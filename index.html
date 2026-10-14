@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ピアノ譜読みトレーニング v2.3</title>
+<title>ピアノ譜読みトレーニング v2.4</title>
 <style>
 :root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
@@ -44,14 +44,38 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 .report-dialog .close-report{background:#3367d6;color:#fff;border:0;border-radius:12px;padding:13px;width:100%;font-weight:700}
 .report-detail{color:#53657b;font-size:.85rem;line-height:1.6}
 @media(max-width:450px){.report-dialog{padding:17px}.report-metrics strong{font-size:1.35rem}}
+
+/* v2.4: settings moved to a dedicated overlay */
+.settings-dialog{max-width:730px;max-height:92dvh;overflow-y:auto;text-align:left;padding:20px}
+.settings-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.settings-heading h2{margin:0}
+.settings-heading #closeSettingsTop{background:#eef2f8;color:#203047;border:0;width:38px;height:38px;border-radius:10px;font-size:1.3rem;font-weight:800;cursor:pointer}
+.settings-dialog .settings{margin:14px 0;border:1px solid #dce4ee;background:#f9fbfe}
+.settings-profiles,.settings-data{padding:5px 0 12px}
+.settings-profiles h3,.settings-data h3{font-size:1rem;margin:8px 0 12px}
+.settings-profile-actions{display:flex;gap:8px}
+.settings-profile-actions button{flex:1;padding:12px;border:1px solid #cbd5e1;border-radius:10px;background:white;color:#203047;font-weight:700}
+.settings-dialog .settings-close{background:#3367d6;color:white;border:0;border-radius:12px;padding:15px;width:100%;font-size:1rem;font-weight:750;position:sticky;bottom:0}
+.settings-dialog .tools{margin-bottom:10px}
+.settings-dialog .foot{margin-top:8px}
+@media(max-width:450px){.settings-dialog{padding:15px;max-height:95dvh}.settings-profile-actions{flex-wrap:wrap}}
 </style>
 </head>
 <body>
 <main>
 <h1>🎹 ピアノ譜読みトレーニング</h1>
 <p class="subtitle">全88鍵対応 ｜ ○・× または ドレミで答えよう</p>
-<div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select><button type="button" id="addProfile">＋追加</button><button type="button" id="renameProfile">名前変更</button></div><div class="stats" id="statusText">データを読み込み中…</div>
-<section class="settings" aria-label="出題設定">
+<div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="stats" id="statusText">データを読み込み中…</div>
+
+<section class="practice"><div class="topline"><span id="clefLabel">ト音記号</span><span id="counter" class="counter">第1問</span></div>
+<button class="stage" id="stage" type="button" aria-label="答えを表示、または次の問題へ">
+<svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"><g stroke="#34475c" stroke-width="1.8"><path d="M90 86H532 M90 112H532 M90 138H532 M90 164H532 M90 190H532" /></g><text x="109" y="205" font-size="132" font-family="Noto Music, Apple Symbols, serif" fill="#23384c" text-anchor="middle">𝄞</text><ellipse cx="329" cy="164" rx="18" ry="12" transform="rotate(-20 329 164)" fill="#263b52"/><path d="M346 164V70" stroke="#263b52" stroke-width="3.3"/></svg>
+<div class="answer hidden" id="answer" aria-live="polite">&nbsp;</div><p id="tapguide" class="tapguide">タップして答えを表示</p>
+</button><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を押してね（オクターブは判定しません）</p><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div></section>
+<div class="actionbar"><button type="button" id="progress" class="small primary">がんばり</button><button type="button" id="parentReport" class="small">保護者向け</button><button type="button" id="openSettings" class="small">⚙ 設定</button></div>
+<p class="foot">音名は「ド・レ・ミ」で表示し、括弧内に国際式の音名（例：C4）を表示します。現在の回答モードは白鍵のみ出題します。♯・♭の問題は将来の鍵盤回答モードで対応します。</p>
+
+<div id="settingsOverlay" class="overlay" role="presentation"><div class="dialog settings-dialog" role="dialog" aria-modal="true" aria-label="設定画面"><div class="settings-heading"><h2>⚙ 設定</h2><button id="closeSettingsTop" type="button" aria-label="設定を閉じる">×</button></div><div class="settings-profiles"><h3>学習者の管理</h3><div class="settings-profile-actions"><button type="button" id="addProfile">＋ 名前を追加</button><button type="button" id="renameProfile">名前を変更</button></div><p class="range-tip">学習者の切り替えは練習画面上部で行えます。</p></div><section class="settings" aria-label="出題設定"><div class="wide group-label">出題設定</div>
 <div class="wide"><label for="answerMode">回答方式</label><select id="answerMode"><option value="self">○・×で自己評価</option><option value="solfege">ドレミのボタンで答える</option></select></div>
 <div><label for="duration">音符の種類</label><select id="duration"><option value="random">ランダム</option><option value="eighth">八分音符</option><option value="quarter">四分音符</option><option value="half">二分音符</option><option value="whole">全音符</option></select></div>
 <div><label for="accidental">臨時記号</label><select id="accidental" disabled><option value="none">なし（白鍵のみ）</option><option value="sharp">♯ のみ</option><option value="flat">♭ のみ</option><option value="both">♯・♭ 両方</option></select><div class="range-tip">♯・♭は将来の鍵盤回答モードで対応予定です。</div></div>
@@ -411,18 +435,10 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 <option value="107">シ7 / B7</option>
 <option value="108">ド8 / C8</option></select></div>
 <div class="wide"><div class="range-tip">臨時記号「なし」では白鍵のみ出題します。最も低い音はラ0（A0）、最も高い音はド8（C8）です。音部記号「自動」ではそれぞれの設定音域から出題します。設定変更後、すぐに次の問題へ切り替わります。</div><div id="rangeError" class="error" role="alert">各音部記号の下限は上限以下にしてください。</div></div>
-</section>
-<section class="practice"><div class="topline"><span id="clefLabel">ト音記号</span><span id="counter" class="counter">第1問</span></div>
-<button class="stage" id="stage" type="button" aria-label="答えを表示、または次の問題へ">
-<svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"><g stroke="#34475c" stroke-width="1.8"><path d="M90 86H532 M90 112H532 M90 138H532 M90 164H532 M90 190H532" /></g><text x="109" y="205" font-size="132" font-family="Noto Music, Apple Symbols, serif" fill="#23384c" text-anchor="middle">𝄞</text><ellipse cx="329" cy="164" rx="18" ry="12" transform="rotate(-20 329 164)" fill="#263b52"/><path d="M346 164V70" stroke="#263b52" stroke-width="3.3"/></svg>
-<div class="answer hidden" id="answer" aria-live="polite">&nbsp;</div><p id="tapguide" class="tapguide">タップして答えを表示</p>
-</button><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を押してね（オクターブは判定しません）</p><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div></section>
-<div class="actionbar"><button type="button" id="progress" class="small primary">がんばり</button><button type="button" id="parentReport" class="small">保護者向け</button><button type="button" id="skip" class="small">問題をスキップ</button></div>
-<p class="foot">音名は「ド・レ・ミ」で表示し、括弧内に国際式の音名（例：C4）を表示します。現在の回答モードは白鍵のみ出題します。♯・♭の問題は将来の鍵盤回答モードで対応します。</p>
-<div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p>
+</section><div class="settings-data"><h3>学習データ管理</h3><div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p></div><button type="button" id="closeSettings" class="settings-close">設定を閉じる</button></div></div>
 <div id="parentOverlay" class="overlay"><div class="dialog report-dialog" role="dialog" aria-modal="true" aria-label="保護者向け学習レポート"><h2>保護者向け 学習レポート</h2><p class="report-detail" id="reportWho"></p><div class="report-tabs"><button type="button" data-period="today" class="on">今日</button><button type="button" data-period="week">1週間</button><button type="button" data-period="month">1か月</button></div><div id="reportContent"></div><button type="button" id="closeParent" class="close-report">練習に戻る</button></div></div>
 <div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
-<p class="foot" style="text-align:center">v2.3｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
+<p class="foot" style="text-align:center">v2.4｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
 </main>
 <script>
 
@@ -553,7 +569,7 @@ else if(short){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=
 else if(promote){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=now+days(s.level)*DAY}
 // Early correct intentionally leaves the original dueCount and dueAt untouched.
 s.lastAt=now;p.stats[n.id]=s;
-const elapsed=Math.max(0,(now-n.started)/1000);const activeSeconds=Math.min(elapsed,120);p.history.push({activeSeconds,at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.3',answerMode:details?'solfege':'self',chosenAnswer:details?.answer??null});
+const elapsed=Math.max(0,(now-n.started)/1000);const activeSeconds=Math.min(elapsed,120);p.history.push({activeSeconds,at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.4',answerMode:details?'solfege':'self',chosenAnswer:details?.answer??null});
 p.recent.push(n.id);p.recent=p.recent.slice(-3);count++;lastRecordedAt=now;save();updateStatus();
 if(details){$('answer').className='answer answer-shown';$('solfegeFeedback').textContent=correct?'○ せいかい！':`× せいかいは ${expectedAnswer(n)}`;$('solfegeFeedback').className='solfege-feedback '+(correct?'good':'bad');$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=true);if(p.counter%20===0)showResult(false);else $('nextAfterSolfege').hidden=false;}else if(p.counter%20===0)showResult(false);else nextProblem();}
 function showResult(manual){const p=active(),history=p.history.slice(-20);const yes=history.filter(h=>h.correct).length,wrong=history.length-yes;$('resultHeading').textContent=manual?'きょうの がんばり':'20もん がんばったね！';$('resultSub').textContent=manual?`きょう ${todayRecords(p).length}もん ／ ぜんぶで ${p.counter}もん`:`ぜんぶで ${p.counter}もん`;$('rCorrect').textContent=yes;$('rWrong').textContent=wrong;$('rRate').textContent=history.length?Math.round(100*yes/history.length)+'%':'—';$('mastered').textContent=`おぼえた音符（Lv.3以上）：${Object.values(p.stats).filter(s=>s.level>=3).length}個`;const recent=todayRecords(p);$('childPraise').textContent=recent.length>=20?'きょうも たくさん れんしゅうしたね！':recent.length?'きょうも ピアノの おんぷに ちょうせんしたね！':'これから いっしょに がんばろう！';$('resultOverlay').classList.add('show');$('resume').textContent=manual?'とじる':'タップして つづける →';$('resume').dataset.manual=manual?'1':'0';}
@@ -576,9 +592,10 @@ function expectedAnswer(n){return JP[n.m%12]}
 function updateAnswerMode(){const sol=$('answerMode').value==='solfege';$('solfegeBox').hidden=!sol;document.querySelector('.practice').classList.toggle('solfege-mode',sol);$('stage').style.cursor=sol?'default':'pointer';if(sol){$('tapguide').textContent='下のドレミを押してね';$('stage').setAttribute('aria-label','五線譜の問題')}else{$('tapguide').textContent='音を読んでからタップして答えを確認'}}
 function chooseSolfege(note){if(!current||waiting||$('answerMode').value!=='solfege')return;const correct=note===expectedAnswer(current);revealed=true;record(correct,{answer:note})}
 
+function closeSettingsPanel(){$('settingsOverlay').classList.remove('show');if(!valid()){loadSettings();nextProblem()}}
 function setupEvents(){for(const id of settingIds)$(id).addEventListener('change',()=>{if(!valid())return;syncSettings();nextProblem()});
 $('stage').addEventListener('click',reveal);$('solfegeKeys').addEventListener('click',e=>{const b=e.target.closest('button[data-note]');if(b)chooseSolfege(b.dataset.note)});$('nextAfterSolfege').addEventListener('click',nextProblem);$('correct').addEventListener('click',()=>record(true));$('incorrect').addEventListener('click',()=>record(false));
-$('skip').addEventListener('click',()=>{if(!current)return;const p=active();p.recent.push(current.id);p.recent=p.recent.slice(-3);nextProblem()});
+$('openSettings').addEventListener('click',()=>{$('settingsOverlay').classList.add('show')});$('closeSettings').addEventListener('click',closeSettingsPanel);$('closeSettingsTop').addEventListener('click',closeSettingsPanel);
 $('progress').addEventListener('click',()=>showResult(true));$('parentReport').addEventListener('click',showParent);$('closeParent').addEventListener('click',()=>$('parentOverlay').classList.remove('show'));document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{reportPeriod=b.dataset.period;renderParent()}));$('resume').addEventListener('click',closeResult);$('resultOverlay').addEventListener('click',e=>{if(e.target===$('resultOverlay'))closeResult()});
 $('profile').addEventListener('change',e=>switchProfile(e.target.value));
 $('addProfile').addEventListener('click',()=>{const name=prompt('新しい学習者の名前を入力してください');if(!name?.trim())return;const id='p'+Date.now()+'_'+Math.floor(Math.random()*10000);state.profiles[id]=newProfile(name.trim().slice(0,40));refreshProfiles();switchProfile(id);refreshProfiles()});
