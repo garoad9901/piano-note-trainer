@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ピアノ譜読みトレーニング v2.2</title>
+<title>ピアノ譜読みトレーニング v2.3</title>
 <style>
 :root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
@@ -26,6 +26,24 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 .practice.solfege-mode .solfege-keys button{min-height:52px;font-size:1.28rem;border-radius:10px}
 .practice.solfege-mode .solfege-feedback{margin:4px 0 0;min-height:0}
 @media(max-width:450px){.practice.solfege-mode .score-svg{height:158px}.practice.solfege-mode .solfege-keys{gap:5px}.practice.solfege-mode .solfege-keys button{min-height:52px}}
+
+/* v2.3 reports */
+.report-dialog{max-width:630px;max-height:88vh;overflow-y:auto;text-align:left}
+.report-dialog h2{margin-bottom:6px}
+.report-tabs{display:flex;gap:7px;margin:14px 0}
+.report-tabs button{flex:1;border:1px solid #cbd5e1;background:#f1f5fb;border-radius:10px;padding:10px;font-weight:700;color:#203047}
+.report-tabs button.on{background:#3367d6;color:#fff}
+.report-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.report-metrics article{background:#f1f5fb;border-radius:13px;padding:13px}
+.report-metrics strong{display:block;font-size:1.5rem}
+.report-metrics small{color:#64748b}
+.report-chart{display:flex;align-items:end;gap:5px;min-height:145px;padding:14px 0 0}
+.report-bar{flex:1;min-width:0;text-align:center;font-size:.7rem;color:#52647a}
+.report-bar .bar{background:#4275cb;border-radius:5px 5px 0 0;margin:5px auto 0;width:76%;min-height:2px}
+.report-compliment{margin:15px 0;padding:12px;border-radius:12px;background:#fff5df;line-height:1.6}
+.report-dialog .close-report{background:#3367d6;color:#fff;border:0;border-radius:12px;padding:13px;width:100%;font-weight:700}
+.report-detail{color:#53657b;font-size:.85rem;line-height:1.6}
+@media(max-width:450px){.report-dialog{padding:17px}.report-metrics strong{font-size:1.35rem}}
 </style>
 </head>
 <body>
@@ -399,11 +417,12 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 <svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"><g stroke="#34475c" stroke-width="1.8"><path d="M90 86H532 M90 112H532 M90 138H532 M90 164H532 M90 190H532" /></g><text x="109" y="205" font-size="132" font-family="Noto Music, Apple Symbols, serif" fill="#23384c" text-anchor="middle">𝄞</text><ellipse cx="329" cy="164" rx="18" ry="12" transform="rotate(-20 329 164)" fill="#263b52"/><path d="M346 164V70" stroke="#263b52" stroke-width="3.3"/></svg>
 <div class="answer hidden" id="answer" aria-live="polite">&nbsp;</div><p id="tapguide" class="tapguide">タップして答えを表示</p>
 </button><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を押してね（オクターブは判定しません）</p><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div></section>
-<div class="actionbar"><button type="button" id="progress" class="small primary">学習状況</button><button type="button" id="skip" class="small">問題をスキップ</button></div>
+<div class="actionbar"><button type="button" id="progress" class="small primary">がんばり</button><button type="button" id="parentReport" class="small">保護者向け</button><button type="button" id="skip" class="small">問題をスキップ</button></div>
 <p class="foot">音名は「ド・レ・ミ」で表示し、括弧内に国際式の音名（例：C4）を表示します。現在の回答モードは白鍵のみ出題します。♯・♭の問題は将来の鍵盤回答モードで対応します。</p>
 <div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p>
-<div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><button id="resume" type="button">タップして つづける →</button></div></div>
-<p class="foot" style="text-align:center">v2.2｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
+<div id="parentOverlay" class="overlay"><div class="dialog report-dialog" role="dialog" aria-modal="true" aria-label="保護者向け学習レポート"><h2>保護者向け 学習レポート</h2><p class="report-detail" id="reportWho"></p><div class="report-tabs"><button type="button" data-period="today" class="on">今日</button><button type="button" data-period="week">1週間</button><button type="button" data-period="month">1か月</button></div><div id="reportContent"></div><button type="button" id="closeParent" class="close-report">練習に戻る</button></div></div>
+<div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
+<p class="foot" style="text-align:center">v2.3｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
 </main>
 <script>
 
@@ -474,7 +493,7 @@ const settingIds=['answerMode','trebleLow','trebleHigh','bassLow','bassHigh','cl
 const DEFAULTS={answerMode:'self',trebleLow:'60',trebleHigh:'84',bassLow:'36',bassHigh:'60',clef:'auto',duration:'random',accidental:'none'};
 let state={version:2,active:'p1',profiles:{p1:{name:'こども1',settings:{...DEFAULTS},counter:0,stats:{},history:[],recent:[],mode:'normal'}}};
 let current=null,revealed=false,count=0,previous=null,waiting=false,storeType='IndexedDB';
-let db=null,writeChain=Promise.resolve();
+let db=null,writeChain=Promise.resolve();let reportPeriod='today';let lastRecordedAt=0;
 const clone=x=>JSON.parse(JSON.stringify(x));
 function active(){return state.profiles[state.active]}
 function newProfile(name){return {name,settings:{...DEFAULTS},counter:0,stats:{},history:[],recent:[],mode:'normal'}}
@@ -534,10 +553,19 @@ else if(short){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=
 else if(promote){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=now+days(s.level)*DAY}
 // Early correct intentionally leaves the original dueCount and dueAt untouched.
 s.lastAt=now;p.stats[n.id]=s;
-p.history.push({at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.2',answerMode:details?'solfege':'self',chosenAnswer:details?.answer??null});
-p.recent.push(n.id);p.recent=p.recent.slice(-3);count++;save();updateStatus();
+const elapsed=Math.max(0,(now-n.started)/1000);const activeSeconds=Math.min(elapsed,120);p.history.push({activeSeconds,at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.3',answerMode:details?'solfege':'self',chosenAnswer:details?.answer??null});
+p.recent.push(n.id);p.recent=p.recent.slice(-3);count++;lastRecordedAt=now;save();updateStatus();
 if(details){$('answer').className='answer answer-shown';$('solfegeFeedback').textContent=correct?'○ せいかい！':`× せいかいは ${expectedAnswer(n)}`;$('solfegeFeedback').className='solfege-feedback '+(correct?'good':'bad');$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=true);if(p.counter%20===0)showResult(false);else $('nextAfterSolfege').hidden=false;}else if(p.counter%20===0)showResult(false);else nextProblem();}
-function showResult(manual){const p=active();const history=manual?p.history.slice(-20):p.history.slice(-20);const yes=history.filter(h=>h.correct).length,wrong=history.length-yes;$('resultHeading').textContent=manual?'がくしゅうのきろく':'20もん できたね！';$('resultSub').textContent=`累計 ${p.counter}問 ／ 直近 ${history.length}問`;$('rCorrect').textContent=yes;$('rWrong').textContent=wrong;$('rRate').textContent=history.length?Math.round(100*yes/history.length)+'%':'—';$('mastered').textContent=`おぼえた音符（Lv.3以上）：${Object.values(p.stats).filter(s=>s.level>=3).length}個`;$('resultOverlay').classList.add('show');$('resume').textContent=manual?'とじる':'タップして つづける →';$('resume').dataset.manual=manual?'1':'0';}
+function showResult(manual){const p=active(),history=p.history.slice(-20);const yes=history.filter(h=>h.correct).length,wrong=history.length-yes;$('resultHeading').textContent=manual?'きょうの がんばり':'20もん がんばったね！';$('resultSub').textContent=manual?`きょう ${todayRecords(p).length}もん ／ ぜんぶで ${p.counter}もん`:`ぜんぶで ${p.counter}もん`;$('rCorrect').textContent=yes;$('rWrong').textContent=wrong;$('rRate').textContent=history.length?Math.round(100*yes/history.length)+'%':'—';$('mastered').textContent=`おぼえた音符（Lv.3以上）：${Object.values(p.stats).filter(s=>s.level>=3).length}個`;const recent=todayRecords(p);$('childPraise').textContent=recent.length>=20?'きょうも たくさん れんしゅうしたね！':recent.length?'きょうも ピアノの おんぷに ちょうせんしたね！':'これから いっしょに がんばろう！';$('resultOverlay').classList.add('show');$('resume').textContent=manual?'とじる':'タップして つづける →';$('resume').dataset.manual=manual?'1':'0';}
+function localDay(t){const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function todayRecords(p){const today=localDay(Date.now());return p.history.filter(h=>localDay(h.at)===today)}
+function dateStart(t){const d=new Date(t);d.setHours(0,0,0,0);return d}
+function periodRecords(p,period){const start=dateStart(Date.now());if(period==='week')start.setDate(start.getDate()-6);if(period==='month')start.setDate(start.getDate()-29);return p.history.filter(h=>h.at>=start.getTime())}
+function fmtTime(h){const data=h.filter(x=>Number.isFinite(x.activeSeconds));if(!data.length)return '記録なし';const mins=Math.round(data.reduce((sum,x)=>sum+x.activeSeconds,0)/60);return mins+'分（推定）'}
+function reportSummary(h){const yes=h.filter(x=>x.correct).length;const firstMastered=new Set(h.filter(x=>x.before!==null&&x.before<3&&x.after>=3).map(x=>x.noteId));const corrected=new Set(h.filter(x=>x.correct&&x.before!==null&&x.before<=1&&x.after>=2).map(x=>x.noteId));return {yes,rate:h.length?Math.round(100*yes/h.length):null,firstMastered:firstMastered.size,corrected:corrected.size}}
+function reportHtml(period){const p=active(),h=periodRecords(p,period),stat=reportSummary(h),dates=new Set(h.map(x=>localDay(x.at)));let bars='';const days=period==='today'?1:period==='week'?7:30;const counts=[];for(let i=days-1;i>=0;i--){const d=dateStart(Date.now());d.setDate(d.getDate()-i);const day=localDay(d);counts.push({label:period==='month'?String(d.getDate()):String(d.getMonth()+1)+'/'+d.getDate(),n:h.filter(x=>localDay(x.at)===day).length})}const max=Math.max(1,...counts.map(x=>x.n));if(period!=='today')bars='<div class="report-chart">'+counts.map((x,i)=>'<div class="report-bar"><div>'+x.n+'</div><div class="bar" style="height:'+Math.max(2,Math.round(x.n/max*100))+'px"></div><div>'+(period==='week'||i%5===0||i===29?x.label:'')+'</div></div>').join('')+'</div>';const daily=h.length;let praise=daily===0?'今日はまだ記録がありません。':stat.corrected>0?'苦手だった音符にも、もう一度挑戦できています！':daily>=20?'たくさんの問題に取り組めています。頑張りを褒めてあげてください！':'今日も音符を読む練習に取り組みました！';if(period!=='today')praise=dates.size>=5?'コツコツ練習を続けています！':h.length?'取り組んだ日をぜひ褒めてあげてください。':'この期間の回答記録はありません。';return '<div class="report-metrics"><article><small>回答数</small><strong>'+h.length+' 問</strong></article><article><small>正解率</small><strong>'+(stat.rate===null?'—':stat.rate+'%')+'</strong></article><article><small>練習時間の目安</small><strong>'+fmtTime(h)+'</strong></article><article><small>'+(period==='today'?'苦手からの改善':'練習日数')+'</small><strong>'+(period==='today'?stat.corrected+' 音':dates.size+' 日')+'</strong></article></div><p class="report-detail">新たにLv.3以上に到達：'+stat.firstMastered+'音（この期間内の履歴に基づく数）</p>'+bars+'<div class="report-compliment"><b>褒めポイント</b><div>'+praise+'</div></div><p class="report-detail">練習時間はv2.3以降の回答について、各問題の経過時間のうち最大2分を合計した推定値です。旧履歴の時間は含みません。</p>'}
+function showParent(){reportPeriod='today';$('parentOverlay').classList.add('show');renderParent()}
+function renderParent(){$('reportWho').textContent=active().name+' の学習記録';document.querySelectorAll('[data-period]').forEach(b=>b.classList.toggle('on',b.dataset.period===reportPeriod));$('reportContent').innerHTML=reportHtml(reportPeriod)}
 function closeResult(){let manual=$('resume').dataset.manual==='1';$('resultOverlay').classList.remove('show');if(!manual)nextProblem()}
 function switchProfile(id){if(!state.profiles[id])return;state.active=id;count=0;loadSettings();save();nextProblem()}
 function download(name,content,type){const blob=new Blob([content],{type});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),1500)}
@@ -551,7 +579,7 @@ function chooseSolfege(note){if(!current||waiting||$('answerMode').value!=='solf
 function setupEvents(){for(const id of settingIds)$(id).addEventListener('change',()=>{if(!valid())return;syncSettings();nextProblem()});
 $('stage').addEventListener('click',reveal);$('solfegeKeys').addEventListener('click',e=>{const b=e.target.closest('button[data-note]');if(b)chooseSolfege(b.dataset.note)});$('nextAfterSolfege').addEventListener('click',nextProblem);$('correct').addEventListener('click',()=>record(true));$('incorrect').addEventListener('click',()=>record(false));
 $('skip').addEventListener('click',()=>{if(!current)return;const p=active();p.recent.push(current.id);p.recent=p.recent.slice(-3);nextProblem()});
-$('progress').addEventListener('click',()=>showResult(true));$('resume').addEventListener('click',closeResult);$('resultOverlay').addEventListener('click',e=>{if(e.target===$('resultOverlay'))closeResult()});
+$('progress').addEventListener('click',()=>showResult(true));$('parentReport').addEventListener('click',showParent);$('closeParent').addEventListener('click',()=>$('parentOverlay').classList.remove('show'));document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{reportPeriod=b.dataset.period;renderParent()}));$('resume').addEventListener('click',closeResult);$('resultOverlay').addEventListener('click',e=>{if(e.target===$('resultOverlay'))closeResult()});
 $('profile').addEventListener('change',e=>switchProfile(e.target.value));
 $('addProfile').addEventListener('click',()=>{const name=prompt('新しい学習者の名前を入力してください');if(!name?.trim())return;const id='p'+Date.now()+'_'+Math.floor(Math.random()*10000);state.profiles[id]=newProfile(name.trim().slice(0,40));refreshProfiles();switchProfile(id);refreshProfiles()});
 $('renameProfile').addEventListener('click',()=>{const name=prompt('学習者の名前',active().name);if(!name?.trim())return;active().name=name.trim().slice(0,40);refreshProfiles();save();updateStatus()});
