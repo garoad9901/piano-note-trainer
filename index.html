@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ピアノ譜読みトレーニング v2.1</title>
+<title>ピアノ譜読みトレーニング v2.2</title>
 <style>
 :root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
@@ -14,6 +14,18 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 .profilebar{display:flex;align-items:center;gap:9px;margin:12px 0;flex-wrap:wrap}.profilebar select{width:auto;min-width:170px;flex:1}.profilebar button,.tools button{padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:var(--ink);font-weight:650;cursor:pointer}.assessment{display:none;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 20px}.assessment.show{display:grid}.assessment button{border:0;border-radius:14px;padding:18px;font-size:1.4rem;font-weight:800;cursor:pointer}.yes{background:#def6e9;color:#11633e}.no{background:#ffe5e7;color:#a52c3b}.stage{min-height:315px}.answer.hidden{visibility:hidden;color:inherit}.actionbar{justify-content:space-between}.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.tools button{flex:1;font-size:.83rem}.stats{font-size:.82rem;color:var(--muted)}.overlay{display:none;position:fixed;inset:0;background:#192b43bd;z-index:100;padding:20px;align-items:center;justify-content:center}.overlay.show{display:flex}.dialog{background:#fff;border-radius:22px;padding:24px;max-width:420px;width:100%;text-align:center;box-shadow:0 18px 70px #0003}.dialog h2{margin:0 0 10px}.dialog .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.dialog .metrics div{background:#f1f5fb;border-radius:12px;padding:13px 3px}.dialog strong{display:block;font-size:1.7rem}.dialog button{border:0;background:#3367d6;color:white;border-radius:13px;font-size:1.1rem;padding:15px;width:100%;font-weight:bold;cursor:pointer}.notice{font-size:.82rem;color:#8a4d13}.status-pill{font-size:.77rem;color:#44628f;background:#edf3ff;border-radius:99px;padding:5px 9px}.stage[disabled]{opacity:.6}.backupfile{display:none}
 
 .solfege-box{padding:0 14px 20px;text-align:center}.solfege-note{color:var(--muted);font-size:.85rem;margin:3px 0 10px}.modifier-row{display:flex;justify-content:center;gap:7px;margin-bottom:12px}.modifier-row button{background:#f2f5fa;border:1px solid #b8c8df;border-radius:10px;padding:11px 9px;color:#29405d;font-weight:700;flex:1;max-width:150px}.modifier-row button.selected{background:#dceaff;border:2px solid #346ad6;color:#1746a8}.solfege-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.solfege-keys button{min-height:65px;border:1px solid #b9c8db;border-radius:13px;background:#eaf1ff;color:#173c73;font-size:1.4rem;font-weight:800;touch-action:manipulation}.solfege-keys button:disabled{opacity:.55}.solfege-feedback{min-height:30px;font-weight:800;margin:11px 0 3px}.solfege-feedback.good{color:#11633e}.solfege-feedback.bad{color:#a52c3b}.continue-button{border:0;border-radius:12px;padding:15px 26px;background:#3367d6;color:white;font-weight:800;font-size:1rem;width:100%}.solfege-box[hidden]{display:none!important}
+
+/* v2.2: place the seven answers immediately below the staff */
+.practice.solfege-mode .stage{min-height:0;padding:0 8px 3px;cursor:default}
+.practice.solfege-mode .score-svg{height:176px;max-width:560px}
+.practice.solfege-mode .answer{display:none}
+.practice.solfege-mode .tapguide{font-size:.79rem;line-height:1.2;margin:0}
+.practice.solfege-mode .solfege-box{padding:2px 10px 12px}
+.practice.solfege-mode .solfege-note{margin:0 0 7px;font-size:.78rem}
+.practice.solfege-mode .solfege-keys{gap:6px}
+.practice.solfege-mode .solfege-keys button{min-height:52px;font-size:1.28rem;border-radius:10px}
+.practice.solfege-mode .solfege-feedback{margin:4px 0 0;min-height:0}
+@media(max-width:450px){.practice.solfege-mode .score-svg{height:158px}.practice.solfege-mode .solfege-keys{gap:5px}.practice.solfege-mode .solfege-keys button{min-height:52px}}
 </style>
 </head>
 <body>
@@ -24,7 +36,7 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 <section class="settings" aria-label="出題設定">
 <div class="wide"><label for="answerMode">回答方式</label><select id="answerMode"><option value="self">○・×で自己評価</option><option value="solfege">ドレミのボタンで答える</option></select></div>
 <div><label for="duration">音符の種類</label><select id="duration"><option value="random">ランダム</option><option value="eighth">八分音符</option><option value="quarter">四分音符</option><option value="half">二分音符</option><option value="whole">全音符</option></select></div>
-<div><label for="accidental">臨時記号</label><select id="accidental"><option value="both">♯・♭ 両方</option><option value="none">なし（白鍵のみ）</option><option value="sharp">♯ のみ</option><option value="flat">♭ のみ</option></select></div>
+<div><label for="accidental">臨時記号</label><select id="accidental" disabled><option value="none">なし（白鍵のみ）</option><option value="sharp">♯ のみ</option><option value="flat">♭ のみ</option><option value="both">♯・♭ 両方</option></select><div class="range-tip">♯・♭は将来の鍵盤回答モードで対応予定です。</div></div>
 <div><label for="clef">音部記号</label><select id="clef"><option value="auto">自動（ト音・ヘ音）</option><option value="treble">ト音記号のみ</option><option value="bass">ヘ音記号のみ</option></select></div>
 <div class="wide group-label">ト音記号の出題音域</div>
 <div><label for="trebleLow">下限（ト音記号）</label><select id="trebleLow"><option value="21">ラ0 / A0</option>
@@ -386,12 +398,12 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 <button class="stage" id="stage" type="button" aria-label="答えを表示、または次の問題へ">
 <svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"><g stroke="#34475c" stroke-width="1.8"><path d="M90 86H532 M90 112H532 M90 138H532 M90 164H532 M90 190H532" /></g><text x="109" y="205" font-size="132" font-family="Noto Music, Apple Symbols, serif" fill="#23384c" text-anchor="middle">𝄞</text><ellipse cx="329" cy="164" rx="18" ry="12" transform="rotate(-20 329 164)" fill="#263b52"/><path d="M346 164V70" stroke="#263b52" stroke-width="3.3"/></svg>
 <div class="answer hidden" id="answer" aria-live="polite">&nbsp;</div><p id="tapguide" class="tapguide">タップして答えを表示</p>
-</button><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を選んでね（オクターブの違いは判定しません）</p><div class="modifier-row" id="modifiers"><button type="button" data-acc="natural" class="selected">♮ なし</button><button type="button" data-acc="sharp">♯ シャープ</button><button type="button" data-acc="flat">♭ フラット</button></div><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button><button type="button" data-note="ド">ド</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div></section>
+</button><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を押してね（オクターブは判定しません）</p><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div></section>
 <div class="actionbar"><button type="button" id="progress" class="small primary">学習状況</button><button type="button" id="skip" class="small">問題をスキップ</button></div>
-<p class="foot">音名は「ド・レ・ミ」で表示し、括弧内に国際式の音名（例：C4）を表示します。黒鍵の表記は、臨時記号の設定に応じて♯・♭を使い分けます。端の音域では加線が多くなります。</p>
+<p class="foot">音名は「ド・レ・ミ」で表示し、括弧内に国際式の音名（例：C4）を表示します。現在の回答モードは白鍵のみ出題します。♯・♭の問題は将来の鍵盤回答モードで対応します。</p>
 <div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p>
 <div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><button id="resume" type="button">タップして つづける →</button></div></div>
-<p class="foot" style="text-align:center">v2.1｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
+<p class="foot" style="text-align:center">v2.2｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
 </main>
 <script>
 
@@ -459,7 +471,7 @@ $('clefLabel').textContent=clef==='treble'?'𝄞 ト音記号':'𝄢 ヘ音記�
 
 const ranges={treble:['trebleLow','trebleHigh'],bass:['bassLow','bassHigh']};
 const settingIds=['answerMode','trebleLow','trebleHigh','bassLow','bassHigh','clef','duration','accidental'];
-const DEFAULTS={answerMode:'self',trebleLow:'60',trebleHigh:'84',bassLow:'36',bassHigh:'60',clef:'auto',duration:'random',accidental:'both'};
+const DEFAULTS={answerMode:'self',trebleLow:'60',trebleHigh:'84',bassLow:'36',bassHigh:'60',clef:'auto',duration:'random',accidental:'none'};
 let state={version:2,active:'p1',profiles:{p1:{name:'こども1',settings:{...DEFAULTS},counter:0,stats:{},history:[],recent:[],mode:'normal'}}};
 let current=null,revealed=false,count=0,previous=null,waiting=false,storeType='IndexedDB';
 let db=null,writeChain=Promise.resolve();
@@ -470,17 +482,17 @@ async function openDb(){return new Promise((resolve,reject)=>{try{const r=indexe
 async function loadState(){try{db=await openDb();const saved=await new Promise((resolve,reject)=>{let t=db.transaction('data','readonly').objectStore('data').get('state');t.onsuccess=()=>resolve(t.result);t.onerror=()=>reject(t.error)});if(saved&&saved.version===2)state=saved}catch(e){storeType='localStorage';try{const s=localStorage.getItem('pianoNoteV2');if(s)state=JSON.parse(s)}catch(err){storeType='一時メモリ（保存不可）'}}
 if(!state.profiles||!Object.keys(state.profiles).length)state={version:2,active:'p1',profiles:{p1:newProfile('こども1')}};
 if(!state.profiles[state.active])state.active=Object.keys(state.profiles)[0];
-for(let p of Object.values(state.profiles)){p.stats||={};p.history||=[];p.recent||=[];p.counter||=0;p.settings={...DEFAULTS,...p.settings}}
+for(let p of Object.values(state.profiles)){p.stats||={};p.history||=[];p.recent||=[];p.counter||=0;p.settings={...DEFAULTS,...p.settings,accidental:'none'}}
 $('storageInfo').textContent=`保存方式：${storeType}。この端末・ブラウザ内に保存されます。定期的にJSONバックアップしてください。`;
 refreshProfiles();loadSettings();updateStatus();nextProblem();}
 function save(){const snapshot=clone(state);writeChain=writeChain.catch(()=>{}).then(()=>new Promise(resolve=>{if(db){try{const t=db.transaction('data','readwrite');t.objectStore('data').put(snapshot,'state');t.oncomplete=resolve;t.onerror=()=>{console.error(t.error);resolve()};return}catch(e){console.error(e)}}try{localStorage.setItem('pianoNoteV2',JSON.stringify(snapshot))}catch(e){console.warn('保存できません',e);$('storageInfo').textContent='保存に失敗しました。JSONバックアップをご利用ください。'}resolve()}));return writeChain}
 function refreshProfiles(){$('profile').replaceChildren();for(const [id,p] of Object.entries(state.profiles)){const o=document.createElement('option');o.value=id;o.textContent=p.name;$('profile').append(o)}$('profile').value=state.active}
-function loadSettings(){const s=active().settings;for(const id of settingIds)$(id).value=s[id]??DEFAULTS[id]}
-function syncSettings(){const s=active().settings;for(const id of settingIds)s[id]=$(id).value;save()}
+function loadSettings(){const s=active().settings;s.accidental='none';for(const id of settingIds)$(id).value=s[id]??DEFAULTS[id]}
+function syncSettings(){const s=active().settings;for(const id of settingIds)s[id]=$(id).value;s.accidental='none';save()}
 function activeClefs(){return $('clef').value==='auto'?['treble','bass']:[$('clef').value]}
-function eligible(clef){const ids=ranges[clef],lo=+$(ids[0]).value,hi=+$(ids[1]).value,mode=$('accidental').value;const out=[];for(let m=lo;m<=hi;m++)if(mode!=='none'||!BLACK.has(m%12))out.push(m);return out}
+function eligible(clef){const ids=ranges[clef],lo=+$(ids[0]).value,hi=+$(ids[1]).value;const out=[];for(let m=lo;m<=hi;m++)if(!BLACK.has(m%12))out.push(m);return out}
 function valid(){const cs=activeClefs();const bad=cs.some(c=>+$(ranges[c][0]).value>+$(ranges[c][1]).value),empty=cs.some(c=>eligible(c).length===0);$('rangeError').textContent=bad?'下限は上限以下にしてください。':'出題できる音符がありません。';$('rangeError').classList.toggle('on',bad||empty);return !(bad||empty)}
-function allCandidates(){let out=[];for(const c of activeClefs()){for(const m of eligible(c)){if(!BLACK.has(m%12)||$('accidental').value==='none')out.push({m,clef:c,useFlat:false});else if($('accidental').value==='sharp')out.push({m,clef:c,useFlat:false});else if($('accidental').value==='flat')out.push({m,clef:c,useFlat:true});else out.push({m,clef:c,useFlat:false},{m,clef:c,useFlat:true})}}return out.map(n=>({...n,id:`${n.clef}:${n.m}:${n.useFlat?'b':'s'}`}))}
+function allCandidates(){const out=[];for(const c of activeClefs())for(const m of eligible(c))out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`});return out}
 function weighted(items,weight){const weights=items.map(x=>Math.max(.001,weight(x)));let r=Math.random()*weights.reduce((a,b)=>a+b,0);for(let i=0;i<items.length;i++){r-=weights[i];if(r<=0)return items[i]}return items[items.length-1]}
 function levelWeight(s){return [8,5,3,2,1][s?.level??0]}
 function currentStatus(n){return active().stats[n.id]}
@@ -507,7 +519,7 @@ else {chosen=weighted(options,n=>levelWeight(currentStatus(n)));type='early'}
 if(!chosen){chosen=pool[Math.floor(Math.random()*pool.length)];type=currentStatus(chosen)?'early':'first'}
 const d=$('duration').value==='random'?DURATIONS[Math.floor(Math.random()*4)]:$('duration').value;
 current={...chosen,d,type,started:Date.now()};revealed=false;waiting=false;
-$('stage').disabled=false;$('assessment').classList.remove('show');$('solfegeFeedback').textContent='';$('solfegeFeedback').className='solfege-feedback';$('nextAfterSolfege').hidden=true;$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=false);selectedAcc='natural';updateModifiers();render();updateAnswerMode();updateStatus();}
+$('stage').disabled=false;$('assessment').classList.remove('show');$('solfegeFeedback').textContent='';$('solfegeFeedback').className='solfege-feedback';$('nextAfterSolfege').hidden=true;$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=false);render();updateAnswerMode();updateStatus();}
 function updateStatus(){const p=active(),stats=Object.values(p.stats),good=stats.filter(x=>x.level>=3).length; $('statusText').textContent=`${p.name}｜回答 ${p.counter}問｜学習済み ${stats.length}音｜Lv.3以上 ${good}音`;}
 function reveal(){if($('answerMode').value==='solfege'||!current||revealed)return;revealed=true;$('answer').className='answer answer-shown';$('tapguide').textContent='できたら ○、まちがえたら × をおしてね';$('assessment').classList.add('show');}
 const DAY=86400000;
@@ -522,7 +534,7 @@ else if(short){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=
 else if(promote){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=now+days(s.level)*DAY}
 // Early correct intentionally leaves the original dueCount and dueAt untouched.
 s.lastAt=now;p.stats[n.id]=s;
-p.history.push({at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.1',answerMode:details?'solfege':'self',chosenAnswer:details?.answer??null});
+p.history.push({at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.2',answerMode:details?'solfege':'self',chosenAnswer:details?.answer??null});
 p.recent.push(n.id);p.recent=p.recent.slice(-3);count++;save();updateStatus();
 if(details){$('answer').className='answer answer-shown';$('solfegeFeedback').textContent=correct?'○ せいかい！':`× せいかいは ${expectedAnswer(n)}`;$('solfegeFeedback').className='solfege-feedback '+(correct?'good':'bad');$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=true);if(p.counter%20===0)showResult(false);else $('nextAfterSolfege').hidden=false;}else if(p.counter%20===0)showResult(false);else nextProblem();}
 function showResult(manual){const p=active();const history=manual?p.history.slice(-20):p.history.slice(-20);const yes=history.filter(h=>h.correct).length,wrong=history.length-yes;$('resultHeading').textContent=manual?'がくしゅうのきろく':'20もん できたね！';$('resultSub').textContent=`累計 ${p.counter}問 ／ 直近 ${history.length}問`;$('rCorrect').textContent=yes;$('rWrong').textContent=wrong;$('rRate').textContent=history.length?Math.round(100*yes/history.length)+'%':'—';$('mastered').textContent=`おぼえた音符（Lv.3以上）：${Object.values(p.stats).filter(s=>s.level>=3).length}個`;$('resultOverlay').classList.add('show');$('resume').textContent=manual?'とじる':'タップして つづける →';$('resume').dataset.manual=manual?'1':'0';}
@@ -531,14 +543,13 @@ function switchProfile(id){if(!state.profiles[id])return;state.active=id;count=0
 function download(name,content,type){const blob=new Blob([content],{type});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),1500)}
 function csv(){const head=['profile','date','ordinal','noteId','clef','midi','useFlat','duration','type','correct','seconds','before','after','algorithm'];const lines=[head.join(',')];for(const [id,p] of Object.entries(state.profiles)){for(const h of p.history){lines.push(head.map(k=>{let v=k==='profile'?p.name:k==='date'?new Date(h.at).toISOString():h[k];return '"'+String(v??'').replaceAll('"','""')+'"'}).join(','))}}return '\ufeff'+lines.join('\r\n')}
 
-let selectedAcc='natural';
 function expectedAnswer(n){const pitch=n.m%12;const name=(n.useFlat?FLAT_JP[pitch]:JP[pitch]);return name}
-function updateModifiers(){document.querySelectorAll('#modifiers button').forEach(b=>b.classList.toggle('selected',b.dataset.acc===selectedAcc))}
-function updateAnswerMode(){const sol=$('answerMode').value==='solfege';$('solfegeBox').hidden=!sol;$('stage').style.cursor=sol?'default':'pointer';if(sol){$('tapguide').textContent='下のドレミのボタンを押してね';$('stage').setAttribute('aria-label','五線譜の問題');}else{$('tapguide').textContent='音を読んでからタップして答えを確認'}}
-function chooseSolfege(note){if(!current||waiting||$('answerMode').value!=='solfege')return;const mark=selectedAcc==='sharp'?'♯':selectedAcc==='flat'?'♭':'';const answer=note+mark;const correct=answer===expectedAnswer(current);revealed=true;record(correct,{answer});}
+function expectedAnswer(n){return JP[n.m%12]}
+function updateAnswerMode(){const sol=$('answerMode').value==='solfege';$('solfegeBox').hidden=!sol;document.querySelector('.practice').classList.toggle('solfege-mode',sol);$('stage').style.cursor=sol?'default':'pointer';if(sol){$('tapguide').textContent='下のドレミを押してね';$('stage').setAttribute('aria-label','五線譜の問題')}else{$('tapguide').textContent='音を読んでからタップして答えを確認'}}
+function chooseSolfege(note){if(!current||waiting||$('answerMode').value!=='solfege')return;const correct=note===expectedAnswer(current);revealed=true;record(correct,{answer:note})}
 
 function setupEvents(){for(const id of settingIds)$(id).addEventListener('change',()=>{if(!valid())return;syncSettings();nextProblem()});
-$('stage').addEventListener('click',reveal);$('modifiers').addEventListener('click',e=>{const b=e.target.closest('button[data-acc]');if(!b||waiting)return;selectedAcc=b.dataset.acc;updateModifiers()});$('solfegeKeys').addEventListener('click',e=>{const b=e.target.closest('button[data-note]');if(b)chooseSolfege(b.dataset.note)});$('nextAfterSolfege').addEventListener('click',nextProblem);$('correct').addEventListener('click',()=>record(true));$('incorrect').addEventListener('click',()=>record(false));
+$('stage').addEventListener('click',reveal);$('solfegeKeys').addEventListener('click',e=>{const b=e.target.closest('button[data-note]');if(b)chooseSolfege(b.dataset.note)});$('nextAfterSolfege').addEventListener('click',nextProblem);$('correct').addEventListener('click',()=>record(true));$('incorrect').addEventListener('click',()=>record(false));
 $('skip').addEventListener('click',()=>{if(!current)return;const p=active();p.recent.push(current.id);p.recent=p.recent.slice(-3);nextProblem()});
 $('progress').addEventListener('click',()=>showResult(true));$('resume').addEventListener('click',closeResult);$('resultOverlay').addEventListener('click',e=>{if(e.target===$('resultOverlay'))closeResult()});
 $('profile').addEventListener('change',e=>switchProfile(e.target.value));
@@ -546,7 +557,7 @@ $('addProfile').addEventListener('click',()=>{const name=prompt('新しい学習
 $('renameProfile').addEventListener('click',()=>{const name=prompt('学習者の名前',active().name);if(!name?.trim())return;active().name=name.trim().slice(0,40);refreshProfiles();save();updateStatus()});
 $('exportAll').addEventListener('click',()=>download('piano-note-v2-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(state,null,2),'application/json'));
 $('exportCsv').addEventListener('click',()=>download('piano-note-history.csv',csv(),'text/csv;charset=utf-8'));
-$('importBackup').addEventListener('click',()=>$('backupFile').click());$('backupFile').addEventListener('change',async e=>{const file=e.target.files?.[0];e.target.value='';if(!file)return;try{const data=JSON.parse(await file.text());if(data.version!==2||!data.profiles||!Object.keys(data.profiles).length||Object.values(data.profiles).some(p=>!p.settings||!Array.isArray(p.history)||typeof p.stats!=='object'))throw Error('不正なデータ形式');if(!confirm('現在の全プロフィールのデータをバックアップの内容で置き換えます。よろしいですか？'))return;state=data;state.active=state.profiles[state.active]?state.active:Object.keys(state.profiles)[0];refreshProfiles();loadSettings();await save();nextProblem();alert('復元しました')}catch(e){alert('JSONを読み込めませんでした：'+e.message)}});
+$('importBackup').addEventListener('click',()=>$('backupFile').click());$('backupFile').addEventListener('change',async e=>{const file=e.target.files?.[0];e.target.value='';if(!file)return;try{const data=JSON.parse(await file.text());if(data.version!==2||!data.profiles||!Object.keys(data.profiles).length||Object.values(data.profiles).some(p=>!p.settings||!Array.isArray(p.history)||typeof p.stats!=='object'))throw Error('不正なデータ形式');if(!confirm('現在の全プロフィールのデータをバックアップの内容で置き換えます。よろしいですか？'))return;state=data;state.active=state.profiles[state.active]?state.active:Object.keys(state.profiles)[0];for(const p of Object.values(state.profiles))p.settings.accidental='none';refreshProfiles();loadSettings();await save();nextProblem();alert('復元しました')}catch(e){alert('JSONを読み込めませんでした：'+e.message)}});
 $('clearProfile').addEventListener('click',()=>{const p=active();if(!confirm(`「${p.name}」の習熟度と全回答履歴を初期化します。元には戻せません。続行しますか？`))return;const word=prompt('確認のため「初期化」と入力してください');if(word!=='初期化')return;const settings={...p.settings};state.profiles[state.active]=newProfile(p.name);active().settings=settings;save();nextProblem();alert('学習履歴を初期化しました')});}
 setupEvents();loadState().catch(e=>{console.error(e);$('statusText').textContent='起動できませんでした：'+e.message});
 
