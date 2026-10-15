@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>かわいい音楽教室 v3.3.1</title>
+<style>
+:root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
+*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
+main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;margin:0 0 4px}p.subtitle{margin:0 0 16px;color:var(--muted);font-size:.88rem}
+.settings{background:white;border:1px solid var(--line);border-radius:17px;padding:15px;display:grid;grid-template-columns:1fr 1fr;gap:12px}label{font-weight:650;font-size:.82rem;display:block;margin-bottom:5px}select{width:100%;min-height:43px;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;background:white;color:var(--ink);font-size:1rem}.wide{grid-column:span 2}.group-label{font-size:.9rem;font-weight:750;padding:9px 2px 2px;border-top:1px solid var(--line);color:#2551a3}.bass-label{color:#75519a}.range-tip{font-size:.76rem;color:var(--muted);margin-top:7px}.error{color:#bd283d;font-size:.78rem;display:none;margin:2px 0 0}.error.on{display:block}
+.practice{margin-top:14px;background:white;border:1px solid var(--line);border-radius:20px;overflow:hidden}.topline{display:flex;align-items:center;justify-content:space-between;padding:14px 17px 0;color:var(--muted);font-size:.86rem}.counter{font-variant-numeric:tabular-nums}.stage{user-select:none;-webkit-user-select:none;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:360px;padding:12px 8px 24px;background:white;border:0;color:inherit;cursor:pointer;text-align:center}.stage:focus-visible{outline:3px solid #80aaff;outline-offset:-4px}.score-svg{width:100%;max-width:660px;height:258px;overflow:visible;display:block}.answer{min-height:73px;display:flex;align-items:center;justify-content:center;font-weight:750;font-size:clamp(1.45rem,6vw,2.25rem)}.answer.hidden{color:transparent}.tapguide{color:var(--muted);font-size:.9rem;margin:0}.answer-shown{color:var(--accent)}.foot{margin-top:12px;color:var(--muted);font-size:.79rem;line-height:1.55}.actionbar{display:flex;gap:8px;margin-top:11px}button.small{flex:1;padding:11px;border:1px solid #c9d6ec;background:white;border-radius:11px;font-size:.9rem;font-weight:650;color:var(--ink);cursor:pointer}.small.primary{background:var(--pale);border-color:#b7cbef;color:#2551a3}
+@media(max-width:450px){main{padding:14px 11px 24px}.settings{gap:10px;padding:12px}.stage{min-height:320px}.score-svg{height:220px}.range-tip{line-height:1.45}}
+
+.profilebar{display:flex;align-items:center;gap:9px;margin:12px 0;flex-wrap:wrap}.profilebar select{width:auto;min-width:170px;flex:1}.profilebar button,.tools button{padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:var(--ink);font-weight:650;cursor:pointer}.assessment{display:none;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 20px}.assessment.show{display:grid}.assessment button{border:0;border-radius:14px;padding:18px;font-size:1.4rem;font-weight:800;cursor:pointer}.yes{background:#def6e9;color:#11633e}.no{background:#ffe5e7;color:#a52c3b}.stage{min-height:315px}.answer.hidden{visibility:hidden;color:inherit}.actionbar{justify-content:space-between}.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.tools button{flex:1;font-size:.83rem}.stats{font-size:.82rem;color:var(--muted)}.overlay{display:none;position:fixed;inset:0;background:#192b43bd;z-index:100;padding:20px;align-items:center;justify-content:center}.overlay.show{display:flex}.dialog{background:#fff;border-radius:22px;padding:24px;max-width:420px;width:100%;text-align:center;box-shadow:0 18px 70px #0003}.dialog h2{margin:0 0 10px}.dialog .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.dialog .metrics div{background:#f1f5fb;border-radius:12px;padding:13px 3px}.dialog strong{display:block;font-size:1.7rem}.dialog button{border:0;background:#3367d6;color:white;border-radius:13px;font-size:1.1rem;padding:15px;width:100%;font-weight:bold;cursor:pointer}.notice{font-size:.82rem;color:#8a4d13}.status-pill{font-size:.77rem;color:#44628f;background:#edf3ff;border-radius:99px;padding:5px 9px}.stage[disabled]{opacity:.6}.backupfile{display:none}
+
+.solfege-box{padding:0 14px 20px;text-align:center}.solfege-note{color:var(--muted);font-size:.85rem;margin:3px 0 10px}.modifier-row{display:flex;justify-content:center;gap:7px;margin-bottom:12px}.modifier-row button{background:#f2f5fa;border:1px solid #b8c8df;border-radius:10px;padding:11px 9px;color:#29405d;font-weight:700;flex:1;max-width:150px}.modifier-row button.selected{background:#dceaff;border:2px solid #346ad6;color:#1746a8}.solfege-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.solfege-keys button{min-height:65px;border:1px solid #b9c8db;border-radius:13px;background:#eaf1ff;color:#173c73;font-size:1.4rem;font-weight:800;touch-action:manipulation}.solfege-keys button:disabled{opacity:.55}.solfege-feedback{min-height:30px;font-weight:800;margin:11px 0 3px}.solfege-feedback.good{color:#11633e}.solfege-feedback.bad{color:#a52c3b}.continue-button{border:0;border-radius:12px;padding:15px 26px;background:#3367d6;color:white;font-weight:800;font-size:1rem;width:100%}.solfege-box[hidden]{display:none!important}
+
+/* v2.2: place the seven answers immediately below the staff */
+.practice.solfege-mode .stage{min-height:0;padding:0 8px 3px;cursor:default}
+.practice.solfege-mode .score-svg{height:176px;max-width:560px}
+.practice.solfege-mode .answer{display:none}
+.practice.solfege-mode .tapguide{font-size:.79rem;line-height:1.2;margin:0}
+.practice.solfege-mode .solfege-box{padding:2px 10px 12px}
+.practice.solfege-mode .solfege-note{margin:0 0 7px;font-size:.78rem}
+.practice.solfege-mode .solfege-keys{gap:6px}
+.practice.solfege-mode .solfege-keys button{min-height:52px;font-size:1.28rem;border-radius:10px}
+.practice.solfege-mode .solfege-feedback{margin:4px 0 0;min-height:0}
+@media(max-width:450px){.practice.solfege-mode .score-svg{height:158px}.practice.solfege-mode .solfege-keys{gap:5px}.practice.solfege-mode .solfege-keys button{min-height:52px}}
+
+/* v2.3 reports */
+.report-dialog{max-width:630px;max-height:88vh;overflow-y:auto;text-align:left}
+.report-dialog h2{margin-bottom:6px}
+.report-tabs{display:flex;gap:7px;margin:14px 0}
+.report-tabs button{flex:1;border:1px solid #cbd5e1;background:#f1f5fb;border-radius:10px;padding:10px;font-weight:700;color:#203047}
+.report-tabs button.on{background:#3367d6;color:#fff}
+.report-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.report-metrics article{background:#f1f5fb;border-radius:13px;padding:13px}
+.report-metrics strong{display:block;font-size:1.5rem}
+.report-metrics small{color:#64748b}
+.report-chart{display:flex;align-items:end;gap:5px;min-height:145px;padding:14px 0 0}
+.report-bar{flex:1;min-width:0;text-align:center;font-size:.7rem;color:#52647a}
+.report-bar .bar{background:#4275cb;border-radius:5px 5px 0 0;margin:5px auto 0;width:76%;min-height:2px}
+.report-compliment{margin:15px 0;padding:12px;border-radius:12px;background:#fff5df;line-height:1.6}
+.report-dialog .close-report{background:#3367d6;color:#fff;border:0;border-radius:12px;padding:13px;width:100%;font-weight:700}
+.report-detail{color:#53657b;font-size:.85rem;line-height:1.6}
+@media(max-width:450px){.report-dialog{padding:17px}.report-metrics strong{font-size:1.35rem}}
+
+/* v2.4: settings moved to a dedicated overlay */
+.settings-dialog{max-width:730px;max-height:92dvh;overflow-y:auto;text-align:left;padding:20px}
+.settings-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.settings-heading h2{margin:0}
+.settings-heading #closeSettingsTop{background:#eef2f8;color:#203047;border:0;width:38px;height:38px;border-radius:10px;font-size:1.3rem;font-weight:800;cursor:pointer}
+.settings-dialog .settings{margin:14px 0;border:1px solid #dce4ee;background:#f9fbfe}
+.settings-profiles,.settings-data{padding:5px 0 12px}
+.settings-profiles h3,.settings-data h3{font-size:1rem;margin:8px 0 12px}
+.settings-profile-actions{display:flex;gap:8px}
+.settings-profile-actions button{flex:1;padding:12px;border:1px solid #cbd5e1;border-radius:10px;background:white;color:#203047;font-weight:700}
+.settings-dialog .settings-close{background:#3367d6;color:white;border:0;border-radius:12px;padding:15px;width:100%;font-size:1rem;font-weight:750;position:sticky;bottom:0}
+.settings-dialog .tools{margin-bottom:10px}
+.settings-dialog .foot{margin-top:8px}
+@media(max-width:450px){.settings-dialog{padding:15px;max-height:95dvh}.settings-profile-actions{flex-wrap:wrap}}
+
+.keyboard-box{padding:0 9px 14px;text-align:center}
+.keyboard-box[hidden]{display:none!important}
+.keyboard-tip{font-size:.78rem;color:#64748b;margin:4px 0 8px}
+.keyboard-map{position:relative;background:#252b34;border-radius:8px;padding:18px 5px 5px;margin-bottom:7px;touch-action:manipulation;cursor:pointer}
+.keyboard-map .minipiano{position:relative;height:46px}
+.keyboard-map .minikey{position:absolute;top:0;height:100%;background:white;border:1px solid #68717a}
+.keyboard-map .miniblack{position:absolute;top:0;height:59%;background:#171c23;z-index:2}
+.keyboard-map .viewport{position:absolute;top:0;height:100%;border:2px solid #d9a836;background:#d9a83629;pointer-events:none;z-index:3}
+.keyboard-map .map-brand{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:2px;color:#e6c879;font-weight:800}
+.piano-scroll{width:100%;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;overscroll-behavior-x:contain;border:1px solid #bdc8d6;border-radius:8px;background:#242b33}
+.piano-full{height:150px;position:relative;user-select:none;-webkit-user-select:none}
+.piano-key{position:absolute;top:0;height:100%;border:1px solid #687587;border-radius:0 0 4px 4px;background:#fff;touch-action:pan-x;cursor:pointer;padding:0}
+.piano-key.black{height:59%;border-color:#171c25;background:#20252d;z-index:2;border-radius:0 0 3px 3px}
+.piano-key.correct-key{background:#80d7a5!important}
+.piano-key.wrong-key{background:#fa969e!important}
+.piano-key.c-key:after{content:attr(data-label);position:absolute;bottom:8px;left:0;right:0;font-size:10px;color:#475569}
+.keyboard-feedback{font-size:.94rem;font-weight:750;min-height:27px;margin:7px 0}
+.practice.keyboard-mode .stage{min-height:0;padding:0 8px 2px;cursor:default}
+.practice.keyboard-mode .score-svg{height:157px;max-width:560px}
+.practice.keyboard-mode .answer{display:none}
+.practice.keyboard-mode .tapguide{font-size:.78rem}
+.practice.keyboard-mode .keyboard-feedback{color:#1e4372}
+@media(min-width:700px){.piano-full{height:180px}}
+.practice.keyboard-mode .tapguide{display:none}
+/* v3.3.1 preview: pastel music classroom design */
+body{background:radial-gradient(circle at 15% 12%,#fff1bb 0,transparent 27%),linear-gradient(170deg,#f7eafa,#e9f8ff 40%,#eaf9ec 78%,#fff6e7);background-attachment:fixed;color:#554762}
+main{max-width:760px}
+h1{text-align:center;color:#9751a5;letter-spacing:.02em;font-size:clamp(1.35rem,5.1vw,1.95rem);text-shadow:0 2px white}
+.dev-version{font-size:.55rem;display:inline-block;vertical-align:middle;border-radius:9px;padding:4px 6px;color:#836796;background:#fff9;border:1px solid #cdb4d8;text-shadow:none}
+.subtitle{text-align:center!important;color:#8b76a0!important;font-weight:700}
+.profilebar{background:#fff9;border:2px solid #e1c8eb;border-radius:18px}
+.classroom-window{position:relative;isolation:isolate;overflow:hidden;height:165px;background:linear-gradient(#c7f0ff 0%,#f0f9ff 58%,#ffe5bd 59%,#f0cfa3 100%);border:5px solid #f7d4c0;border-radius:23px;margin-top:13px;box-shadow:0 5px 0 #e7c4b8}
+.classroom-window:before{content:"";position:absolute;inset:auto 0 30%;height:6px;background:#e4ae91}
+.sun{position:absolute;top:6px;left:13%;font-size:35px}.cloud{position:absolute;top:0;right:15%;font-size:44px}
+.classroom-board{position:absolute;top:19px;left:28%;width:54%;max-width:280px;text-align:center;background:#91bd9c;border:8px solid #d2a573;border-radius:9px;color:white;padding:12px 5px;font-size:clamp(.75rem,3vw,1rem);font-weight:850;line-height:1.65;box-shadow:0 4px 4px #8967}
+.classroom-mascot{position:absolute;bottom:-10px;left:8%;font-size:83px;filter:drop-shadow(1px 5px 1px #bd927b)}
+.classroom-friend{position:absolute;bottom:-8px;right:6%;font-size:72px;filter:drop-shadow(1px 4px 1px #bd927b)}
+.classroom-melody{position:absolute;top:12px;right:3%;font-size:21px;transform:rotate(16deg);color:#a37bd3}
+.practice{border:4px solid #e6c5ec;border-radius:23px;background:#fffdfd;box-shadow:0 6px 0 #e3c6e8,0 12px 24px #927da322;margin-top:16px}
+.classroom-label{text-align:center;width:max-content;max-width:95%;margin:-15px auto 11px;padding:9px 23px;border-radius:24px;background:linear-gradient(90deg,#ffbaca,#e5ceff,#bbebee);border:3px solid white;box-shadow:0 3px 0 #dcb0d6;color:#704a83;font-size:1.04rem;font-weight:900}
+.practice .topline{background:#fbf2ff;border-radius:13px;padding:10px;color:#8d66a8}
+.practice .stage{background:linear-gradient(#fffefa,#fff8ff);border:2px dashed #e5cce8;border-radius:18px}
+button{transition:filter .15s,transform .15s}button:active{transform:translateY(2px);filter:brightness(.96)}
+.actionbar button{background:#fbe9f8;border:2px solid #d3addb;border-radius:14px;color:#704b89}
+.actionbar button.primary{background:linear-gradient(#b6eafa,#80c5e8);border-color:#72b3ce;color:#274e69}
+#resultDialog{background:linear-gradient(#fff8fb,#f0faff);border:4px solid #efd2f1;border-radius:24px}
+.congratulations{text-align:center;font-size:2.3rem;animation:classCelebration 1.5s ease-in-out infinite}
+@keyframes classCelebration{50%{transform:translateY(-6px)}}
+@media(prefers-reduced-motion:reduce){.congratulations{animation:none}}
+</style>
+</head>
+<body>
+<main>
+<h1>🎼 かわいい音楽教室 <span class="dev-version">v3.3.1</span></h1>
+<p class="subtitle">おんぷと なかよく なろう♪　まいにち ちょっとずつ れんしゅう</p>
+<div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="classroom-window" aria-hidden="true"><span class="sun">☀️</span><span class="cloud">☁️</span><span class="classroom-board">きょうも たのしく<br>おんぷの おべんきょう ♪</span><span class="classroom-mascot">🐰</span><span class="classroom-friend">🐻</span><span class="classroom-melody">♫ ♪ ♬</span></div><div class="stats" id="statusText">データを読み込み中…</div>
+
+<section class="practice"><div class="classroom-label">🎵 きょうの おんぷ</div><div class="topline"><span id="clefLabel">ト音記号</span><span id="counter" class="counter">第1問</span></div>
+<button class="stage" id="stage" type="button" aria-label="答えを表示、または次の問題へ">
+<svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"><g stroke="#34475c" stroke-width="1.8"><path d="M90 86H532 M90 112H532 M90 138H532 M90 164H532 M90 190H532" /></g><text x="109" y="205" font-size="132" font-family="Noto Music, Apple Symbols, serif" fill="#23384c" text-anchor="middle">𝄞</text><ellipse cx="329" cy="164" rx="18" ry="12" transform="rotate(-20 329 164)" fill="#263b52"/><path d="M346 164V70" stroke="#263b52" stroke-width="3.3"/></svg>
+<div class="answer hidden" id="answer" aria-live="polite">&nbsp;</div><p id="tapguide" class="tapguide">タップして答えを表示</p>
+</button><div id="keyboardBox" class="keyboard-box" hidden><div id="keyboardMap" class="keyboard-map" aria-label="88鍵位置マップ"></div><div class="piano-scroll" id="pianoScroll"><div id="pianoFull" class="piano-full"></div></div><div id="keyboardFeedback" class="keyboard-feedback" aria-live="polite"></div><button type="button" id="keyboardNext" class="continue-button" hidden>つぎのもんだい →</button></div><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を押してね（オクターブは判定しません）</p><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div></section>
+<div class="actionbar"><button type="button" id="progress" class="small primary">がんばり</button><button type="button" id="parentReport" class="small">保護者向け</button><button type="button" id="openSettings" class="small">⚙ 設定</button></div>
+<p class="foot">音名は「ド・レ・ミ」で表示し、括弧内に国際式の音名（例：C4）を表示します。○×・ドレミモードは白鍵のみ、鍵盤モードでは♯・♭も出題できます。</p>
+
+<div id="settingsOverlay" class="overlay" role="presentation"><div class="dialog settings-dialog" role="dialog" aria-modal="true" aria-label="設定画面"><div class="settings-heading"><h2>⚙ 設定</h2><button id="closeSettingsTop" type="button" aria-label="設定を閉じる">×</button></div><div class="settings-profiles"><h3>学習者の管理</h3><div class="settings-profile-actions"><button type="button" id="addProfile">＋ 名前を追加</button><button type="button" id="renameProfile">名前を変更</button></div><p class="range-tip">学習者の切り替えは練習画面上部で行えます。</p></div><section class="settings" aria-label="出題設定"><div class="wide group-label">出題設定</div>
+<div class="wide"><label for="answerMode">回答方式</label><select id="answerMode"><option value="self">○・×で自己評価</option><option value="solfege">ドレミのボタンで答える</option><option value="keyboard">鍵盤を押して答える</option></select></div>
+<div><label for="duration">音符の種類</label><select id="duration"><option value="random">ランダム</option><option value="eighth">八分音符</option><option value="quarter">四分音符</option><option value="half">二分音符</option><option value="whole">全音符</option></select></div>
+<div><label for="accidental">臨時記号</label><select id="accidental"><option value="none">なし（白鍵のみ）</option><option value="sharp">♯ のみ</option><option value="flat">♭ のみ</option><option value="both">♯・♭ 両方</option></select><div class="range-tip">♯・♭は鍵盤回答モードでのみ出題されます。</div></div>
+<div><label for="clef">音部記号</label><select id="clef"><option value="auto">自動（ト音・ヘ音）</option><option value="treble">ト音記号のみ</option><option value="bass">ヘ音記号のみ</option></select></div>
+<div class="wide group-label">ト音記号の出題音域</div>
+<div><label for="trebleLow">下限（ト音記号）</label><select id="trebleLow"><option value="21">ラ0 / A0</option>
+<option value="22">ラ♯0 / A♯0</option>
+<option value="23">シ0 / B0</option>
+<option value="24">ド1 / C1</option>
+<option value="25">ド♯1 / C♯1</option>
+<option value="26">レ1 / D1</option>
+<option value="27">レ♯1 / D♯1</option>
+<option value="28">ミ1 / E1</option>
+<option value="29">ファ1 / F1</option>
+<option value="30">ファ♯1 / F♯1</option>
+<option value="31">ソ1 / G1</option>
+<option value="32">ソ♯1 / G♯1</option>
+<option value="33">ラ1 / A1</option>
+<option value="34">ラ♯1 / A♯1</option>
+<option value="35">シ1 / B1</option>
+<option value="36">ド2 / C2</option>
+<option value="37">ド♯2 / C♯2</option>
+<option value="38">レ2 / D2</option>
+<option value="39">レ♯2 / D♯2</option>
+<option value="40">ミ2 / E2</option>
+<option value="41">ファ2 / F2</option>
+<option value="42">ファ♯2 / F♯2</option>
+<option value="43">ソ2 / G2</option>
+<option value="44">ソ♯2 / G♯2</option>
+<option value="45">ラ2 / A2</option>
+<option value="46">ラ♯2 / A♯2</option>
+<option value="47">シ2 / B2</option>
+<option value="48">ド3 / C3</option>
+<option value="49">ド♯3 / C♯3</option>
+<option value="50">レ3 / D3</option>
+<option value="51">レ♯3 / D♯3</option>
+<option value="52">ミ3 / E3</option>
+<option value="53">ファ3 / F3</option>
+<option value="54">ファ♯3 / F♯3</option>
+<option value="55">ソ3 / G3</option>
+<option value="56">ソ♯3 / G♯3</option>
+<option value="57">ラ3 / A3</option>
+<option value="58">ラ♯3 / A♯3</option>
+<option value="59">シ3 / B3</option>
+<option value="60" selected>ド4 / C4</option>
+<option value="61">ド♯4 / C♯4</option>
+<option value="62">レ4 / D4</option>
+<option value="63">レ♯4 / D♯4</option>
+<option value="64">ミ4 / E4</option>
+<option value="65">ファ4 / F4</option>
+<option value="66">ファ♯4 / F♯4</option>
+<option value="67">ソ4 / G4</option>
+<option value="68">ソ♯4 / G♯4</option>
+<option value="69">ラ4 / A4</option>
+<option value="70">ラ♯4 / A♯4</option>
+<option value="71">シ4 / B4</option>
+<option value="72">ド5 / C5</option>
+<option value="73">ド♯5 / C♯5</option>
+<option value="74">レ5 / D5</option>
+<option value="75">レ♯5 / D♯5</option>
+<option value="76">ミ5 / E5</option>
+<option value="77">ファ5 / F5</option>
+<option value="78">ファ♯5 / F♯5</option>
+<option value="79">ソ5 / G5</option>
+<option value="80">ソ♯5 / G♯5</option>
+<option value="81">ラ5 / A5</option>
+<option value="82">ラ♯5 / A♯5</option>
+<option value="83">シ5 / B5</option>
+<option value="84">ド6 / C6</option>
+<option value="85">ド♯6 / C♯6</option>
+<option value="86">レ6 / D6</option>
+<option value="87">レ♯6 / D♯6</option>
+<option value="88">ミ6 / E6</option>
+<option value="89">ファ6 / F6</option>
+<option value="90">ファ♯6 / F♯6</option>
+<option value="91">ソ6 / G6</option>
+<option value="92">ソ♯6 / G♯6</option>
+<option value="93">ラ6 / A6</option>
+<option value="94">ラ♯6 / A♯6</option>
+<option value="95">シ6 / B6</option>
+<option value="96">ド7 / C7</option>
+<option value="97">ド♯7 / C♯7</option>
+<option value="98">レ7 / D7</option>
+<option value="99">レ♯7 / D♯7</option>
+<option value="100">ミ7 / E7</option>
+<option value="101">ファ7 / F7</option>
+<option value="102">ファ♯7 / F♯7</option>
+<option value="103">ソ7 / G7</option>
+<option value="104">ソ♯7 / G♯7</option>
+<option value="105">ラ7 / A7</option>
+<option value="106">ラ♯7 / A♯7</option>
+<option value="107">シ7 / B7</option>
+<option value="108">ド8 / C8</option></select></div>
+<div><label for="trebleHigh">上限（ト音記号）</label><select id="trebleHigh"><option value="21">ラ0 / A0</option>
+<option value="22">ラ♯0 / A♯0</option>
+<option value="23">シ0 / B0</option>
+<option value="24">ド1 / C1</option>
+<option value="25">ド♯1 / C♯1</option>
+<option value="26">レ1 / D1</option>
+<option value="27">レ♯1 / D♯1</option>
+<option value="28">ミ1 / E1</option>
+<option value="29">ファ1 / F1</option>
+<option value="30">ファ♯1 / F♯1</option>
+<option value="31">ソ1 / G1</option>
+<option value="32">ソ♯1 / G♯1</option>
+<option value="33">ラ1 / A1</option>
+<option value="34">ラ♯1 / A♯1</option>
+<option value="35">シ1 / B1</option>
+<option value="36">ド2 / C2</option>
+<option value="37">ド♯2 / C♯2</option>
+<option value="38">レ2 / D2</option>
+<option value="39">レ♯2 / D♯2</option>
+<option value="40">ミ2 / E2</option>
+<option value="41">ファ2 / F2</option>
+<option value="42">ファ♯2 / F♯2</option>
+<option value="43">ソ2 / G2</option>
+<option value="44">ソ♯2 / G♯2</option>
+<option value="45">ラ2 / A2</option>
+<option value="46">ラ♯2 / A♯2</option>
+<option value="47">シ2 / B2</option>
+<option value="48">ド3 / C3</option>
+<option value="49">ド♯3 / C♯3</option>
+<option value="50">レ3 / D3</option>
+<option value="51">レ♯3 / D♯3</option>
+<option value="52">ミ3 / E3</option>
+<option value="53">ファ3 / F3</option>
+<option value="54">ファ♯3 / F♯3</option>
+<option value="55">ソ3 / G3</option>
+<option value="56">ソ♯3 / G♯3</option>
+<option value="57">ラ3 / A3</option>
+<option value="58">ラ♯3 / A♯3</option>
+<option value="59">シ3 / B3</option>
+<option value="60">ド4 / C4</option>
+<option value="61">ド♯4 / C♯4</option>
+<option value="62">レ4 / D4</option>
+<option value="63">レ♯4 / D♯4</option>
+<option value="64">ミ4 / E4</option>
+<option value="65">ファ4 / F4</option>
+<option value="66">ファ♯4 / F♯4</option>
+<option value="67">ソ4 / G4</option>
+<option value="68">ソ♯4 / G♯4</option>
+<option value="69">ラ4 / A4</option>
+<option value="70">ラ♯4 / A♯4</option>
+<option value="71">シ4 / B4</option>
+<option value="72">ド5 / C5</option>
+<option value="73">ド♯5 / C♯5</option>
+<option value="74">レ5 / D5</option>
+<option value="75">レ♯5 / D♯5</option>
+<option value="76">ミ5 / E5</option>
+<option value="77">ファ5 / F5</option>
+<option value="78">ファ♯5 / F♯5</option>
+<option value="79">ソ5 / G5</option>
+<option value="80">ソ♯5 / G♯5</option>
+<option value="81">ラ5 / A5</option>
+<option value="82">ラ♯5 / A♯5</option>
+<option value="83">シ5 / B5</option>
+<option value="84" selected>ド6 / C6</option>
+<option value="85">ド♯6 / C♯6</option>
+<option value="86">レ6 / D6</option>
+<option value="87">レ♯6 / D♯6</option>
+<option value="88">ミ6 / E6</option>
+<option value="89">ファ6 / F6</option>
+<option value="90">ファ♯6 / F♯6</option>
+<option value="91">ソ6 / G6</option>
+<option value="92">ソ♯6 / G♯6</option>
+<option value="93">ラ6 / A6</option>
+<option value="94">ラ♯6 / A♯6</option>
+<option value="95">シ6 / B6</option>
+<option value="96">ド7 / C7</option>
+<option value="97">ド♯7 / C♯7</option>
+<option value="98">レ7 / D7</option>
+<option value="99">レ♯7 / D♯7</option>
+<option value="100">ミ7 / E7</option>
+<option value="101">ファ7 / F7</option>
+<option value="102">ファ♯7 / F♯7</option>
+<option value="103">ソ7 / G7</option>
+<option value="104">ソ♯7 / G♯7</option>
+<option value="105">ラ7 / A7</option>
+<option value="106">ラ♯7 / A♯7</option>
+<option value="107">シ7 / B7</option>
+<option value="108">ド8 / C8</option></select></div>
+<div class="wide group-label bass-label">ヘ音記号の出題音域</div>
+<div><label for="bassLow">下限（ヘ音記号）</label><select id="bassLow"><option value="21">ラ0 / A0</option>
+<option value="22">ラ♯0 / A♯0</option>
+<option value="23">シ0 / B0</option>
+<option value="24">ド1 / C1</option>
+<option value="25">ド♯1 / C♯1</option>
+<option value="26">レ1 / D1</option>
+<option value="27">レ♯1 / D♯1</option>
+<option value="28">ミ1 / E1</option>
+<option value="29">ファ1 / F1</option>
+<option value="30">ファ♯1 / F♯1</option>
+<option value="31">ソ1 / G1</option>
+<option value="32">ソ♯1 / G♯1</option>
+<option value="33">ラ1 / A1</option>
+<option value="34">ラ♯1 / A♯1</option>
+<option value="35">シ1 / B1</option>
+<option value="36" selected>ド2 / C2</option>
+<option value="37">ド♯2 / C♯2</option>
+<option value="38">レ2 / D2</option>
+<option value="39">レ♯2 / D♯2</option>
+<option value="40">ミ2 / E2</option>
+<option value="41">ファ2 / F2</option>
+<option value="42">ファ♯2 / F♯2</option>
+<option value="43">ソ2 / G2</option>
+<option value="44">ソ♯2 / G♯2</option>
+<option value="45">ラ2 / A2</option>
+<option value="46">ラ♯2 / A♯2</option>
+<option value="47">シ2 / B2</option>
+<option value="48">ド3 / C3</option>
+<option value="49">ド♯3 / C♯3</option>
+<option value="50">レ3 / D3</option>
+<option value="51">レ♯3 / D♯3</option>
+<option value="52">ミ3 / E3</option>
+<option value="53">ファ3 / F3</option>
+<option value="54">ファ♯3 / F♯3</option>
+<option value="55">ソ3 / G3</option>
+<option value="56">ソ♯3 / G♯3</option>
+<option value="57">ラ3 / A3</option>
+<option value="58">ラ♯3 / A♯3</option>
+<option value="59">シ3 / B3</option>
+<option value="60">ド4 / C4</option>
+<option value="61">ド♯4 / C♯4</option>
+<option value="62">レ4 / D4</option>
+<option value="63">レ♯4 / D♯4</option>
+<option value="64">ミ4 / E4</option>
+<option value="65">ファ4 / F4</option>
+<option value="66">ファ♯4 / F♯4</option>
+<option value="67">ソ4 / G4</option>
+<option value="68">ソ♯4 / G♯4</option>
+<option value="69">ラ4 / A4</option>
+<option value="70">ラ♯4 / A♯4</option>
+<option value="71">シ4 / B4</option>
+<option value="72">ド5 / C5</option>
+<option value="73">ド♯5 / C♯5</option>
+<option value="74">レ5 / D5</option>
+<option value="75">レ♯5 / D♯5</option>
+<option value="76">ミ5 / E5</option>
+<option value="77">ファ5 / F5</option>
+<option value="78">ファ♯5 / F♯5</option>
+<option value="79">ソ5 / G5</option>
+<option value="80">ソ♯5 / G♯5</option>
+<option value="81">ラ5 / A5</option>
+<option value="82">ラ♯5 / A♯5</option>
+<option value="83">シ5 / B5</option>
+<option value="84">ド6 / C6</option>
+<option value="85">ド♯6 / C♯6</option>
+<option value="86">レ6 / D6</option>
+<option value="87">レ♯6 / D♯6</option>
+<option value="88">ミ6 / E6</option>
+<option value="89">ファ6 / F6</option>
+<option value="90">ファ♯6 / F♯6</option>
+<option value="91">ソ6 / G6</option>
+<option value="92">ソ♯6 / G♯6</option>
+<option value="93">ラ6 / A6</option>
+<option value="94">ラ♯6 / A♯6</option>
+<option value="95">シ6 / B6</option>
+<option value="96">ド7 / C7</option>
+<option value="97">ド♯7 / C♯7</option>
+<option value="98">レ7 / D7</option>
+<option value="99">レ♯7 / D♯7</option>
+<option value="100">ミ7 / E7</option>
+<option value="101">ファ7 / F7</option>
+<option value="102">ファ♯7 / F♯7</option>
+<option value="103">ソ7 / G7</option>
+<option value="104">ソ♯7 / G♯7</option>
+<option value="105">ラ7 / A7</option>
+<option value="106">ラ♯7 / A♯7</option>
+<option value="107">シ7 / B7</option>
+<option value="108">ド8 / C8</option></select></div>
+<div><label for="bassHigh">上限（ヘ音記号）</label><select id="bassHigh"><option value="21">ラ0 / A0</option>
+<option value="22">ラ♯0 / A♯0</option>
+<option value="23">シ0 / B0</option>
+<option value="24">ド1 / C1</option>
+<option value="25">ド♯1 / C♯1</option>
+<option value="26">レ1 / D1</option>
+<option value="27">レ♯1 / D♯1</option>
+<option value="28">ミ1 / E1</option>
+<option value="29">ファ1 / F1</option>
+<option value="30">ファ♯1 / F♯1</option>
+<option value="31">ソ1 / G1</option>
+<option value="32">ソ♯1 / G♯1</option>
+<option value="33">ラ1 / A1</option>
+<option value="34">ラ♯1 / A♯1</option>
+<option value="35">シ1 / B1</option>
+<option value="36">ド2 / C2</option>
+<option value="37">ド♯2 / C♯2</option>
+<option value="38">レ2 / D2</option>
+<option value="39">レ♯2 / D♯2</option>
+<option value="40">ミ2 / E2</option>
+<option value="41">ファ2 / F2</option>
+<option value="42">ファ♯2 / F♯2</option>
+<option value="43">ソ2 / G2</option>
+<option value="44">ソ♯2 / G♯2</option>
+<option value="45">ラ2 / A2</option>
+<option value="46">ラ♯2 / A♯2</option>
+<option value="47">シ2 / B2</option>
+<option value="48">ド3 / C3</option>
+<option value="49">ド♯3 / C♯3</option>
+<option value="50">レ3 / D3</option>
+<option value="51">レ♯3 / D♯3</option>
+<option value="52">ミ3 / E3</option>
+<option value="53">ファ3 / F3</option>
+<option value="54">ファ♯3 / F♯3</option>
+<option value="55">ソ3 / G3</option>
+<option value="56">ソ♯3 / G♯3</option>
+<option value="57">ラ3 / A3</option>
+<option value="58">ラ♯3 / A♯3</option>
+<option value="59">シ3 / B3</option>
+<option value="60" selected>ド4 / C4</option>
+<option value="61">ド♯4 / C♯4</option>
+<option value="62">レ4 / D4</option>
+<option value="63">レ♯4 / D♯4</option>
+<option value="64">ミ4 / E4</option>
+<option value="65">ファ4 / F4</option>
+<option value="66">ファ♯4 / F♯4</option>
+<option value="67">ソ4 / G4</option>
+<option value="68">ソ♯4 / G♯4</option>
+<option value="69">ラ4 / A4</option>
+<option value="70">ラ♯4 / A♯4</option>
+<option value="71">シ4 / B4</option>
+<option value="72">ド5 / C5</option>
+<option value="73">ド♯5 / C♯5</option>
+<option value="74">レ5 / D5</option>
+<option value="75">レ♯5 / D♯5</option>
+<option value="76">ミ5 / E5</option>
+<option value="77">ファ5 / F5</option>
+<option value="78">ファ♯5 / F♯5</option>
+<option value="79">ソ5 / G5</option>
+<option value="80">ソ♯5 / G♯5</option>
+<option value="81">ラ5 / A5</option>
+<option value="82">ラ♯5 / A♯5</option>
+<option value="83">シ5 / B5</option>
+<option value="84">ド6 / C6</option>
+<option value="85">ド♯6 / C♯6</option>
+<option value="86">レ6 / D6</option>
+<option value="87">レ♯6 / D♯6</option>
+<option value="88">ミ6 / E6</option>
+<option value="89">ファ6 / F6</option>
+<option value="90">ファ♯6 / F♯6</option>
+<option value="91">ソ6 / G6</option>
+<option value="92">ソ♯6 / G♯6</option>
+<option value="93">ラ6 / A6</option>
+<option value="94">ラ♯6 / A♯6</option>
+<option value="95">シ6 / B6</option>
+<option value="96">ド7 / C7</option>
+<option value="97">ド♯7 / C♯7</option>
+<option value="98">レ7 / D7</option>
+<option value="99">レ♯7 / D♯7</option>
+<option value="100">ミ7 / E7</option>
+<option value="101">ファ7 / F7</option>
+<option value="102">ファ♯7 / F♯7</option>
+<option value="103">ソ7 / G7</option>
+<option value="104">ソ♯7 / G♯7</option>
+<option value="105">ラ7 / A7</option>
+<option value="106">ラ♯7 / A♯7</option>
+<option value="107">シ7 / B7</option>
+<option value="108">ド8 / C8</option></select></div>
+<div class="wide"><div class="range-tip">臨時記号「なし」では白鍵のみ出題します。最も低い音はラ0（A0）、最も高い音はド8（C8）です。音部記号「自動」ではそれぞれの設定音域から出題します。設定変更後、すぐに次の問題へ切り替わります。</div><div id="rangeError" class="error" role="alert">各音部記号の下限は上限以下にしてください。</div></div>
+</section><div class="settings-data"><h3>学習データ管理</h3><div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p></div><button type="button" id="closeSettings" class="settings-close">設定を閉じる</button></div></div>
+<div id="parentOverlay" class="overlay"><div class="dialog report-dialog" role="dialog" aria-modal="true" aria-label="保護者向け学習レポート"><h2>保護者向け 学習レポート</h2><p class="report-detail" id="reportWho"></p><div class="report-tabs"><button type="button" data-period="today" class="on">今日</button><button type="button" data-period="week">1週間</button><button type="button" data-period="month">1か月</button></div><div id="reportContent"></div><button type="button" id="closeParent" class="close-report">練習に戻る</button></div></div>
+<div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><div class="congratulations" aria-hidden="true">🐰 🎉 🐻</div><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
+<p class="foot" style="text-align:center">v2.5｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
+</main>
+<script>
+
+'use strict';
+const $=id=>document.getElementById(id);
+const PC=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+const JP=['ド','ド♯','レ','レ♯','ミ','ファ','ファ♯','ソ','ソ♯','ラ','ラ♯','シ'];
+const FLAT_PC={1:'D♭',3:'E♭',6:'G♭',8:'A♭',10:'B♭'};
+const FLAT_JP={1:'レ♭',3:'ミ♭',6:'ソ♭',8:'ラ♭',10:'シ♭'};
+const BLACK=new Set([1,3,6,8,10]);
+const LETTER_INDEX={C:0,D:1,E:2,F:3,G:4,A:5,B:6};
+const DURATIONS=['eighth','quarter','half','whole'];
+function getName(m,useFlat=false){const o=Math.floor(m/12)-1,p=m%12;return `${useFlat?FLAT_JP[p]:JP[p]}${o}（${useFlat?FLAT_PC[p]:PC[p]}${o}）`}
+function svg(tag,attrs,parent=$('score')){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);parent.append(e);return e}
+function render(){if(!current)return;const {m,clef,d,useFlat}=current;const out=$('score');out.replaceChildren();
+const pc=m%12,oct=Math.floor(m/12)-1,letter=(useFlat?FLAT_PC[pc]:PC[pc])[0];const abs=oct*7+LETTER_INDEX[letter];
+// Treble bottom E4 / bass bottom G2. Staff rises by diatonic steps.
+const bottom=clef==='treble'?4*7+LETTER_INDEX.E:2*7+LETTER_INDEX.G;
+const step=abs-bottom;const y=190-step*13;const top=Math.min(60,y-42),btm=Math.max(205,y+42);const minY=Math.min(28,top-8);const maxY=Math.max(253,btm+8);
+out.setAttribute('viewBox',`0 ${minY} 600 ${maxY-minY}`);
+const staffTop=86, spacing=26;
+for(let i=0;i<5;i++)svg('line',{x1:90,y1:staffTop+i*spacing,x2:532,y2:staffTop+i*spacing,stroke:'#34475c','stroke-width':1.7});
+// Fixed vector clefs: no device-dependent music font metrics.
+const CLEF_TREBLE='M314 801Q300 854 291.0 906.0Q282 958 282 1012Q282 1059 288.5 1100.5Q295 1142 307 1177Q320 1217 341.0 1252.5Q362 1288 385.5 1311.0Q409 1334 427 1334Q451 1334 493 1249Q514 1206 524.0 1156.0Q534 1106 534 1049Q534 978 515.0 907.5Q496 837 459.5 775.0Q423 713 372 666L407 498Q422 500 432.0 501.0Q442 502 447 502Q508 502 556.0 467.5Q604 433 632.5 377.0Q661 321 661 254Q661 177 621.5 115.5Q582 54 503 25Q508 8 532 -117Q538 -147 541.0 -164.5Q544 -182 545.0 -195.0Q546 -208 546 -225Q546 -275 521.5 -314.5Q497 -354 455.5 -376.0Q414 -398 363 -398Q311 -398 271.0 -378.5Q231 -359 208.0 -324.5Q185 -290 185 -245Q185 -197 211.5 -165.0Q238 -133 287 -133Q329 -133 355.5 -163.5Q382 -194 382 -236Q382 -272 357.0 -299.0Q332 -326 292 -326H282Q308 -365 364 -365Q433 -365 472.0 -320.0Q511 -275 511 -205Q511 -188 507.0 -159.5Q503 -131 493 -91Q483 -51 477.5 -25.0Q472 1 470 12Q436 2 390 2Q304 2 222 52Q142 102 96.0 184.0Q50 266 50 361Q50 451 91 530Q132 609 192.5 675.0Q253 741 314 801ZM341 826Q364 838 390.0 870.5Q416 903 440.0 945.0Q464 987 479.0 1029.5Q494 1072 494 1106Q494 1142 483.0 1163.0Q472 1184 445 1184Q421 1184 398.5 1162.0Q376 1140 358.5 1103.5Q341 1067 331.0 1022.0Q321 977 321 930Q321 898 327.5 872.0Q334 846 341 826ZM398 379Q371 373 347.0 353.5Q323 334 308.5 306.5Q294 279 294 248Q294 223 307.0 196.5Q320 170 339 154Q352 142 365 136Q380 129 380 123Q380 120 370 117Q332 126 301.5 151.0Q271 176 253.5 211.5Q236 247 236 287Q236 330 253.5 370.0Q271 410 302.5 442.0Q334 474 374 490L345 641Q229 547 174.5 456.5Q120 366 120 277Q120 212 154.0 156.0Q188 100 247.0 65.5Q306 31 380 31Q400 31 420.5 35.0Q441 39 464 45ZM495 55Q593 97 593 227Q593 270 571.0 305.5Q549 341 512.0 362.0Q475 383 429 383Z';
+const CLEF_BASS='M50 123Q216 231 288 301Q336 348 373.0 408.5Q410 469 431.5 536.0Q453 603 453 669Q453 728 435.0 773.5Q417 819 383.0 845.0Q349 871 302 871Q284 871 264.5 867.0Q245 863 224 855Q181 839 158.0 813.5Q135 788 135 765Q135 756 143.0 752.0Q151 748 158 748Q168 748 183 752Q190 754 196.5 755.0Q203 756 210 756Q248 756 272.0 733.5Q296 711 296 674Q296 638 266.0 612.0Q236 586 195 586Q146 586 111.0 617.0Q76 648 76 697Q76 756 109.0 802.0Q142 848 198.5 874.0Q255 900 324 900Q400 900 460.0 867.0Q520 834 555.5 776.5Q591 719 591 646Q591 551 538 464Q511 419 476.5 379.0Q442 339 389.0 297.5Q336 256 256.0 208.0Q176 160 57 101ZM687 809Q710 809 726.0 793.0Q742 777 742 754Q742 731 726.0 715.5Q710 700 687 700Q664 700 648.0 715.5Q632 731 632 754Q632 777 648.0 793.0Q664 809 687 809ZM687 589Q710 589 726.0 573.0Q742 557 742 534Q742 511 726.0 495.5Q710 480 687 480Q664 480 648.0 495.5Q632 511 632 534Q632 557 648.0 573.0Q664 589 687 589Z';
+const isTreble=clef==='treble';
+// Font paths use positive Y upward. The whole glyph is aligned to the staff.
+const clefGroup=svg('g',{transform:isTreble?'translate(85 178) scale(.102 -.102)':'translate(86 184) scale(.100 -.100)'});
+svg('path',{d:isTreble?CLEF_TREBLE:CLEF_BASS,fill:'#23384c'},clefGroup);
+const noteX=329;
+if(step<0){for(let s=-2;s>=step;s-=2){const yy=190-s*13;svg('line',{x1:noteX-28,y1:yy,x2:noteX+29,y2:yy,stroke:'#283e54','stroke-width':1.65})}}
+if(step>8){for(let s=10;s<=step;s+=2){const yy=190-s*13;svg('line',{x1:noteX-28,y1:yy,x2:noteX+29,y2:yy,stroke:'#283e54','stroke-width':1.65})}}
+if(BLACK.has(pc)){const accidental=svg('text',{x:noteX-56,y:y+11,'font-size':43,'font-family':'Georgia, serif',fill:'#263b52','text-anchor':'middle'});accidental.textContent=useFlat?'♭':'♯'}
+// Engraved noteheads: asymmetric contours and diagonal counters, not browser ovals.
+// Keep notehead dimensions constant relative to 26-unit staff spacing.
+const ink='#263b52';
+if(d==='whole'){
+  // The whole-note's distinctive horizontal rim and diagonal hollow centre.
+  const g=svg('g',{transform:`translate(${noteX} ${y})`});
+  svg('path',{d:'M -22 0 C -22 -12 -11 -17 0 -17 C 13 -17 23 -10 23 0 C 23 11 12 17 0 17 C -12 17 -22 11 -22 0 Z',fill:ink},g);
+  svg('path',{d:'M -9 10 C -16 6 -11 -10 -2 -12 C 5 -14 12 -6 10 3 C 8 12 -2 14 -9 10 Z',fill:'#fff'},g);
+}else{
+  const up=step<5;
+  const stemX=noteX+(up?17.5:-17.5),stemEnd=y+(up?-93:93);
+  // Stems: vertical filled rectangles with clean, squared end caps.
+  svg('rect',{x:up?stemX-3.6:stemX,y:Math.min(y,stemEnd),width:3.6,height:Math.abs(stemEnd-y),fill:ink});
+  const g=svg('g',{transform:`translate(${noteX} ${y}) rotate(-20)`});
+  // Calligraphic flattened diagonal head, lightly pointed on the ends.
+  const head='M -20 1 C -20 -8 -9 -12 0 -12 C 12 -12 20 -7 20 1 C 20 10 9 12 -1 12 C -12 12 -20 9 -20 1 Z';
+  svg('path',{d:head,fill:ink},g);
+  if(d==='half'){
+    // Diagonal aperture with the characteristic thick sides of a half note.
+    svg('path',{d:'M -12 2 C -12 -3 -4 -7 3 -7 C 10 -7 13 -4 12 0 C 11 5 3 8 -4 8 C -10 8 -12 6 -12 2 Z',fill:'#fff'},g);
+  }
+  if(d==='eighth'){
+    // Filled, tapered curved flag; orientation follows standard stem direction.
+    const flag=up
+      ? `M ${stemX-0.8} ${stemEnd} C ${stemX+3} ${stemEnd+14},${stemX+36} ${stemEnd+9},${stemX+39} ${stemEnd+43} C ${stemX+40} ${stemEnd+53},${stemX+33} ${stemEnd+63},${stemX+25} ${stemEnd+69} C ${stemX+33} ${stemEnd+52},${stemX+31} ${stemEnd+39},${stemX+19} ${stemEnd+30} C ${stemX+9} ${stemEnd+22},${stemX+1} ${stemEnd+21},${stemX-0.8} ${stemEnd+16} Z`
+      : `M ${stemX+3.6} ${stemEnd} C ${stemX-3} ${stemEnd-14},${stemX-36} ${stemEnd-9},${stemX-39} ${stemEnd-43} C ${stemX-40} ${stemEnd-53},${stemX-33} ${stemEnd-63},${stemX-25} ${stemEnd-69} C ${stemX-33} ${stemEnd-52},${stemX-31} ${stemEnd-39},${stemX-19} ${stemEnd-30} C ${stemX-9} ${stemEnd-22},${stemX} ${stemEnd-21},${stemX+3.6} ${stemEnd-16} Z`;
+    svg('path',{d:flag,fill:ink});
+  }
+}
+$('clefLabel').textContent=clef==='treble'?'𝄞 ト音記号':'𝄢 ヘ音記号';$('counter').textContent=`第${count+1}問`;$('answer').textContent=getName(m,useFlat);$('answer').className='answer hidden';$('tapguide').textContent='音を読んでからタップして答えを確認';$('stage').setAttribute('aria-label',`${clef==='treble'?'ト音記号':'ヘ音記号'}の音符。タップで答えを見る`);
+}
+
+const ranges={treble:['trebleLow','trebleHigh'],bass:['bassLow','bassHigh']};
+const settingIds=['answerMode','trebleLow','trebleHigh','bassLow','bassHigh','clef','duration','accidental'];
+const DEFAULTS={answerMode:'self',trebleLow:'60',trebleHigh:'84',bassLow:'36',bassHigh:'60',clef:'auto',duration:'random',accidental:'none'};
+let state={version:2,active:'p1',profiles:{p1:{name:'こども1',settings:{...DEFAULTS},counter:0,stats:{},history:[],recent:[],mode:'normal'}}};
+let current=null,revealed=false,count=0,previous=null,waiting=false,storeType='IndexedDB';
+let db=null,writeChain=Promise.resolve();let reportPeriod='today';let lastRecordedAt=0;
+const clone=x=>JSON.parse(JSON.stringify(x));
+function active(){return state.profiles[state.active]}
+function newProfile(name){return {name,settings:{...DEFAULTS},counter:0,stats:{},history:[],recent:[],mode:'normal'}}
+async function openDb(){return new Promise((resolve,reject)=>{try{const r=indexedDB.open('piano_note_v2',1);r.onupgradeneeded=()=>r.result.createObjectStore('data');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)}catch(e){reject(e)}})}
+async function loadState(){try{db=await openDb();const saved=await new Promise((resolve,reject)=>{let t=db.transaction('data','readonly').objectStore('data').get('state');t.onsuccess=()=>resolve(t.result);t.onerror=()=>reject(t.error)});if(saved&&saved.version===2)state=saved}catch(e){storeType='localStorage';try{const s=localStorage.getItem('pianoNoteV2');if(s)state=JSON.parse(s)}catch(err){storeType='一時メモリ（保存不可）'}}
+if(!state.profiles||!Object.keys(state.profiles).length)state={version:2,active:'p1',profiles:{p1:newProfile('こども1')}};
+if(!state.profiles[state.active])state.active=Object.keys(state.profiles)[0];
+for(let p of Object.values(state.profiles)){p.stats||={};p.history||=[];p.recent||=[];p.counter||=0;p.settings={...DEFAULTS,...p.settings}}
+$('storageInfo').textContent=`保存方式：${storeType}。この端末・ブラウザ内に保存されます。定期的にJSONバックアップしてください。`;
+refreshProfiles();loadSettings();updateStatus();nextProblem();}
+function save(){const snapshot=clone(state);writeChain=writeChain.catch(()=>{}).then(()=>new Promise(resolve=>{if(db){try{const t=db.transaction('data','readwrite');t.objectStore('data').put(snapshot,'state');t.oncomplete=resolve;t.onerror=()=>{console.error(t.error);resolve()};return}catch(e){console.error(e)}}try{localStorage.setItem('pianoNoteV2',JSON.stringify(snapshot))}catch(e){console.warn('保存できません',e);$('storageInfo').textContent='保存に失敗しました。JSONバックアップをご利用ください。'}resolve()}));return writeChain}
+function refreshProfiles(){$('profile').replaceChildren();for(const [id,p] of Object.entries(state.profiles)){const o=document.createElement('option');o.value=id;o.textContent=p.name;$('profile').append(o)}$('profile').value=state.active}
+function loadSettings(){const s=active().settings;for(const id of settingIds)$(id).value=s[id]??DEFAULTS[id];updateAccidentalControl()}
+function syncSettings(){const s=active().settings;for(const id of settingIds)s[id]=$(id).value;save()}
+function activeClefs(){return $('clef').value==='auto'?['treble','bass']:[$('clef').value]}
+function eligible(clef){const ids=ranges[clef],lo=+$(ids[0]).value,hi=+$(ids[1]).value;const out=[];for(let m=lo;m<=hi;m++)if(!BLACK.has(m%12)||($('answerMode').value==='keyboard'&&$('accidental').value!=='none'))out.push(m);return out}
+function valid(){const cs=activeClefs();const bad=cs.some(c=>+$(ranges[c][0]).value>+$(ranges[c][1]).value),empty=cs.some(c=>eligible(c).length===0);$('rangeError').textContent=bad?'下限は上限以下にしてください。':'出題できる音符がありません。';$('rangeError').classList.toggle('on',bad||empty);return !(bad||empty)}
+function allCandidates(){const out=[];const acc=$('answerMode').value==='keyboard'?$('accidental').value:'none';for(const c of activeClefs())for(const m of eligible(c)){const black=BLACK.has(m%12);if(black&&acc==='none')continue;if(black&&acc==='sharp')out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`});else if(black&&acc==='flat')out.push({m,clef:c,useFlat:true,id:`${c}:${m}:f`});else if(black&&acc==='both'){out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`},{m,clef:c,useFlat:true,id:`${c}:${m}:f`})}else if(!black)out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`})}return out}
+function weighted(items,weight){const weights=items.map(x=>Math.max(.001,weight(x)));let r=Math.random()*weights.reduce((a,b)=>a+b,0);for(let i=0;i<items.length;i++){r-=weights[i];if(r<=0)return items[i]}return items[items.length-1]}
+function levelWeight(s){return [8,5,3,2,1][s?.level??0]}
+function currentStatus(n){return active().stats[n.id]}
+function due(s,counter,now){return counter>=s.dueCount||(s.dueAt!=null&&now>=s.dueAt)}
+function nextProblem(){if(!valid())return;const p=active(),pool=allCandidates(),now=Date.now();if(!pool.length)return;
+const available=pool.filter(n=>!p.recent.includes(n.id));const options=available.length?available:pool;
+const short=options.filter(n=>{let s=currentStatus(n);return s?.shortDue!=null&&p.counter>=s.shortDue});
+const normal=options.filter(n=>{let s=currentStatus(n);return s&&s.shortDue==null&&due(s,p.counter,now)});
+const fresh=options.filter(n=>!currentStatus(n));
+const trained=options.filter(n=>currentStatus(n)&&currentStatus(n).shortDue==null);
+const weak=pool.filter(n=>{let s=currentStatus(n);return s&&s.level<=1}).length;
+const ratio=weak/pool.length;
+const rate=weak>=11||ratio>=.4?.05:weak>=6||ratio>=.25?.15:.30;
+let chosen,type;
+const overdueWeight=n=>{const s=currentStatus(n);const past=Math.max(0,p.counter-(s.shortDue??s.dueCount??p.counter));return levelWeight(s)*(1+Math.min(past/10,2))};
+if(short.length){chosen=weighted(short,overdueWeight);type='short'}
+else if(normal.length&&Math.random()<.8){chosen=weighted(normal,overdueWeight);type='normal'}
+else if(fresh.length&&(!trained.length||Math.random()<rate)){chosen=fresh[Math.floor(Math.random()*fresh.length)];type='first'}
+else if(normal.length){chosen=weighted(normal,overdueWeight);type='normal'}
+else if(trained.length){chosen=weighted(trained,n=>levelWeight(currentStatus(n)));type='early'}
+else if(fresh.length){chosen=fresh[Math.floor(Math.random()*fresh.length)];type='first'}
+else {chosen=weighted(options,n=>levelWeight(currentStatus(n)));type='early'}
+// If recent-history exclusion masked all eligible due problems, retry them when appropriate.
+if(!chosen){chosen=pool[Math.floor(Math.random()*pool.length)];type=currentStatus(chosen)?'early':'first'}
+const d=$('duration').value==='random'?DURATIONS[Math.floor(Math.random()*4)]:$('duration').value;
+current={...chosen,d,type,started:Date.now()};revealed=false;waiting=false;
+$('stage').disabled=false;$('assessment').classList.remove('show');$('solfegeFeedback').textContent='';$('solfegeFeedback').className='solfege-feedback';$('keyboardFeedback').textContent='';$('keyboardNext').hidden=true;clearKeyHighlights();$('nextAfterSolfege').hidden=true;$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=false);render();updateAnswerMode();updateStatus();}
+function updateStatus(){const p=active(),stats=Object.values(p.stats),good=stats.filter(x=>x.level>=3).length; $('statusText').textContent=`${p.name}｜回答 ${p.counter}問｜学習済み ${stats.length}音｜Lv.3以上 ${good}音`;}
+function reveal(){if($('answerMode').value!=='self'||!current||revealed)return;revealed=true;$('answer').className='answer answer-shown';$('tapguide').textContent='できたら ○、まちがえたら × をおしてね';$('assessment').classList.add('show');}
+const DAY=86400000;
+function interval(level,s){if(level===4)return [100,200,400,800][Math.min(s.masteryStep??0,3)];return [10,10,25,50][level]}
+function days(level){return [1,1,2,4,7][level]}
+function record(correct,details=null){if(!current||(!revealed&&!details)||waiting)return;waiting=true;const p=active(),n=current,now=Date.now();let s=p.stats[n.id]||{level:0,correct:0,wrong:0,masteryStep:0};const before=p.stats[n.id]?s.level:null;const short=n.type==='short';let promote=false;
+if(correct){s.correct++;if(n.type==='first'){s.level=1;promote=true;s.masteryStep=0}else if(n.type==='normal'){s.level=Math.min(4,s.level+1);promote=true;if(s.level===4){s.masteryStep=before===4?Math.min(3,(s.masteryStep??0)+1):0}else s.masteryStep=0}}
+else{s.wrong++;s.level=Math.max(0,s.level-2);s.masteryStep=0}
+p.counter++;
+if(!correct){s.shortDue=p.counter+5;s.dueCount=null;s.dueAt=null}
+else if(short){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=now+days(s.level)*DAY}
+else if(promote){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=now+days(s.level)*DAY}
+// Early correct intentionally leaves the original dueCount and dueAt untouched.
+s.lastAt=now;p.stats[n.id]=s;
+const elapsed=Math.max(0,(now-n.started)/1000);const activeSeconds=Math.min(elapsed,120);p.history.push({activeSeconds,at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.5',answerMode:details?.mode??'self',chosenAnswer:details?.answer??null});
+p.recent.push(n.id);p.recent=p.recent.slice(-3);count++;lastRecordedAt=now;save();updateStatus();
+if(details?.mode==='keyboard'){finishKeyboard(correct,n,details.answer);if(p.counter%20===0)showResult(false)}else if(details){$('answer').className='answer answer-shown';$('solfegeFeedback').textContent=correct?'○ せいかい！':`× せいかいは ${expectedAnswer(n)}`;$('solfegeFeedback').className='solfege-feedback '+(correct?'good':'bad');$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=true);if(p.counter%20===0)showResult(false);else $('nextAfterSolfege').hidden=false;}else if(p.counter%20===0)showResult(false);else nextProblem();}
+function showResult(manual){const p=active(),history=p.history.slice(-20);const yes=history.filter(h=>h.correct).length,wrong=history.length-yes;$('resultHeading').textContent=manual?'きょうの がんばり':'20もん がんばったね！';$('resultSub').textContent=manual?`きょう ${todayRecords(p).length}もん ／ ぜんぶで ${p.counter}もん`:`ぜんぶで ${p.counter}もん`;$('rCorrect').textContent=yes;$('rWrong').textContent=wrong;$('rRate').textContent=history.length?Math.round(100*yes/history.length)+'%':'—';$('mastered').textContent=`おぼえた音符（Lv.3以上）：${Object.values(p.stats).filter(s=>s.level>=3).length}個`;const recent=todayRecords(p);$('childPraise').textContent=recent.length>=20?'きょうも たくさん れんしゅうしたね！':recent.length?'きょうも ピアノの おんぷに ちょうせんしたね！':'これから いっしょに がんばろう！';$('resultOverlay').classList.add('show');$('resume').textContent=manual?'とじる':'タップして つづける →';$('resume').dataset.manual=manual?'1':'0';}
+function localDay(t){const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function todayRecords(p){const today=localDay(Date.now());return p.history.filter(h=>localDay(h.at)===today)}
+function dateStart(t){const d=new Date(t);d.setHours(0,0,0,0);return d}
+function periodRecords(p,period){const start=dateStart(Date.now());if(period==='week')start.setDate(start.getDate()-6);if(period==='month')start.setDate(start.getDate()-29);return p.history.filter(h=>h.at>=start.getTime())}
+function fmtTime(h){const data=h.filter(x=>Number.isFinite(x.activeSeconds));if(!data.length)return '記録なし';const mins=Math.round(data.reduce((sum,x)=>sum+x.activeSeconds,0)/60);return mins+'分（推定）'}
+function reportSummary(h){const yes=h.filter(x=>x.correct).length;const firstMastered=new Set(h.filter(x=>x.before!==null&&x.before<3&&x.after>=3).map(x=>x.noteId));const corrected=new Set(h.filter(x=>x.correct&&x.before!==null&&x.before<=1&&x.after>=2).map(x=>x.noteId));return {yes,rate:h.length?Math.round(100*yes/h.length):null,firstMastered:firstMastered.size,corrected:corrected.size}}
+function reportHtml(period){const p=active(),h=periodRecords(p,period),stat=reportSummary(h),dates=new Set(h.map(x=>localDay(x.at)));let bars='';const days=period==='today'?1:period==='week'?7:30;const counts=[];for(let i=days-1;i>=0;i--){const d=dateStart(Date.now());d.setDate(d.getDate()-i);const day=localDay(d);counts.push({label:period==='month'?String(d.getDate()):String(d.getMonth()+1)+'/'+d.getDate(),n:h.filter(x=>localDay(x.at)===day).length})}const max=Math.max(1,...counts.map(x=>x.n));if(period!=='today')bars='<div class="report-chart">'+counts.map((x,i)=>'<div class="report-bar"><div>'+x.n+'</div><div class="bar" style="height:'+Math.max(2,Math.round(x.n/max*100))+'px"></div><div>'+(period==='week'||i%5===0||i===29?x.label:'')+'</div></div>').join('')+'</div>';const daily=h.length;let praise=daily===0?'今日はまだ記録がありません。':stat.corrected>0?'苦手だった音符にも、もう一度挑戦できています！':daily>=20?'たくさんの問題に取り組めています。頑張りを褒めてあげてください！':'今日も音符を読む練習に取り組みました！';if(period!=='today')praise=dates.size>=5?'コツコツ練習を続けています！':h.length?'取り組んだ日をぜひ褒めてあげてください。':'この期間の回答記録はありません。';return '<div class="report-metrics"><article><small>回答数</small><strong>'+h.length+' 問</strong></article><article><small>正解率</small><strong>'+(stat.rate===null?'—':stat.rate+'%')+'</strong></article><article><small>練習時間の目安</small><strong>'+fmtTime(h)+'</strong></article><article><small>'+(period==='today'?'苦手からの改善':'練習日数')+'</small><strong>'+(period==='today'?stat.corrected+' 音':dates.size+' 日')+'</strong></article></div><p class="report-detail">新たにLv.3以上に到達：'+stat.firstMastered+'音（この期間内の履歴に基づく数）</p>'+bars+'<div class="report-compliment"><b>褒めポイント</b><div>'+praise+'</div></div><p class="report-detail">練習時間はv2.3以降の回答について、各問題の経過時間のうち最大2分を合計した推定値です。旧履歴の時間は含みません。</p>'}
+function showParent(){reportPeriod='today';$('parentOverlay').classList.add('show');renderParent()}
+function renderParent(){$('reportWho').textContent=active().name+' の学習記録';document.querySelectorAll('[data-period]').forEach(b=>b.classList.toggle('on',b.dataset.period===reportPeriod));$('reportContent').innerHTML=reportHtml(reportPeriod)}
+function closeResult(){let manual=$('resume').dataset.manual==='1';$('resultOverlay').classList.remove('show');if(!manual)nextProblem()}
+function switchProfile(id){if(!state.profiles[id])return;keyboardPositioned=false;state.active=id;count=0;loadSettings();save();nextProblem()}
+function download(name,content,type){const blob=new Blob([content],{type});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),1500)}
+function csv(){const head=['profile','date','ordinal','noteId','clef','midi','useFlat','duration','type','correct','seconds','before','after','algorithm'];const lines=[head.join(',')];for(const [id,p] of Object.entries(state.profiles)){for(const h of p.history){lines.push(head.map(k=>{let v=k==='profile'?p.name:k==='date'?new Date(h.at).toISOString():h[k];return '"'+String(v??'').replaceAll('"','""')+'"'}).join(','))}}return '\ufeff'+lines.join('\r\n')}
+
+function expectedAnswer(n){const pitch=n.m%12;const name=(n.useFlat?FLAT_JP[pitch]:JP[pitch]);return name}
+function expectedAnswer(n){return JP[n.m%12]}
+function updateAccidentalControl(){$('accidental').disabled=$('answerMode').value!=='keyboard'}
+function updateAnswerMode(){const sol=$('answerMode').value==='solfege',kb=$('answerMode').value==='keyboard';$('solfegeBox').hidden=!sol;$('keyboardBox').hidden=!kb;document.querySelector('.practice').classList.toggle('solfege-mode',sol);document.querySelector('.practice').classList.toggle('keyboard-mode',kb);$('stage').style.cursor=sol||kb?'default':'pointer';$('tapguide').textContent=kb?'したの鍵盤を押してね':sol?'下のドレミを押してね':'音を読んでからタップして答えを確認';if(kb){initKeyboard();if(!keyboardPositioned){positionKeyboard();keyboardPositioned=true}}updateAccidentalControl()}
+let keyboardReady=false,keyboardPositioned=false,keyWidth=26,dragStarted=false,dragMoved=false,dragX=0,dragY=0;
+const whiteBefore=m=>{let n=0;for(let i=21;i<m;i++)if(!BLACK.has(i%12))n++;return n};
+const keyX=m=>{const w=whiteBefore(m);return BLACK.has(m%12)?w*keyWidth-keyWidth*.36:w*keyWidth};
+function initKeyboard(){if(keyboardReady)return;keyboardReady=true;const full=$('pianoFull'),mini=document.createElement('div');mini.className='minipiano';$('keyboardMap').append(mini);const mapBrand=document.createElement('div');mapBrand.className='map-brand';mapBrand.textContent='PIANO';$('keyboardMap').prepend(mapBrand);const viewport=document.createElement('div');viewport.className='viewport';viewport.id='pianoViewport';mini.append(viewport);for(let m=21;m<=108;m++){const x=keyX(m);const isBlack=BLACK.has(m%12);const b=document.createElement('button');b.type='button';b.className='piano-key'+(isBlack?' black':'')+(m%12===0?' c-key':'');b.dataset.midi=String(m);if(m%12===0)b.dataset.label='C'+(Math.floor(m/12)-1);b.setAttribute('aria-label',getName(m));b.style.left=x+'px';b.style.width=(isBlack?keyWidth*.72:keyWidth)+'px';full.append(b);const small=document.createElement('span');small.className=isBlack?'miniblack':'minikey';small.style.left=(x/(52*keyWidth)*100)+'%';small.style.width=((isBlack?keyWidth*.72:keyWidth)/(52*keyWidth)*100)+'%';mini.append(small)}full.style.width=(52*keyWidth)+'px';mini.append(viewport);$('pianoScroll').addEventListener('scroll',updateMapPosition,{passive:true});$('keyboardMap').addEventListener('click',e=>{const box=$('keyboardMap').getBoundingClientRect(),fraction=Math.max(0,Math.min(1,(e.clientX-box.left)/box.width));$('pianoScroll').scrollLeft=fraction*$('pianoFull').offsetWidth-$('pianoScroll').clientWidth/2;updateMapPosition()});$('pianoFull').addEventListener('pointerdown',e=>{dragStarted=true;dragMoved=false;dragX=e.clientX;dragY=e.clientY});$('pianoFull').addEventListener('pointermove',e=>{if(dragStarted&&(Math.abs(e.clientX-dragX)>8||Math.abs(e.clientY-dragY)>8))dragMoved=true});$('pianoFull').addEventListener('pointerup',()=>{setTimeout(()=>dragStarted=false,0)});$('pianoFull').addEventListener('click',e=>{const key=e.target.closest('[data-midi]');if(!key||dragMoved)return;answerKeyboard(+key.dataset.midi)});window.addEventListener('resize',updateMapPosition);updateMapPosition()}
+function updateKeyWidth(){const available=$('pianoScroll').clientWidth;const width=Math.max(24,available/14);if(Math.abs(width-keyWidth)<.5)return;const center=($('pianoScroll').scrollLeft+available/2)/(52*keyWidth);keyWidth=width;keyboardReady=false;$('pianoFull').replaceChildren();$('keyboardMap').replaceChildren();initKeyboard();$('pianoScroll').scrollLeft=center*(52*keyWidth)-available/2}
+function updateMapPosition(){const sc=$('pianoScroll');const v=$('pianoViewport');if(!v)return;const span=$('pianoFull').offsetWidth;if(!span)return;v.style.left=100*sc.scrollLeft/span+'%';v.style.width=100*sc.clientWidth/span+'%'}
+function positionKeyboard(){updateKeyWidth();const cs=activeClefs();let lo=108,hi=21;for(const c of cs){lo=Math.min(lo,+$(ranges[c][0]).value);hi=Math.max(hi,+$(ranges[c][1]).value)}const midpoint=(lo+hi)/2;const x=keyX(midpoint|0);$('pianoScroll').scrollLeft=x-$('pianoScroll').clientWidth/2;updateMapPosition()}
+function clearKeyHighlights(){document.querySelectorAll('.piano-key.correct-key,.piano-key.wrong-key').forEach(b=>b.classList.remove('correct-key','wrong-key'))}
+function answerKeyboard(m){if(!current||waiting||$('answerMode').value!=='keyboard')return;revealed=true;record(m===current.m,{mode:'keyboard',answer:m})}
+function finishKeyboard(correct,n,answer){$('keyboardFeedback').textContent=correct?'○ せいかい！':`× せいかいは ${getName(n.m,n.useFlat)}`;$('keyboardFeedback').style.color=correct?'#16653b':'#a52c3b';const right=$('pianoFull').querySelector('[data-midi="'+n.m+'"]'),chosen=$('pianoFull').querySelector('[data-midi="'+answer+'"]');right?.classList.add('correct-key');if(!correct)chosen?.classList.add('wrong-key');$('keyboardNext').hidden=active().counter%20===0}
+function chooseSolfege(note){if(!current||waiting||$('answerMode').value!=='solfege')return;const correct=note===expectedAnswer(current);revealed=true;record(correct,{answer:note})}
+
+function closeSettingsPanel(){$('settingsOverlay').classList.remove('show');if(!valid()){loadSettings();nextProblem()}}
+function setupEvents(){for(const id of settingIds)$(id).addEventListener('change',()=>{updateAccidentalControl();if(!valid())return;syncSettings();if(id==='answerMode'||id==='clef'||ranges.treble.includes(id)||ranges.bass.includes(id))keyboardPositioned=false;nextProblem()});
+$('stage').addEventListener('click',reveal);$('solfegeKeys').addEventListener('click',e=>{const b=e.target.closest('button[data-note]');if(b)chooseSolfege(b.dataset.note)});$('nextAfterSolfege').addEventListener('click',nextProblem);$('keyboardNext').addEventListener('click',nextProblem);$('correct').addEventListener('click',()=>record(true));$('incorrect').addEventListener('click',()=>record(false));
+$('openSettings').addEventListener('click',()=>{$('settingsOverlay').classList.add('show')});$('closeSettings').addEventListener('click',closeSettingsPanel);$('closeSettingsTop').addEventListener('click',closeSettingsPanel);
+$('progress').addEventListener('click',()=>showResult(true));$('parentReport').addEventListener('click',showParent);$('closeParent').addEventListener('click',()=>$('parentOverlay').classList.remove('show'));document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{reportPeriod=b.dataset.period;renderParent()}));$('resume').addEventListener('click',closeResult);$('resultOverlay').addEventListener('click',e=>{if(e.target===$('resultOverlay'))closeResult()});
+$('profile').addEventListener('change',e=>switchProfile(e.target.value));
+$('addProfile').addEventListener('click',()=>{const name=prompt('新しい学習者の名前を入力してください');if(!name?.trim())return;const id='p'+Date.now()+'_'+Math.floor(Math.random()*10000);state.profiles[id]=newProfile(name.trim().slice(0,40));refreshProfiles();switchProfile(id);refreshProfiles()});
+$('renameProfile').addEventListener('click',()=>{const name=prompt('学習者の名前',active().name);if(!name?.trim())return;active().name=name.trim().slice(0,40);refreshProfiles();save();updateStatus()});
+$('exportAll').addEventListener('click',()=>download('piano-note-v2-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(state,null,2),'application/json'));
+$('exportCsv').addEventListener('click',()=>download('piano-note-history.csv',csv(),'text/csv;charset=utf-8'));
+$('importBackup').addEventListener('click',()=>$('backupFile').click());$('backupFile').addEventListener('change',async e=>{const file=e.target.files?.[0];e.target.value='';if(!file)return;try{const data=JSON.parse(await file.text());if(data.version!==2||!data.profiles||!Object.keys(data.profiles).length||Object.values(data.profiles).some(p=>!p.settings||!Array.isArray(p.history)||typeof p.stats!=='object'))throw Error('不正なデータ形式');if(!confirm('現在の全プロフィールのデータをバックアップの内容で置き換えます。よろしいですか？'))return;state=data;state.active=state.profiles[state.active]?state.active:Object.keys(state.profiles)[0];for(const p of Object.values(state.profiles))p.settings.accidental??='none';refreshProfiles();loadSettings();await save();nextProblem();alert('復元しました')}catch(e){alert('JSONを読み込めませんでした：'+e.message)}});
+$('clearProfile').addEventListener('click',()=>{const p=active();if(!confirm(`「${p.name}」の習熟度と全回答履歴を初期化します。元には戻せません。続行しますか？`))return;const word=prompt('確認のため「初期化」と入力してください');if(word!=='初期化')return;const settings={...p.settings};state.profiles[state.active]=newProfile(p.name);active().settings=settings;save();nextProblem();alert('学習履歴を初期化しました')});}
+setupEvents();loadState().catch(e=>{console.error(e);$('statusText').textContent='起動できませんでした：'+e.message});
+
+</script>
+</body></html>
