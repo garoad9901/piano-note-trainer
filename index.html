@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ピアノ譜読みトレーニング v2.5</title>
+<title>かわいい音楽教室 v3.3.1</title>
 <style>
 :root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
@@ -84,15 +84,40 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 .practice.keyboard-mode .keyboard-feedback{color:#1e4372}
 @media(min-width:700px){.piano-full{height:180px}}
 .practice.keyboard-mode .tapguide{display:none}
+/* v3.3.1 preview: pastel music classroom design */
+body{background:radial-gradient(circle at 15% 12%,#fff1bb 0,transparent 27%),linear-gradient(170deg,#f7eafa,#e9f8ff 40%,#eaf9ec 78%,#fff6e7);background-attachment:fixed;color:#554762}
+main{max-width:760px}
+h1{text-align:center;color:#9751a5;letter-spacing:.02em;font-size:clamp(1.35rem,5.1vw,1.95rem);text-shadow:0 2px white}
+.dev-version{font-size:.55rem;display:inline-block;vertical-align:middle;border-radius:9px;padding:4px 6px;color:#836796;background:#fff9;border:1px solid #cdb4d8;text-shadow:none}
+.subtitle{text-align:center!important;color:#8b76a0!important;font-weight:700}
+.profilebar{background:#fff9;border:2px solid #e1c8eb;border-radius:18px}
+.classroom-window{position:relative;isolation:isolate;overflow:hidden;height:165px;background:linear-gradient(#c7f0ff 0%,#f0f9ff 58%,#ffe5bd 59%,#f0cfa3 100%);border:5px solid #f7d4c0;border-radius:23px;margin-top:13px;box-shadow:0 5px 0 #e7c4b8}
+.classroom-window:before{content:"";position:absolute;inset:auto 0 30%;height:6px;background:#e4ae91}
+.sun{position:absolute;top:6px;left:13%;font-size:35px}.cloud{position:absolute;top:0;right:15%;font-size:44px}
+.classroom-board{position:absolute;top:19px;left:28%;width:54%;max-width:280px;text-align:center;background:#91bd9c;border:8px solid #d2a573;border-radius:9px;color:white;padding:12px 5px;font-size:clamp(.75rem,3vw,1rem);font-weight:850;line-height:1.65;box-shadow:0 4px 4px #8967}
+.classroom-mascot{position:absolute;bottom:-10px;left:8%;font-size:83px;filter:drop-shadow(1px 5px 1px #bd927b)}
+.classroom-friend{position:absolute;bottom:-8px;right:6%;font-size:72px;filter:drop-shadow(1px 4px 1px #bd927b)}
+.classroom-melody{position:absolute;top:12px;right:3%;font-size:21px;transform:rotate(16deg);color:#a37bd3}
+.practice{border:4px solid #e6c5ec;border-radius:23px;background:#fffdfd;box-shadow:0 6px 0 #e3c6e8,0 12px 24px #927da322;margin-top:16px}
+.classroom-label{text-align:center;width:max-content;max-width:95%;margin:-15px auto 11px;padding:9px 23px;border-radius:24px;background:linear-gradient(90deg,#ffbaca,#e5ceff,#bbebee);border:3px solid white;box-shadow:0 3px 0 #dcb0d6;color:#704a83;font-size:1.04rem;font-weight:900}
+.practice .topline{background:#fbf2ff;border-radius:13px;padding:10px;color:#8d66a8}
+.practice .stage{background:linear-gradient(#fffefa,#fff8ff);border:2px dashed #e5cce8;border-radius:18px}
+button{transition:filter .15s,transform .15s}button:active{transform:translateY(2px);filter:brightness(.96)}
+.actionbar button{background:#fbe9f8;border:2px solid #d3addb;border-radius:14px;color:#704b89}
+.actionbar button.primary{background:linear-gradient(#b6eafa,#80c5e8);border-color:#72b3ce;color:#274e69}
+#resultDialog{background:linear-gradient(#fff8fb,#f0faff);border:4px solid #efd2f1;border-radius:24px}
+.congratulations{text-align:center;font-size:2.3rem;animation:classCelebration 1.5s ease-in-out infinite}
+@keyframes classCelebration{50%{transform:translateY(-6px)}}
+@media(prefers-reduced-motion:reduce){.congratulations{animation:none}}
 </style>
 </head>
 <body>
 <main>
-<h1>🎹 ピアノ譜読みトレーニング</h1>
-<p class="subtitle">全88鍵対応 ｜ ○・× または ドレミで答えよう</p>
-<div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="stats" id="statusText">データを読み込み中…</div>
+<h1>🎼 かわいい音楽教室 <span class="dev-version">v3.3.1</span></h1>
+<p class="subtitle">おんぷと なかよく なろう♪　まいにち ちょっとずつ れんしゅう</p>
+<div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="classroom-window" aria-hidden="true"><span class="sun">☀️</span><span class="cloud">☁️</span><span class="classroom-board">きょうも たのしく<br>おんぷの おべんきょう ♪</span><span class="classroom-mascot">🐰</span><span class="classroom-friend">🐻</span><span class="classroom-melody">♫ ♪ ♬</span></div><div class="stats" id="statusText">データを読み込み中…</div>
 
-<section class="practice"><div class="topline"><span id="clefLabel">ト音記号</span><span id="counter" class="counter">第1問</span></div>
+<section class="practice"><div class="classroom-label">🎵 きょうの おんぷ</div><div class="topline"><span id="clefLabel">ト音記号</span><span id="counter" class="counter">第1問</span></div>
 <button class="stage" id="stage" type="button" aria-label="答えを表示、または次の問題へ">
 <svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"><g stroke="#34475c" stroke-width="1.8"><path d="M90 86H532 M90 112H532 M90 138H532 M90 164H532 M90 190H532" /></g><text x="109" y="205" font-size="132" font-family="Noto Music, Apple Symbols, serif" fill="#23384c" text-anchor="middle">𝄞</text><ellipse cx="329" cy="164" rx="18" ry="12" transform="rotate(-20 329 164)" fill="#263b52"/><path d="M346 164V70" stroke="#263b52" stroke-width="3.3"/></svg>
 <div class="answer hidden" id="answer" aria-live="polite">&nbsp;</div><p id="tapguide" class="tapguide">タップして答えを表示</p>
@@ -462,7 +487,7 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 <div class="wide"><div class="range-tip">臨時記号「なし」では白鍵のみ出題します。最も低い音はラ0（A0）、最も高い音はド8（C8）です。音部記号「自動」ではそれぞれの設定音域から出題します。設定変更後、すぐに次の問題へ切り替わります。</div><div id="rangeError" class="error" role="alert">各音部記号の下限は上限以下にしてください。</div></div>
 </section><div class="settings-data"><h3>学習データ管理</h3><div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p></div><button type="button" id="closeSettings" class="settings-close">設定を閉じる</button></div></div>
 <div id="parentOverlay" class="overlay"><div class="dialog report-dialog" role="dialog" aria-modal="true" aria-label="保護者向け学習レポート"><h2>保護者向け 学習レポート</h2><p class="report-detail" id="reportWho"></p><div class="report-tabs"><button type="button" data-period="today" class="on">今日</button><button type="button" data-period="week">1週間</button><button type="button" data-period="month">1か月</button></div><div id="reportContent"></div><button type="button" id="closeParent" class="close-report">練習に戻る</button></div></div>
-<div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
+<div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><div class="congratulations" aria-hidden="true">🐰 🎉 🐻</div><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
 <p class="foot" style="text-align:center">v2.5｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
 </main>
 <script>
