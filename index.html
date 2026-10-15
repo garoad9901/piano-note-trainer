@@ -541,7 +541,7 @@ async function openDb(){return new Promise((resolve,reject)=>{try{const r=indexe
 async function loadState(){try{db=await openDb();const saved=await new Promise((resolve,reject)=>{let t=db.transaction('data','readonly').objectStore('data').get('state');t.onsuccess=()=>resolve(t.result);t.onerror=()=>reject(t.error)});if(saved&&saved.version===2)state=saved}catch(e){storeType='localStorage';try{const s=localStorage.getItem('pianoNoteV2');if(s)state=JSON.parse(s)}catch(err){storeType='一時メモリ（保存不可）'}}
 if(!state.profiles||!Object.keys(state.profiles).length)state={version:2,active:'p1',profiles:{p1:newProfile('こども1')}};
 if(!state.profiles[state.active])state.active=Object.keys(state.profiles)[0];
-for(let p of Object.values(state.profiles)){p.stats||={};p.history||=[];p.recent||=[];p.counter||=0;p.settings={...DEFAULTS,...p.settings,accidental:'none'}}
+for(let p of Object.values(state.profiles)){p.stats||={};p.history||=[];p.recent||=[];p.counter||=0;p.settings={...DEFAULTS,...p.settings}}
 $('storageInfo').textContent=`保存方式：${storeType}。この端末・ブラウザ内に保存されます。定期的にJSONバックアップしてください。`;
 refreshProfiles();loadSettings();updateStatus();nextProblem();}
 function save(){const snapshot=clone(state);writeChain=writeChain.catch(()=>{}).then(()=>new Promise(resolve=>{if(db){try{const t=db.transaction('data','readwrite');t.objectStore('data').put(snapshot,'state');t.oncomplete=resolve;t.onerror=()=>{console.error(t.error);resolve()};return}catch(e){console.error(e)}}try{localStorage.setItem('pianoNoteV2',JSON.stringify(snapshot))}catch(e){console.warn('保存できません',e);$('storageInfo').textContent='保存に失敗しました。JSONバックアップをご利用ください。'}resolve()}));return writeChain}
