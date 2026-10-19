@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>かわいい音楽教室 v3.3.5</title>
+<title>かわいい音楽教室 v3.3.6</title>
 <style>
 :root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
@@ -13,7 +13,7 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 
 .profilebar{display:flex;align-items:center;gap:9px;margin:12px 0;flex-wrap:wrap}.profilebar select{width:auto;min-width:170px;flex:1}.profilebar button,.tools button{padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:var(--ink);font-weight:650;cursor:pointer}.assessment{display:none;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 20px}.assessment.show{display:grid}.assessment button{border:0;border-radius:14px;padding:18px;font-size:1.4rem;font-weight:800;cursor:pointer}.yes{background:#def6e9;color:#11633e}.no{background:#ffe5e7;color:#a52c3b}.stage{min-height:315px}.answer.hidden{visibility:hidden;color:inherit}.actionbar{justify-content:space-between}.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.tools button{flex:1;font-size:.83rem}.stats{font-size:.82rem;color:var(--muted)}.overlay{display:none;position:fixed;inset:0;background:#192b43bd;z-index:100;padding:20px;align-items:center;justify-content:center}.overlay.show{display:flex}.dialog{background:#fff;border-radius:22px;padding:24px;max-width:420px;width:100%;text-align:center;box-shadow:0 18px 70px #0003}.dialog h2{margin:0 0 10px}.dialog .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.dialog .metrics div{background:#f1f5fb;border-radius:12px;padding:13px 3px}.dialog strong{display:block;font-size:1.7rem}.dialog button{border:0;background:#3367d6;color:white;border-radius:13px;font-size:1.1rem;padding:15px;width:100%;font-weight:bold;cursor:pointer}.notice{font-size:.82rem;color:#8a4d13}.status-pill{font-size:.77rem;color:#44628f;background:#edf3ff;border-radius:99px;padding:5px 9px}.stage[disabled]{opacity:.6}.backupfile{display:none}
 
-.solfege-box{padding:0 14px 20px;text-align:center}.solfege-note{color:var(--muted);font-size:.85rem;margin:3px 0 10px}.modifier-row{display:flex;justify-content:center;gap:7px;margin-bottom:12px}.modifier-row button{background:#f2f5fa;border:1px solid #b8c8df;border-radius:10px;padding:11px 9px;color:#29405d;font-weight:700;flex:1;max-width:150px}.modifier-row button.selected{background:#dceaff;border:2px solid #346ad6;color:#1746a8}.solfege-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.solfege-keys button{min-height:65px;border:1px solid #b9c8db;border-radius:13px;background:#eaf1ff;color:#173c73;font-size:1.4rem;font-weight:800;touch-action:manipulation}.solfege-keys button:disabled{opacity:.55}.solfege-keys button.chosen-answer,.solfege-keys button.chosen-answer:disabled{opacity:1!important;filter:brightness(.79);box-shadow:inset 0 4px 12px #49325345,0 0 0 3px #805093!important;transform:translateY(2px)}.solfege-feedback{min-height:30px;font-weight:800;margin:11px 0 3px}.solfege-feedback.good{color:#11633e}.solfege-feedback.bad{color:#a52c3b}.continue-button{border:0;border-radius:12px;padding:15px 26px;background:#3367d6;color:white;font-weight:800;font-size:1rem;width:100%}.solfege-box[hidden]{display:none!important}
+.solfege-box{padding:0 14px 20px;text-align:center}.solfege-note{color:var(--muted);font-size:.85rem;margin:3px 0 10px}.modifier-row{display:flex;justify-content:center;gap:7px;margin-bottom:12px}.modifier-row button{background:#f2f5fa;border:1px solid #b8c8df;border-radius:10px;padding:11px 9px;color:#29405d;font-weight:700;flex:1;max-width:150px}.modifier-row button.selected{background:#dceaff;border:2px solid #346ad6;color:#1746a8}.solfege-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.solfege-keys button{min-height:65px;border:1px solid #b9c8db;border-radius:13px;background:#eaf1ff;color:#173c73;font-size:1.4rem;font-weight:800;touch-action:manipulation}.solfege-keys button:disabled{opacity:.55}.solfege-keys button.chosen-answer,.solfege-keys button.chosen-answer:disabled{opacity:1!important;background:color-mix(in srgb,#eaf1ff 55%,#85aff0 45%);filter:none;box-shadow:none;transform:none}.solfege-feedback{min-height:30px;font-weight:800;margin:11px 0 3px}.solfege-feedback.good{color:#11633e}.solfege-feedback.bad{color:#a52c3b}.continue-button{border:0;border-radius:12px;padding:15px 26px;background:#3367d6;color:white;font-weight:800;font-size:1rem;width:100%}.solfege-box[hidden]{display:none!important}
 
 /* v2.2: place the seven answers immediately below the staff */
 .practice.solfege-mode .stage{min-height:0;padding:0 8px 3px;cursor:default}
@@ -85,7 +85,7 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 @media(min-width:700px){.piano-full{height:180px}}
 .practice.keyboard-mode .tapguide{display:none}
 
-/* v3.3.5 compact responsive classroom. Built on complete v2.5. */
+/* v3.3.6 compact responsive classroom. Built on complete v2.5. */
 :root{--ink:#59496f;--muted:#806e96;--line:#eedbf0;--accent:#b65c96;--pale:#fff3fc}
 html,body{width:100%;max-width:100%;overflow-x:hidden}
 body{background:linear-gradient(180deg,#f9edff,#ecf9ff 45%,#fff9ed);color:var(--ink)}
@@ -119,7 +119,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
 </head>
 <body>
 <main>
-<h1>🎼 かわいい音楽教室 <small class="dev-version">v3.3.5</small></h1>
+<h1>🎼 かわいい音楽教室 <small class="dev-version">v3.3.6</small></h1>
 <p class="subtitle">おんぷと なかよく なろう♪</p>
 <div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="classroom-scene" aria-label="うさぎとくまの音楽教室"><div class="scene-window"><span>☁️</span></div><div class="scene-board"><span>きょうも たのしく</span><strong>おんぷの おべんきょう♪</strong></div><div class="scene-bunny">🐰</div><div class="scene-bear">🐻</div><div class="scene-piano">🎹</div><div class="scene-notes">♪ ♫ ♪</div></div><div class="stats" id="statusText">データを読み込み中…</div>
 
@@ -494,7 +494,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
 </section><div class="settings-data"><h3>学習データ管理</h3><div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p></div><button type="button" id="closeSettings" class="settings-close">設定を閉じる</button></div></div>
 <div id="parentOverlay" class="overlay"><div class="dialog report-dialog" role="dialog" aria-modal="true" aria-label="保護者向け学習レポート"><h2>保護者向け 学習レポート</h2><p class="report-detail" id="reportWho"></p><div class="report-tabs"><button type="button" data-period="today" class="on">今日</button><button type="button" data-period="week">1週間</button><button type="button" data-period="month">1か月</button></div><div id="reportContent"></div><button type="button" id="closeParent" class="close-report">練習に戻る</button></div></div>
 <div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><div class="classroom-celebration">🐰 🏅 🐻</div><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
-<p class="foot" style="text-align:center">v3.3.5｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
+<p class="foot" style="text-align:center">v3.3.6｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
 </main>
 <script>
 
