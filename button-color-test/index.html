@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ドレミ回答ボタン色テスト v0.1.0</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#59466a;background:#fff8fd}
+*{box-sizing:border-box}body{margin:0}main{max-width:640px;padding:20px 14px 50px;margin:auto}h1{font-size:1.4rem;margin:0 0 4px}.version{font-size:.65rem;background:#e8d9fa;color:#654e82;border-radius:12px;padding:4px 7px;vertical-align:middle}.sub{color:#8d7a99;font-size:.9rem;line-height:1.6}
+section{background:white;border:2px solid #efdaed;border-radius:22px;padding:18px;margin:16px 0;box-shadow:0 7px 18px #b788a71b}
+h2{font-size:1.05rem;margin:0 0 12px}.keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.key{--pale:#ffe2ed;--strong:#ff7ba6;--edge:#d85486;min-height:72px;border:2px solid var(--edge);background:var(--pale);color:#654257;font-size:1.4rem;font-weight:850;border-radius:16px;cursor:pointer;touch-action:manipulation;transition:background-color .12s ease,color .12s ease,box-shadow .12s ease,transform .12s ease;outline-offset:3px}
+.key:nth-child(2){--pale:#ffe7d3;--strong:#ffac63;--edge:#df8a48}
+.key:nth-child(3){--pale:#fff2cb;--strong:#f5d04b;--edge:#c79b23}
+.key:nth-child(4){--pale:#ddf5d9;--strong:#7cda88;--edge:#43a65c}
+.key:nth-child(5){--pale:#ddf0ff;--strong:#75c4f5;--edge:#4098cd}
+.key:nth-child(6){--pale:#e9e2ff;--strong:#b5a0f8;--edge:#8672d1}
+.key:nth-child(7){--pale:#f3dfff;--strong:#d494f2;--edge:#a85dca}
+.key.selected{background:var(--strong);color:#352742;border-color:var(--edge);box-shadow:0 4px 0 var(--edge),0 0 0 2px #fff inset;transform:translateY(-2px)}
+.key:disabled{cursor:default;opacity:1}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.controls button{flex:1;min-width:115px;border:1px solid #dcbfe6;border-radius:12px;padding:12px 8px;background:#f8edff;color:#69497a;font-weight:750;cursor:pointer}
+#feedback{padding:10px 12px;margin:15px 0 0;min-height:48px;border-radius:12px;background:#fff2fa;font-weight:800;line-height:1.6}#feedback.good{color:#237347;background:#e6f9ed}#feedback.bad{color:#b3395c;background:#ffeaf0}
+.note{font-size:.84rem;color:#8e7997;line-height:1.7}
+@media(max-width:380px){main{padding:14px 9px}.keys{gap:6px}.key{min-height:65px;font-size:1.18rem}}
+</style></head>
+<body><main><h1>🎵 ドレミボタン色テスト <span class="version">v0.1.0</span></h1>
+<p class="sub">v3.3からボタンだけ切り出した検証ページ。選択時はグレーを重ねず、<b>その色そのものを鮮やかに濃く</b>します。学習履歴には影響しません。</p>
+<section><h2>ボタンをタップして色を確認</h2>
+<div class="keys" id="keys"><button class="key" data-note="ド">ド</button><button class="key" data-note="レ">レ</button><button class="key" data-note="ミ">ミ</button><button class="key" data-note="ファ">ファ</button><button class="key" data-note="ソ">ソ</button><button class="key" data-note="ラ">ラ</button><button class="key" data-note="シ">シ</button></div>
+<div id="feedback" aria-live="polite">ボタンを押してください。</div>
+<div class="controls"><button id="reset" type="button">選択を解除</button><button id="toggle" type="button">回答確定モード：OFF</button></div>
+<p class="note">通常モード：押すたびに選択を切り替えます。回答確定モード：1回押したら選択を保持し、再度の回答を止めます。「選択を解除」でやり直せます。</p></section></main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+let locked=false,lockMode=false;
+function reset(){locked=false;document.querySelectorAll('.key').forEach(k=>{k.classList.remove('selected');k.disabled=false});$('feedback').textContent='ボタンを押してください。';$('feedback').className=''}
+$('keys').addEventListener('click',e=>{const key=e.target.closest('button[data-note]');if(!key||locked)return;document.querySelectorAll('.key').forEach(k=>k.classList.toggle('selected',k===key));$('feedback').textContent='選択した音：'+key.dataset.note+'　（ボタンの色自体が濃く変化）';$('feedback').className='';if(lockMode){locked=true;document.querySelectorAll('.key').forEach(k=>k.disabled=true)}});
+$('reset').addEventListener('click',reset);
+$('toggle').addEventListener('click',()=>{lockMode=!lockMode;$('toggle').textContent='回答確定モード：'+(lockMode?'ON':'OFF');reset()});
+</script></body></html>
