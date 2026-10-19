@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ドレミ回答ボタン色テスト v0.1.2</title>
+<title>ドレミ回答ボタン色テスト v0.1.3</title>
 <style>
 :root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#59466a;background:#fff8fd}
 *{box-sizing:border-box}body{margin:0}main{max-width:640px;padding:20px 14px 50px;margin:auto}h1{font-size:1.4rem;margin:0 0 4px}.version{font-size:.65rem;background:#e8d9fa;color:#654e82;border-radius:12px;padding:4px 7px;vertical-align:middle}.sub{color:#8d7a99;font-size:.9rem;line-height:1.6}
@@ -14,25 +14,25 @@ h2{font-size:1.05rem;margin:0 0 12px}.keys{display:grid;grid-template-columns:re
 .key:nth-child(6){--pale:#e9e2ff;--strong:#b5a0f8;--edge:#8672d1}
 .key:nth-child(7){--pale:#f3dfff;--strong:#d494f2;--edge:#a85dca}
 .key.selected{background:color-mix(in srgb,var(--pale) 55%,var(--strong) 45%);color:#654257;border-color:var(--edge);box-shadow:none;transform:none}
-.key:disabled{cursor:default;opacity:.55}.key.selected:disabled{opacity:1}
+.key:disabled{cursor:default;opacity:.55!important}.key.selected:disabled{opacity:1!important}
 .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.controls button{flex:1;min-width:115px;border:1px solid #dcbfe6;border-radius:12px;padding:12px 8px;background:#f8edff;color:#69497a;font-weight:750;cursor:pointer}
 #feedback{padding:10px 12px;margin:15px 0 0;min-height:48px;border-radius:12px;background:#fff2fa;font-weight:800;line-height:1.6}#feedback.good{color:#237347;background:#e6f9ed}#feedback.bad{color:#b3395c;background:#ffeaf0}
 .note{font-size:.84rem;color:#8e7997;line-height:1.7}
 @media(max-width:380px){main{padding:14px 9px}.keys{gap:6px}.key{min-height:65px;font-size:1.18rem}}
 </style></head>
-<body><main><h1>🎵 ドレミボタン色テスト <span class="version">v0.1.2</span></h1>
+<body><main><h1>🎵 ドレミボタン色テスト <span class="version">v0.1.3</span></h1>
 <p class="sub">v3.3からボタンだけ切り出した検証ページ。選択時は枠線を変えず、<b>選択ボタンの背景は中間色、未選択ボタンは薄く</b>にします。学習履歴には影響しません。</p>
 <section><h2>ボタンをタップして色を確認</h2>
 <div class="keys" id="keys"><button class="key" data-note="ド">ド</button><button class="key" data-note="レ">レ</button><button class="key" data-note="ミ">ミ</button><button class="key" data-note="ファ">ファ</button><button class="key" data-note="ソ">ソ</button><button class="key" data-note="ラ">ラ</button><button class="key" data-note="シ">シ</button></div>
 <div id="feedback" aria-live="polite">ボタンを押してください。</div>
-<div class="controls"><button id="reset" type="button">選択を解除</button><button id="toggle" type="button">回答確定モード：OFF</button></div>
-<p class="note">通常モード：押すたびに選択を切り替えます。回答確定モード：1回押したら選択を保持し、押していないボタンは薄くなります。「選択を解除」でやり直せます。</p></section></main>
+<div class="controls"><button id="reset" type="button">もう一度ためす</button></div>
+<p class="note">ボタンを押すと回答確定。選択したボタンは中間色のまま、押していない6つは薄くなります。「もう一度ためす」で元に戻ります。</p></section></main>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
-let locked=false,lockMode=false;
+let locked=false;
 function reset(){locked=false;document.querySelectorAll('.key').forEach(k=>{k.classList.remove('selected');k.disabled=false});$('feedback').textContent='ボタンを押してください。';$('feedback').className=''}
-$('keys').addEventListener('click',e=>{const key=e.target.closest('button[data-note]');if(!key||locked)return;document.querySelectorAll('.key').forEach(k=>k.classList.toggle('selected',k===key));$('feedback').textContent='選択した音：'+key.dataset.note+'　（背景色だけ少し濃く・枠は同じ）';$('feedback').className='';if(lockMode){locked=true;document.querySelectorAll('.key').forEach(k=>k.disabled=true)}});
+$('keys').addEventListener('click',e=>{const key=e.target.closest('button[data-note]');if(!key||locked)return;document.querySelectorAll('.key').forEach(k=>k.classList.toggle('selected',k===key));$('feedback').textContent='選択した音：'+key.dataset.note+'　（背景色だけ少し濃く・枠は同じ）';$('feedback').className='';locked=true;document.querySelectorAll('.key').forEach(k=>k.disabled=true)});
 $('reset').addEventListener('click',reset);
-$('toggle').addEventListener('click',()=>{lockMode=!lockMode;$('toggle').textContent='回答確定モード：'+(lockMode?'ON':'OFF');reset()});
+
 </script></body></html>
