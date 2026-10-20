@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>支給SVG 音符表示テスト v0.2.0</title>
+  <title>支給SVG 音符表示テスト v0.2.1</title>
   <style>
     :root { color:#304059; background:#fff9fc; font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif }
     * { box-sizing:border-box } body { margin:0 } main { width:min(920px,100%); margin:auto; padding:18px 12px 42px }
@@ -27,7 +27,7 @@
 </head>
 <body>
 <main>
-  <h1>🎼 支給SVG 音符表示テスト <small>v0.2.0</small></h1>
+  <h1>🎼 支給SVG 音符表示テスト <small>v0.2.1</small></h1>
   <p>提供された「楽譜記号.svg」のパスをそのまま使って描画しています。五線・加線・配置だけをテスト用コードで生成し、アプリ本体は変更していません。</p>
 
   <!-- 提供SVGの9本のpathを、形状を変更せず再利用するためのスプライト -->
@@ -79,8 +79,17 @@
 <script>
   const NS='http://www.w3.org/2000/svg',ink='#263b52',$=id=>document.getElementById(id);
   const labels={half:'二分音符',quarter:'四分音符',whole:'全音符',eighth:'八分音符',dotted:'付点八分音符'};
+  // 音符頭の外縁が、線間では上下の五線（22px間隔）へちょうど接する寸法。
+  const noteLayout={
+    whole:{x:-20.54,y:-12.94,width:40.49,height:25.77},
+    half:{x:-14.37,y:-74.90,width:30.00,height:87.70},
+    quarter:{x:-14.52,y:-76.29,width:29.71,height:89.14},
+    eighth:{x:-14.89,y:-75.55,width:51.14,height:89.19},
+    dotted:{x:-14.51,y:-76.40,width:51.13,height:89.18}
+  };
   function svgElement(parent,tag,attributes){const node=document.createElementNS(NS,tag);Object.entries(attributes).forEach(([key,value])=>node.setAttribute(key,value));parent.append(node);return node}
   function placeUse(parent,symbol,x,y,width,height){return svgElement(parent,'use',{href:`#g-${symbol}`,x,y,width,height,fill:ink})}
+  function placeNote(parent,duration,x,y){const box=noteLayout[duration];placeUse(parent,duration,x+box.x,y+box.y,box.width,box.height)}
   function render(){
     const score=$('score'),duration=$('duration').value,clef=$('clef').value,step=Number($('position').value),accidental=$('accidental').value,y=152-step*11,noteX=266;
     score.querySelectorAll(':scope > :not(title):not(desc)').forEach(node=>node.remove());
@@ -89,7 +98,7 @@
     for(let ledger=-2;ledger>=step;ledger-=2){const ledgerY=152-ledger*11;svgElement(score,'line',{x1:noteX-27,x2:noteX+27,y1:ledgerY,y2:ledgerY,stroke:ink,'stroke-width':1.6})}
     for(let ledger=10;ledger<=step;ledger+=2){const ledgerY=152-ledger*11;svgElement(score,'line',{x1:noteX-27,x2:noteX+27,y1:ledgerY,y2:ledgerY,stroke:ink,'stroke-width':1.6})}
     if(accidental==='sharp')placeUse(score,'sharp',noteX-47,y-28,17,55);if(accidental==='flat')placeUse(score,'flat',noteX-47,y-34,19,53);
-    if(duration==='whole')placeUse(score,'whole',noteX-18,y-11,36,23);if(duration==='half')placeUse(score,'half',noteX-12,y-59,24,68);if(duration==='quarter')placeUse(score,'quarter',noteX-12,y-62,24,72);if(duration==='eighth')placeUse(score,'eighth',noteX-12,y-62,41,72);if(duration==='dotted')placeUse(score,'dotted',noteX-12,y-62,41,72);
+    placeNote(score,duration,noteX,y);
     $('status').textContent=`${labels[duration]}・${clef==='treble'?'ト音記号':'ヘ音記号'}を支給SVGの輪郭で表示中。`;
     document.querySelectorAll('[data-duration]').forEach(button=>button.classList.toggle('active',button.dataset.duration===duration));
   }
