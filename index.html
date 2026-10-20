@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ピアノ譜読みトレーニング v2.5.1</title>
+<title>ピアノ譜読みトレーニング v3.3.7</title>
 <style>
 :root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
@@ -88,13 +88,26 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 </head>
 <body>
 <main>
+<!-- 支給された「楽譜記号.svg」の輪郭を変更せず再利用するスプライト -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+<defs>
+<symbol id="g-treble" viewBox="63 310 51 138"><path d="M90.44,433.41c0,3.1-4.03,6.26-7.63,6.26c-1.01,0-2.02-0.22-2.88-0.86c0.36,2.88,4.82,6.12,8.57,6.12 c5.98,0,12.6-4.1,12.6-10.37c0-0.72-0.07-1.44-0.29-2.23l-3.6-14.83c-2.38,0.5-4.68,0.72-6.84,0.72 c-16.42,0-26.07-12.96-26.07-27.79c0-14.04,12.1-27,17.93-33.05c-1.87-7.56-4.25-12.89-4.25-22.11v-0.79 c0.14-9.65,7.85-22.18,11.09-23.26c3.02,0.5,11.09,12.17,11.23,24.63v0.43c0,11.3-5.33,21.1-14.04,29.95l3.46,13.18 c1.15-0.43,3.24-0.65,5.18-0.65c0.94,0,1.87,0,2.66,0.14c7.63,1.15,14.83,6.48,14.83,17.43v0.36c-0.07,5.62-3.96,16.2-13.54,20.23 l3.67,14.83c0.29,1.01,0.36,1.94,0.36,2.88c0,7.92-8.78,12.02-14.54,12.02c-6.26,0-14.11-4.32-14.11-12.38 c0-3.46,3.67-8.06,9.14-8.14C87.92,426.29,90.44,429.81,90.44,433.41z M84.82,367.6c-2.74,3.02-15.41,15.05-15.48,25.63 c0,9.65,5.62,20.81,17.57,22.03c0.43,0.07,1.15,0.07,1.94,0.07c2.45,0,5.98-0.22,7.63-0.72l-6.55-26.35 c-5.69,1.3-7.78,5.04-7.78,9.94c0.07,5.33,2.88,8.28,6.91,11.52c-3.38-0.94-9.29-5.62-9.94-14.19c-0.07-0.72-0.07-1.44-0.07-2.16 c0-6.19,2.38-10.87,8.57-13.25L84.82,367.6z M80.57,336.78c0,9,1.66,13.32,3.1,19.23c4.68-5.04,13.1-13.9,13.18-21.75 c0-5.54-2.38-14.33-5.62-15.12C88.56,319.43,80.57,327.28,80.57,336.78z M98.14,414.19c6.19-2.74,10.23-8.42,10.23-15.41 c0-1.37-0.14-2.74-0.43-4.18c-0.94-4.1-5.76-6.98-12.24-6.98c-1.3,0-2.66,0.14-4.03,0.36L98.14,414.19z"/></symbol>
+<symbol id="g-bass" viewBox="120 381 54 62"><path d="M121.54,440.33c11.38-7.27,18.65-11.81,25.06-23.04c2.81-4.9,4.61-12.02,4.61-16.85c0-6.77-3.02-16.13-10.66-16.13 c-0.5,0-1.01,0.07-1.51,0.14c-5.11,0.79-8.71,2.52-11.16,6.48c-0.14,0.36-0.22,0.65-0.22,1.01c0,1.08,0.72,1.94,2.3,1.94 c0.5,0,1.8-0.43,2.74-0.58c0.5-0.07,1.01-0.14,1.44-0.14c3.46,0,5.83,2.81,5.83,5.98c0,4.54-3.96,6.84-8.06,6.84 c-4.25,0-8.64-2.52-8.64-7.85c0-9.22,11.16-15.91,18.29-15.91c10.15,0,20.09,6.62,20.09,17.64c0,22.97-23.4,34.13-39.68,42.05 L121.54,440.33z M168.84,388.27c2.45,0,4.18,1.8,4.18,4.03c0,1.87-1.73,3.89-4.18,3.89c-2.74,0-4.18-2.02-4.18-3.89 C164.67,390.07,166.11,388.27,168.84,388.27z M168.84,404.4c2.45,0,4.18,1.87,4.18,4.1c0,1.87-1.73,4.03-4.18,4.03 c-2.74,0-4.18-2.16-4.18-4.03C164.67,406.27,166.11,404.4,168.84,404.4z"/></symbol>
+<symbol id="g-whole" viewBox="185 390 33 21"><path d="M201.89,391.58c6.12,0,15.19,2.88,15.19,8.93c0,6.98-8.86,8.93-14.91,9h-0.36c-6.41,0-15.41-1.94-15.41-8.86 C186.41,394.46,195.48,391.58,201.89,391.58z M194.26,399.07c0,3.38,2.23,7.13,4.82,8.57c0.86,0.5,2.02,0.72,3.17,0.72 c2.66,0,5.54-1.15,6.34-2.74c0.29-0.58,0.36-1.3,0.36-2.09c0-3.1-1.8-7.34-4.1-9c-1.22-0.86-2.74-1.22-4.25-1.22 c-1.87,0-3.74,0.58-4.82,1.66C194.69,396.11,194.26,397.56,194.26,399.07z"/></symbol>
+<symbol id="g-half" viewBox="233 326 26 76"><path d="M256.97,388.48l-0.29-0.07c-0.29,2.95-2.38,6.34-6.7,9.15c-2.16,1.37-5.62,2.88-8.78,2.88c-2.3,0-4.39-0.79-5.83-2.95 c-0.86-1.3-1.15-2.52-1.15-3.74c0-4.32,4.32-8.06,7.27-9.86c2.81-1.73,5.54-2.52,7.92-2.52c2.59,0,4.68,0.94,5.98,2.45v-56.31h1.58 V388.48z M254.52,387.33c0-0.5-0.14-1.08-0.43-1.58c-0.58-1.08-1.51-1.51-2.74-1.51c-2.3,0-5.4,1.51-7.78,3.02 c-3.24,1.94-6.7,5.26-6.7,7.85c0,0.43,0.07,0.86,0.29,1.22c0.5,0.86,1.37,1.22,2.45,1.22c2.38,0,5.69-1.66,8.28-3.31 C250.99,392.3,254.52,389.92,254.52,387.33z"/></symbol>
+<symbol id="g-quarter" viewBox="268 327 25 75"><path d="M291.38,389.06c0,6.05-7.27,11.38-13.68,11.38c-4.82,0-8.64-2.59-8.64-7.2c0-6.05,7.27-11.31,13.68-11.31 c2.88,0,5.4,0.94,6.98,2.66v-56.16h1.66V389.06z"/></symbol>
+<symbol id="g-eighth" viewBox="305 327 43 75"><path d="M346.83,370.19c0,5.76-1.8,11.59-4.75,18.29l-0.29-0.22c2.3-5.83,3.31-11.23,3.31-16.06c0-10.3-5.62-18.65-16.42-24.7v40.9 c0,6.05-7.27,11.38-13.68,11.38c-4.82,0-8.64-2.59-8.64-7.2c0-6.05,7.27-11.3,13.68-11.3c2.88,0,5.4,0.94,6.98,2.66v-55.59 l1.66,0.07c1.22,9.22,9.36,19.01,14.04,27.29C345.6,360.83,346.83,365.51,346.83,370.19z"/></symbol>
+<symbol id="g-sharp" viewBox="405 374 16 53"><path d="M417.31,425.06v-14.4l-11.02,3.82v-38.67h1.8v14.47l11.02-3.89v38.67H417.31z M408.09,408.14l9.22-3.31v-12.1l-9.22,3.38 V408.14z"/></symbol>
+<symbol id="g-flat" viewBox="432 366 17 48"><path d="M433.72,412.17v-44.64h1.66v24.48c2.02-1.37,4.68-2.52,7.06-2.52c2.88,0,5.26,1.66,5.26,6.48 C447.69,400.72,437.68,409.58,433.72,412.17z M435.16,407.35c2.74-2.38,7.06-7.27,7.06-11.38c0-2.66-1.44-3.82-3.24-3.82 c-1.15,0-2.52,0.5-3.6,1.51L435.16,407.35z"/></symbol>
+</defs>
+</svg>
 <h1>🎹 ピアノ譜読みトレーニング</h1>
 <p class="subtitle">全88鍵対応 ｜ ○・× または ドレミで答えよう</p>
 <div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="stats" id="statusText">データを読み込み中…</div>
 
 <section class="practice"><div class="topline"><span id="clefLabel">ト音記号</span><span id="counter" class="counter">第1問</span></div>
 <button class="stage" id="stage" type="button" aria-label="答えを表示、または次の問題へ">
-<svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"><g stroke="#34475c" stroke-width="1.8"><path d="M90 86H532 M90 112H532 M90 138H532 M90 164H532 M90 190H532" /></g><text x="109" y="205" font-size="132" font-family="Noto Music, Apple Symbols, serif" fill="#23384c" text-anchor="middle">𝄞</text><ellipse cx="329" cy="164" rx="18" ry="12" transform="rotate(-20 329 164)" fill="#263b52"/><path d="M346 164V70" stroke="#263b52" stroke-width="3.3"/></svg>
+<svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"></svg>
 <div class="answer hidden" id="answer" aria-live="polite">&nbsp;</div><p id="tapguide" class="tapguide">タップして答えを表示</p>
 </button><div id="keyboardBox" class="keyboard-box" hidden><div id="keyboardMap" class="keyboard-map" aria-label="88鍵位置マップ"></div><div class="piano-scroll" id="pianoScroll"><div id="pianoFull" class="piano-full"></div></div><div id="keyboardFeedback" class="keyboard-feedback" aria-live="polite"></div><button type="button" id="keyboardNext" class="continue-button" hidden>つぎのもんだい →</button></div><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を押してね（オクターブは判定しません）</p><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div><button type="button" id="selfNext" class="continue-button" hidden style="display:block;width:calc(100% - 28px);margin:4px 14px 16px">つぎへ →</button></section>
 <div class="actionbar"><button type="button" id="progress" class="small primary">がんばり</button><button type="button" id="parentReport" class="small">保護者向け</button><button type="button" id="openSettings" class="small">⚙ 設定</button></div>
@@ -463,7 +476,7 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 </section><div class="settings-data"><h3>学習データ管理</h3><div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p></div><button type="button" id="closeSettings" class="settings-close">設定を閉じる</button></div></div>
 <div id="parentOverlay" class="overlay"><div class="dialog report-dialog" role="dialog" aria-modal="true" aria-label="保護者向け学習レポート"><h2>保護者向け 学習レポート</h2><p class="report-detail" id="reportWho"></p><div class="report-tabs"><button type="button" data-period="today" class="on">今日</button><button type="button" data-period="week">1週間</button><button type="button" data-period="month">1か月</button></div><div id="reportContent"></div><button type="button" id="closeParent" class="close-report">練習に戻る</button></div></div>
 <div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
-<p class="foot" style="text-align:center">v2.5.1｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
+<p class="foot" style="text-align:center">v3.3.7｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
 </main>
 <script>
 
@@ -478,54 +491,32 @@ const LETTER_INDEX={C:0,D:1,E:2,F:3,G:4,A:5,B:6};
 const DURATIONS=['eighth','quarter','half','whole'];
 function getName(m,useFlat=false){const o=Math.floor(m/12)-1,p=m%12;return `${useFlat?FLAT_JP[p]:JP[p]}${o}（${useFlat?FLAT_PC[p]:PC[p]}${o}）`}
 function svg(tag,attrs,parent=$('score')){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);parent.append(e);return e}
+const GLYPH_INK='#263b52';
+const NOTE_SCALE=26/22;
+// v0.2.1で承認された寸法。線間では音符頭の外縁が上下の五線へちょうど接する。
+const NOTE_LAYOUT={
+whole:{x:-20.54,y:-12.94,width:40.49,height:25.77},
+half:{x:-14.37,y:-74.90,width:30.00,height:87.70},
+quarter:{x:-14.52,y:-76.29,width:29.71,height:89.14},
+eighth:{x:-14.89,y:-75.55,width:51.14,height:89.19}
+};
+function placeUse(parent,name,x,y,width,height){return svg('use',{href:`#g-${name}`,x,y,width,height,fill:GLYPH_INK},parent)}
+function placeNote(parent,duration,x,y){const box=NOTE_LAYOUT[duration];placeUse(parent,duration,x+box.x*NOTE_SCALE,y+box.y*NOTE_SCALE,box.width*NOTE_SCALE,box.height*NOTE_SCALE)}
 function render(){if(!current)return;const {m,clef,d,useFlat}=current;const out=$('score');out.replaceChildren();
 const pc=m%12,oct=Math.floor(m/12)-1,letter=(useFlat?FLAT_PC[pc]:PC[pc])[0];const abs=oct*7+LETTER_INDEX[letter];
 // Treble bottom E4 / bass bottom G2. Staff rises by diatonic steps.
 const bottom=clef==='treble'?4*7+LETTER_INDEX.E:2*7+LETTER_INDEX.G;
 const step=abs-bottom;const y=190-step*13;const top=Math.min(60,y-42),btm=Math.max(205,y+42);const minY=Math.min(28,top-8);const maxY=Math.max(253,btm+8);
 out.setAttribute('viewBox',`0 ${minY} 600 ${maxY-minY}`);
-const staffTop=86, spacing=26;
+const staffTop=86,spacing=26;
 for(let i=0;i<5;i++)svg('line',{x1:90,y1:staffTop+i*spacing,x2:532,y2:staffTop+i*spacing,stroke:'#34475c','stroke-width':1.7});
-// Fixed vector clefs: no device-dependent music font metrics.
-const CLEF_TREBLE='M314 801Q300 854 291.0 906.0Q282 958 282 1012Q282 1059 288.5 1100.5Q295 1142 307 1177Q320 1217 341.0 1252.5Q362 1288 385.5 1311.0Q409 1334 427 1334Q451 1334 493 1249Q514 1206 524.0 1156.0Q534 1106 534 1049Q534 978 515.0 907.5Q496 837 459.5 775.0Q423 713 372 666L407 498Q422 500 432.0 501.0Q442 502 447 502Q508 502 556.0 467.5Q604 433 632.5 377.0Q661 321 661 254Q661 177 621.5 115.5Q582 54 503 25Q508 8 532 -117Q538 -147 541.0 -164.5Q544 -182 545.0 -195.0Q546 -208 546 -225Q546 -275 521.5 -314.5Q497 -354 455.5 -376.0Q414 -398 363 -398Q311 -398 271.0 -378.5Q231 -359 208.0 -324.5Q185 -290 185 -245Q185 -197 211.5 -165.0Q238 -133 287 -133Q329 -133 355.5 -163.5Q382 -194 382 -236Q382 -272 357.0 -299.0Q332 -326 292 -326H282Q308 -365 364 -365Q433 -365 472.0 -320.0Q511 -275 511 -205Q511 -188 507.0 -159.5Q503 -131 493 -91Q483 -51 477.5 -25.0Q472 1 470 12Q436 2 390 2Q304 2 222 52Q142 102 96.0 184.0Q50 266 50 361Q50 451 91 530Q132 609 192.5 675.0Q253 741 314 801ZM341 826Q364 838 390.0 870.5Q416 903 440.0 945.0Q464 987 479.0 1029.5Q494 1072 494 1106Q494 1142 483.0 1163.0Q472 1184 445 1184Q421 1184 398.5 1162.0Q376 1140 358.5 1103.5Q341 1067 331.0 1022.0Q321 977 321 930Q321 898 327.5 872.0Q334 846 341 826ZM398 379Q371 373 347.0 353.5Q323 334 308.5 306.5Q294 279 294 248Q294 223 307.0 196.5Q320 170 339 154Q352 142 365 136Q380 129 380 123Q380 120 370 117Q332 126 301.5 151.0Q271 176 253.5 211.5Q236 247 236 287Q236 330 253.5 370.0Q271 410 302.5 442.0Q334 474 374 490L345 641Q229 547 174.5 456.5Q120 366 120 277Q120 212 154.0 156.0Q188 100 247.0 65.5Q306 31 380 31Q400 31 420.5 35.0Q441 39 464 45ZM495 55Q593 97 593 227Q593 270 571.0 305.5Q549 341 512.0 362.0Q475 383 429 383Z';
-const CLEF_BASS='M50 123Q216 231 288 301Q336 348 373.0 408.5Q410 469 431.5 536.0Q453 603 453 669Q453 728 435.0 773.5Q417 819 383.0 845.0Q349 871 302 871Q284 871 264.5 867.0Q245 863 224 855Q181 839 158.0 813.5Q135 788 135 765Q135 756 143.0 752.0Q151 748 158 748Q168 748 183 752Q190 754 196.5 755.0Q203 756 210 756Q248 756 272.0 733.5Q296 711 296 674Q296 638 266.0 612.0Q236 586 195 586Q146 586 111.0 617.0Q76 648 76 697Q76 756 109.0 802.0Q142 848 198.5 874.0Q255 900 324 900Q400 900 460.0 867.0Q520 834 555.5 776.5Q591 719 591 646Q591 551 538 464Q511 419 476.5 379.0Q442 339 389.0 297.5Q336 256 256.0 208.0Q176 160 57 101ZM687 809Q710 809 726.0 793.0Q742 777 742 754Q742 731 726.0 715.5Q710 700 687 700Q664 700 648.0 715.5Q632 731 632 754Q632 777 648.0 793.0Q664 809 687 809ZM687 589Q710 589 726.0 573.0Q742 557 742 534Q742 511 726.0 495.5Q710 480 687 480Q664 480 648.0 495.5Q632 511 632 534Q632 557 648.0 573.0Q664 589 687 589Z';
-const isTreble=clef==='treble';
-// Font paths use positive Y upward. The whole glyph is aligned to the staff.
-const clefGroup=svg('g',{transform:isTreble?'translate(85 178) scale(.102 -.102)':'translate(86 184) scale(.100 -.100)'});
-svg('path',{d:isTreble?CLEF_TREBLE:CLEF_BASS,fill:'#23384c'},clefGroup);
+// 音部記号も支給SVGの輪郭を使用する。
+if(clef==='treble')placeUse(out,'treble',80,58.82,57.91,157.18);else placeUse(out,'bass',75,100.18,69.73,80.36);
 const noteX=329;
 if(step<0){for(let s=-2;s>=step;s-=2){const yy=190-s*13;svg('line',{x1:noteX-28,y1:yy,x2:noteX+29,y2:yy,stroke:'#283e54','stroke-width':1.65})}}
 if(step>8){for(let s=10;s<=step;s+=2){const yy=190-s*13;svg('line',{x1:noteX-28,y1:yy,x2:noteX+29,y2:yy,stroke:'#283e54','stroke-width':1.65})}}
-if(BLACK.has(pc)){const accidental=svg('text',{x:noteX-56,y:y+11,'font-size':43,'font-family':'Georgia, serif',fill:'#263b52','text-anchor':'middle'});accidental.textContent=useFlat?'♭':'♯'}
-// Engraved noteheads: asymmetric contours and diagonal counters, not browser ovals.
-// Keep notehead dimensions constant relative to 26-unit staff spacing.
-const ink='#263b52';
-if(d==='whole'){
-  // The whole-note's distinctive horizontal rim and diagonal hollow centre.
-  const g=svg('g',{transform:`translate(${noteX} ${y})`});
-  svg('path',{d:'M -22 0 C -22 -12 -11 -17 0 -17 C 13 -17 23 -10 23 0 C 23 11 12 17 0 17 C -12 17 -22 11 -22 0 Z',fill:ink},g);
-  svg('path',{d:'M -9 10 C -16 6 -11 -10 -2 -12 C 5 -14 12 -6 10 3 C 8 12 -2 14 -9 10 Z',fill:'#fff'},g);
-}else{
-  const up=step<5;
-  const stemX=noteX+(up?17.5:-17.5),stemEnd=y+(up?-93:93);
-  // Stems: vertical filled rectangles with clean, squared end caps.
-  svg('rect',{x:up?stemX-3.6:stemX,y:Math.min(y,stemEnd),width:3.6,height:Math.abs(stemEnd-y),fill:ink});
-  const g=svg('g',{transform:`translate(${noteX} ${y}) rotate(-20)`});
-  // Calligraphic flattened diagonal head, lightly pointed on the ends.
-  const head='M -20 1 C -20 -8 -9 -12 0 -12 C 12 -12 20 -7 20 1 C 20 10 9 12 -1 12 C -12 12 -20 9 -20 1 Z';
-  svg('path',{d:head,fill:ink},g);
-  if(d==='half'){
-    // Diagonal aperture with the characteristic thick sides of a half note.
-    svg('path',{d:'M -12 2 C -12 -3 -4 -7 3 -7 C 10 -7 13 -4 12 0 C 11 5 3 8 -4 8 C -10 8 -12 6 -12 2 Z',fill:'#fff'},g);
-  }
-  if(d==='eighth'){
-    // Filled, tapered curved flag; orientation follows standard stem direction.
-    const flag=up
-      ? `M ${stemX-0.8} ${stemEnd} C ${stemX+3} ${stemEnd+14},${stemX+36} ${stemEnd+9},${stemX+39} ${stemEnd+43} C ${stemX+40} ${stemEnd+53},${stemX+33} ${stemEnd+63},${stemX+25} ${stemEnd+69} C ${stemX+33} ${stemEnd+52},${stemX+31} ${stemEnd+39},${stemX+19} ${stemEnd+30} C ${stemX+9} ${stemEnd+22},${stemX+1} ${stemEnd+21},${stemX-0.8} ${stemEnd+16} Z`
-      : `M ${stemX+3.6} ${stemEnd} C ${stemX-3} ${stemEnd-14},${stemX-36} ${stemEnd-9},${stemX-39} ${stemEnd-43} C ${stemX-40} ${stemEnd-53},${stemX-33} ${stemEnd-63},${stemX-25} ${stemEnd-69} C ${stemX-33} ${stemEnd-52},${stemX-31} ${stemEnd-39},${stemX-19} ${stemEnd-30} C ${stemX-9} ${stemEnd-22},${stemX} ${stemEnd-21},${stemX+3.6} ${stemEnd-16} Z`;
-    svg('path',{d:flag,fill:ink});
-  }
-}
+if(BLACK.has(pc)){if(useFlat)placeUse(out,'flat',noteX-55.55,y-40.18,22.45,62.64);else placeUse(out,'sharp',noteX-55.55,y-33.09,20.09,65)}
+placeNote(out,d,noteX,y);
 $('clefLabel').textContent=clef==='treble'?'𝄞 ト音記号':'𝄢 ヘ音記号';$('counter').textContent=`第${count+1}問`;$('answer').textContent=getName(m,useFlat);$('answer').className='answer hidden';$('tapguide').textContent='音を読んでからタップして答えを確認';$('stage').setAttribute('aria-label',`${clef==='treble'?'ト音記号':'ヘ音記号'}の音符。タップで答えを見る`);
 }
 
@@ -594,7 +585,7 @@ else if(short){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=
 else if(promote){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueAt=now+days(s.level)*DAY}
 // Early correct intentionally leaves the original dueCount and dueAt untouched.
 s.lastAt=now;p.stats[n.id]=s;
-const elapsed=Math.max(0,(now-n.started)/1000);const activeSeconds=Math.min(elapsed,120);p.history.push({activeSeconds,at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.5.1',answerMode:details?.mode??'self',chosenAnswer:details?.answer??null});
+const elapsed=Math.max(0,(now-n.started)/1000);const activeSeconds=Math.min(elapsed,120);p.history.push({activeSeconds,at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v3.3.7',answerMode:details?.mode??'self',chosenAnswer:details?.answer??null});
 p.recent.push(n.id);p.recent=p.recent.slice(-3);count++;lastRecordedAt=now;save();updateStatus();
 if(details?.mode==='keyboard'){finishKeyboard(correct,n,details.answer)}
  else if(details){$('answer').className='answer answer-shown';$('solfegeFeedback').textContent=correct?'○ せいかい！':`× せいかいは ${expectedAnswer(n)}`;$('solfegeFeedback').className='solfege-feedback '+(correct?'good':'bad');$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=true);$('nextAfterSolfege').hidden=false;}
