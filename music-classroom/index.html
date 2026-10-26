@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>かわいい音楽教室 v3.3.9</title>
+<title>かわいい音楽教室 v3.3.10</title>
 <style>
 :root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
@@ -85,7 +85,7 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 @media(min-width:700px){.piano-full{height:180px}}
 .practice.keyboard-mode .tapguide{display:none}
 
-/* v3.3.9 compact responsive classroom. Built on complete v2.5. */
+/* v3.3.10 compact responsive classroom. Built on complete v2.5. */
 :root{--ink:#59496f;--muted:#806e96;--line:#eedbf0;--accent:#b65c96;--pale:#fff3fc}
 html,body{width:100%;max-width:100%;overflow-x:hidden}
 body{background:linear-gradient(180deg,#f9edff,#ecf9ff 45%,#fff9ed);color:var(--ink)}
@@ -117,6 +117,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
 [hidden]{display:none!important}
 .mic-box{margin:8px 12px 18px;padding:14px;border-radius:15px;background:#f2f7ff;border:1px solid #d5e5fa}.mic-toolbar{display:flex;gap:7px;flex-wrap:wrap}.mic-toolbar button{border:0;border-radius:10px;background:#3367d6;color:white;font-weight:750;padding:12px}.mic-toolbar button:disabled{opacity:.45}#micStop{background:#6c7d96}#micSkip{background:#edf1fc;color:#334f76}#micStatus{font-size:.84rem;color:#435b80}#micFeedback{font-weight:800;color:#36527a;min-height:1.4em}.practice.mic-mode .stage{cursor:default}
 .clear-progress{background:#fff;border:1px solid #d6dced;border-radius:15px;padding:12px;margin:10px 0}.clear-progress-title{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}.clear-track{height:13px;background:#e5e9f3;border-radius:30px;overflow:hidden;margin:9px 0}.clear-track span{height:100%;display:block;background:#48aa83;width:0;transition:width .2s}#clearDetails{color:#64718c;font-size:.83rem;margin:6px 0}#clearRestart{padding:7px 12px;background:#ecedf8;color:#53617d;border-radius:10px;font-size:.79rem}
+.normal-qr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:8px 0 14px;border:2px solid #e6d9f6;border-radius:16px;background:#fffafa}.normal-qr strong{font-size:.95rem}.normal-qr p{margin:5px 0;font-size:.8rem;color:#857399}.normal-qr a{font-size:.82rem;color:#6656b6}.normal-qr img{flex:none;width:110px;height:110px;background:white;border:5px solid white;border-radius:9px}.debug-panel{background:#fff6dd;border:1px solid #e5bb76;border-radius:12px;padding:9px 13px;font-size:.85rem}.debug-panel p{margin:5px 0}.dev-version{display:none!important}body.debug-mode .dev-version{display:inline-block!important}body.debug-mode .debug-panel{display:block!important}body.debug-mode .normal-qr{display:none!important}@media(max-width:390px){.normal-qr{gap:6px;padding:9px}.normal-qr img{width:96px;height:96px}}
 </style>
 </head>
 <body>
@@ -134,8 +135,8 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
     </defs>
   </svg>
 <main>
-<h1>🎼 かわいい音楽教室 <small class="dev-version">v3.3.9</small></h1>
-<p class="subtitle">おんぷと なかよく なろう♪</p>
+<h1>🎼 かわいい音楽教室 <small class="dev-version">v3.3.10</small></h1>
+<p class="subtitle">おんぷと なかよく なろう♪</p><section id="normalQr" class="normal-qr" aria-label="スマートフォン用QRコード"><div><strong>📱 スマホでもれんしゅうできるよ</strong><p>カメラでQRコードを読み取って開いてね</p><a id="normalQrLink" href="https://garoad9901.github.io/piano-note-trainer/music-classroom/">練習ページを開く</a></div><img id="normalQrImage" width="110" height="110" alt="かわいい音楽教室を開くQRコード"></section><div id="debugPanel" class="debug-panel" hidden><strong>開発・デバッグモード v3.3.10</strong><p>表示・動作確認用です。学習記録は通常モードと共通です。</p><a href="https://garoad9901.github.io/piano-note-trainer/music-classroom/">通常モードで開く</a></div>
 <div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="classroom-scene" aria-label="うさぎとくまの音楽教室"><div class="scene-window"><span>☁️</span></div><div class="scene-board"><span>きょうも たのしく</span><strong>おんぷの おべんきょう♪</strong></div><div class="scene-bunny">🐰</div><div class="scene-bear">🐻</div><div class="scene-piano">🎹</div><div class="scene-notes">♪ ♫ ♪</div></div><div id="clearProgress" class="clear-progress" hidden><div class="clear-progress-title"><strong>🎵 ぜんぶできるかな？</strong><span id="clearNumbers">0 / 0 クリア</span></div><div class="clear-track"><span id="clearBar"></span></div><p id="clearDetails">全問クリアに挑戦しよう！</p><button id="clearRestart" type="button">この範囲を最初から</button></div><div class="stats" id="statusText">データを読み込み中…</div>
 
 <section class="practice"><div class="classroom-ribbon">🎵 きょうの おんぷ</div><div class="topline"><span id="clefLabel">ト音記号</span><span id="counter" class="counter">第1問</span></div>
@@ -509,7 +510,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
 </section><div class="settings-data"><h3>学習データ管理</h3><div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p></div><button type="button" id="closeSettings" class="settings-close">設定を閉じる</button></div></div>
 <div id="parentOverlay" class="overlay"><div class="dialog report-dialog" role="dialog" aria-modal="true" aria-label="保護者向け学習レポート"><h2>保護者向け 学習レポート</h2><p class="report-detail" id="reportWho"></p><div class="report-tabs"><button type="button" data-period="today" class="on">今日</button><button type="button" data-period="week">1週間</button><button type="button" data-period="month">1か月</button></div><div id="reportContent"></div><button type="button" id="closeParent" class="close-report">練習に戻る</button></div></div>
 <div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><div class="classroom-celebration">🐰 🏅 🐻</div><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
-<p class="foot" style="text-align:center">v3.3.9｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
+<p class="foot" style="text-align:center">v3.3.10｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
 </main>
 <script>
 
@@ -567,7 +568,7 @@ function render(){
 
 const ranges={treble:['trebleLow','trebleHigh'],bass:['bassLow','bassHigh']};
 const settingIds=['learningMode','clearTimes','answerMode','trebleLow','trebleHigh','bassLow','bassHigh','clef','duration','accidental'];
-const DEFAULTS={learningMode:'mastery',clearTimes:'1',answerMode:'self',trebleLow:'60',trebleHigh:'84',bassLow:'36',bassHigh:'60',clef:'auto',duration:'random',accidental:'none'};
+const DEFAULTS={learningMode:'mastery',clearTimes:'1',answerMode:'self',trebleLow:'60',trebleHigh:'84',bassLow:'36',bassHigh:'60',clef:'auto',duration:'whole',accidental:'none'};
 let state={version:2,active:'p1',profiles:{p1:{name:'こども1',settings:{...DEFAULTS},counter:0,stats:{},history:[],recent:[],mode:'normal'}}};
 let current=null,revealed=false,count=0,previous=null,waiting=false,storeType='IndexedDB';
 let db=null,writeChain=Promise.resolve();let reportPeriod='today';let lastRecordedAt=0;
@@ -594,7 +595,7 @@ function levelWeight(s){return [8,5,3,2,1][s?.level??0]}
 function currentStatus(n){return active().stats[n.id]}
 function due(s,counter,now){return counter>=s.dueCount||(s.dueAt!=null&&now>=s.dueAt)}
 
-/* v3.3.9: independent all-notes-first-try clear-mode progress, persisted per profile. */
+/* v3.3.10: independent all-notes-first-try clear-mode progress, persisted per profile. */
 function clearSignature(){
  return JSON.stringify({clef:$('clef').value,trebleLow:$('trebleLow').value,trebleHigh:$('trebleHigh').value,bassLow:$('bassLow').value,bassHigh:$('bassHigh').value,accidental:$('accidental').value,answerMode:$('answerMode').value,times:$('clearTimes').value});
 }
@@ -844,6 +845,15 @@ $('exportAll').addEventListener('click',()=>download('piano-note-v2-backup-'+new
 $('exportCsv').addEventListener('click',()=>download('piano-note-history.csv',csv(),'text/csv;charset=utf-8'));
 $('importBackup').addEventListener('click',()=>$('backupFile').click());$('backupFile').addEventListener('change',async e=>{const file=e.target.files?.[0];e.target.value='';if(!file)return;try{const data=JSON.parse(await file.text());if(data.version!==2||!data.profiles||!Object.keys(data.profiles).length||Object.values(data.profiles).some(p=>!p.settings||!Array.isArray(p.history)||typeof p.stats!=='object'))throw Error('不正なデータ形式');if(!confirm('現在の全プロフィールのデータをバックアップの内容で置き換えます。よろしいですか？'))return;state=data;state.active=state.profiles[state.active]?state.active:Object.keys(state.profiles)[0];for(const p of Object.values(state.profiles))p.settings.accidental??='none';refreshProfiles();loadSettings();await save();nextProblem();alert('復元しました')}catch(e){alert('JSONを読み込めませんでした：'+e.message)}});
 $('clearProfile').addEventListener('click',()=>{const p=active();if(!confirm(`「${p.name}」の習熟度と全回答履歴を初期化します。元には戻せません。続行しますか？`))return;const word=prompt('確認のため「初期化」と入力してください');if(word!=='初期化')return;const settings={...p.settings};state.profiles[state.active]=newProfile(p.name);active().settings=settings;save();nextProblem();alert('学習履歴を初期化しました')});}
+const DEBUG_MODE=new URLSearchParams(location.search).get('debug')==='1';
+document.body.classList.toggle('debug-mode',DEBUG_MODE);
+$('debugPanel').hidden=!DEBUG_MODE;
+if(!DEBUG_MODE){
+ const qrUrl='https://garoad9901.github.io/piano-note-trainer/music-classroom/';
+ $('normalQrLink').href=qrUrl;
+ $('normalQrImage').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data='+encodeURIComponent(qrUrl);
+ $('normalQrImage').addEventListener('error',()=>{$('normalQrImage').alt='QR画像を読み込めませんでした。リンクから開いてください';$('normalQrImage').style.display='none'});
+}
 setupEvents();loadState().catch(e=>{console.error(e);$('statusText').textContent='起動できませんでした：'+e.message});
 
 </script>
