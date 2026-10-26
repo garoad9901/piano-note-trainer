@@ -117,7 +117,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
 [hidden]{display:none!important}
 .mic-box{margin:8px 12px 18px;padding:14px;border-radius:15px;background:#f2f7ff;border:1px solid #d5e5fa}.mic-toolbar{display:flex;gap:7px;flex-wrap:wrap}.mic-toolbar button{border:0;border-radius:10px;background:#3367d6;color:white;font-weight:750;padding:12px}.mic-toolbar button:disabled{opacity:.45}#micStop{background:#6c7d96}#micSkip{background:#edf1fc;color:#334f76}#micStatus{font-size:.84rem;color:#435b80}#micFeedback{font-weight:800;color:#36527a;min-height:1.4em}.practice.mic-mode .stage{cursor:default}
 .clear-progress{background:#fff;border:1px solid #d6dced;border-radius:15px;padding:12px;margin:10px 0}.clear-progress-title{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}.clear-track{height:13px;background:#e5e9f3;border-radius:30px;overflow:hidden;margin:9px 0}.clear-track span{height:100%;display:block;background:#48aa83;width:0;transition:width .2s}#clearDetails{color:#64718c;font-size:.83rem;margin:6px 0}#clearRestart{padding:7px 12px;background:#ecedf8;color:#53617d;border-radius:10px;font-size:.79rem}
-.normal-qr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:8px 0 14px;border:2px solid #e6d9f6;border-radius:16px;background:#fffafa}.normal-qr strong{font-size:.95rem}.normal-qr p{margin:5px 0;font-size:.8rem;color:#857399}.normal-qr a{font-size:.82rem;color:#6656b6}.normal-qr img{flex:none;width:110px;height:110px;background:white;border:5px solid white;border-radius:9px}.debug-panel{background:#fff6dd;border:1px solid #e5bb76;border-radius:12px;padding:9px 13px;font-size:.85rem}.debug-panel p{margin:5px 0}.dev-version{display:none!important}body.debug-mode .dev-version{display:inline-block!important}body.debug-mode .debug-panel{display:block!important}body.debug-mode .normal-qr{display:none!important}@media(max-width:390px){.normal-qr{gap:6px;padding:9px}.normal-qr img{width:96px;height:96px}}
+
 </style>
 </head>
 <body>
@@ -136,7 +136,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
   </svg>
 <main>
 <h1>🎼 かわいい音楽教室 <small class="dev-version">v3.3.10</small></h1>
-<p class="subtitle">おんぷと なかよく なろう♪</p><section id="normalQr" class="normal-qr" aria-label="スマートフォン用QRコード"><div><strong>📱 スマホでもれんしゅうできるよ</strong><p>カメラでQRコードを読み取って開いてね</p><a id="normalQrLink" href="https://garoad9901.github.io/piano-note-trainer/music-classroom/">練習ページを開く</a></div><img id="normalQrImage" width="110" height="110" alt="かわいい音楽教室を開くQRコード"></section><div id="debugPanel" class="debug-panel" hidden><strong>開発・デバッグモード v3.3.10</strong><p>表示・動作確認用です。学習記録は通常モードと共通です。</p><a href="https://garoad9901.github.io/piano-note-trainer/music-classroom/">通常モードで開く</a></div>
+<p class="subtitle">おんぷと なかよく なろう♪</p><div id="debugPanel" class="debug-panel" hidden><strong>開発・デバッグモード v3.3.10</strong><p>表示・動作確認用です。学習記録は通常モードと共通です。</p><a href="https://garoad9901.github.io/piano-note-trainer/music-classroom/">通常モードで開く</a></div>
 <div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="classroom-scene" aria-label="うさぎとくまの音楽教室"><div class="scene-window"><span>☁️</span></div><div class="scene-board"><span>きょうも たのしく</span><strong>おんぷの おべんきょう♪</strong></div><div class="scene-bunny">🐰</div><div class="scene-bear">🐻</div><div class="scene-piano">🎹</div><div class="scene-notes">♪ ♫ ♪</div></div><div id="clearProgress" class="clear-progress" hidden><div class="clear-progress-title"><strong>🎵 ぜんぶできるかな？</strong><span id="clearNumbers">0 / 0 クリア</span></div><div class="clear-track"><span id="clearBar"></span></div><p id="clearDetails">全問クリアに挑戦しよう！</p><button id="clearRestart" type="button">この範囲を最初から</button></div><div class="stats" id="statusText">データを読み込み中…</div>
 
 <section class="practice"><div class="classroom-ribbon">🎵 きょうの おんぷ</div><div class="topline"><span id="clefLabel">ト音記号</span><span id="counter" class="counter">第1問</span></div>
@@ -848,12 +848,7 @@ $('clearProfile').addEventListener('click',()=>{const p=active();if(!confirm(`�
 const DEBUG_MODE=new URLSearchParams(location.search).get('debug')==='1';
 document.body.classList.toggle('debug-mode',DEBUG_MODE);
 $('debugPanel').hidden=!DEBUG_MODE;
-if(!DEBUG_MODE){
- const qrUrl='https://garoad9901.github.io/piano-note-trainer/music-classroom/';
- $('normalQrLink').href=qrUrl;
- $('normalQrImage').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data='+encodeURIComponent(qrUrl);
- $('normalQrImage').addEventListener('error',()=>{$('normalQrImage').alt='QR画像を読み込めませんでした。リンクから開いてください';$('normalQrImage').style.display='none'});
-}
+
 setupEvents();loadState().catch(e=>{console.error(e);$('statusText').textContent='起動できませんでした：'+e.message});
 
 </script>
