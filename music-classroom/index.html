@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>かわいい音楽教室 v3.3.7</title>
+<title>かわいい音楽教室 v3.3.8</title>
 <style>
 :root{color-scheme:light;--ink:#203047;--muted:#64748b;--line:#dce4ee;--accent:#3367d6;--pale:#eaf1ff}
 *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif}
@@ -85,7 +85,7 @@ main{max-width:760px;margin:auto;padding:20px 16px 36px}h1{font-size:1.38rem;mar
 @media(min-width:700px){.piano-full{height:180px}}
 .practice.keyboard-mode .tapguide{display:none}
 
-/* v3.3.7 compact responsive classroom. Built on complete v2.5. */
+/* v3.3.8 compact responsive classroom. Built on complete v2.5. */
 :root{--ink:#59496f;--muted:#806e96;--line:#eedbf0;--accent:#b65c96;--pale:#fff3fc}
 html,body{width:100%;max-width:100%;overflow-x:hidden}
 body{background:linear-gradient(180deg,#f9edff,#ecf9ff 45%,#fff9ed);color:var(--ink)}
@@ -115,6 +115,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
 #resultDialog{background:#fff8fd;border:3px solid #eccce5}
 @media(max-width:390px){main{padding:12px 8px 24px}.profilebar{gap:5px}.scene-board{left:30%;width:55%;border-width:5px}.classroom-scene{height:155px}.classroom-ribbon{font-size:.9rem}.practice{margin-top:21px}}
 [hidden]{display:none!important}
+.mic-box{margin:8px 12px 18px;padding:14px;border-radius:15px;background:#f2f7ff;border:1px solid #d5e5fa}.mic-toolbar{display:flex;gap:7px;flex-wrap:wrap}.mic-toolbar button{border:0;border-radius:10px;background:#3367d6;color:white;font-weight:750;padding:12px}.mic-toolbar button:disabled{opacity:.45}#micStop{background:#6c7d96}#micSkip{background:#edf1fc;color:#334f76}#micStatus{font-size:.84rem;color:#435b80}#micFeedback{font-weight:800;color:#36527a;min-height:1.4em}.practice.mic-mode .stage{cursor:default}
 </style>
 </head>
 <body>
@@ -132,7 +133,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
     </defs>
   </svg>
 <main>
-<h1>🎼 かわいい音楽教室 <small class="dev-version">v3.3.7</small></h1>
+<h1>🎼 かわいい音楽教室 <small class="dev-version">v3.3.8</small></h1>
 <p class="subtitle">おんぷと なかよく なろう♪</p>
 <div class="profilebar"><label for="profile" style="margin:0">学習者</label><select id="profile"></select></div><div class="classroom-scene" aria-label="うさぎとくまの音楽教室"><div class="scene-window"><span>☁️</span></div><div class="scene-board"><span>きょうも たのしく</span><strong>おんぷの おべんきょう♪</strong></div><div class="scene-bunny">🐰</div><div class="scene-bear">🐻</div><div class="scene-piano">🎹</div><div class="scene-notes">♪ ♫ ♪</div></div><div class="stats" id="statusText">データを読み込み中…</div>
 
@@ -140,12 +141,12 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
 <button class="stage" id="stage" type="button" aria-label="答えを表示、または次の問題へ">
 <svg id="score" class="score-svg" viewBox="0 28 600 225" role="img" aria-label="音符"><g stroke="#34475c" stroke-width="1.8"><path d="M90 86H532 M90 112H532 M90 138H532 M90 164H532 M90 190H532" /></g><text x="109" y="205" font-size="132" font-family="Noto Music, Apple Symbols, serif" fill="#23384c" text-anchor="middle">𝄞</text><ellipse cx="329" cy="164" rx="18" ry="12" transform="rotate(-20 329 164)" fill="#263b52"/><path d="M346 164V70" stroke="#263b52" stroke-width="3.3"/></svg>
 <div class="answer hidden" id="answer" aria-live="polite">&nbsp;</div><p id="tapguide" class="tapguide">タップして答えを表示</p>
-</button><div id="keyboardBox" class="keyboard-box" hidden><div id="keyboardMap" class="keyboard-map" aria-label="88鍵位置マップ"></div><div class="piano-scroll" id="pianoScroll"><div id="pianoFull" class="piano-full"></div></div><div id="keyboardFeedback" class="keyboard-feedback" aria-live="polite"></div><button type="button" id="keyboardNext" class="continue-button" hidden>つぎのもんだい →</button></div><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を押してね（オクターブは判定しません）</p><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div><button type="button" id="selfNext" class="continue-button" hidden style="display:block;width:calc(100% - 28px);margin:4px 14px 16px">つぎへ →</button></section>
+</button><div id="keyboardBox" class="keyboard-box" hidden><div id="keyboardMap" class="keyboard-map" aria-label="88鍵位置マップ"></div><div class="piano-scroll" id="pianoScroll"><div id="pianoFull" class="piano-full"></div></div><div id="keyboardFeedback" class="keyboard-feedback" aria-live="polite"></div><button type="button" id="keyboardNext" class="continue-button" hidden>つぎのもんだい →</button></div><div id="solfegeBox" class="solfege-box" hidden><p class="solfege-note">音名を押してね（オクターブは判定しません）</p><div class="solfege-keys" id="solfegeKeys"><button type="button" data-note="ド">ド</button><button type="button" data-note="レ">レ</button><button type="button" data-note="ミ">ミ</button><button type="button" data-note="ファ">ファ</button><button type="button" data-note="ソ">ソ</button><button type="button" data-note="ラ">ラ</button><button type="button" data-note="シ">シ</button></div><p id="solfegeFeedback" class="solfege-feedback" aria-live="polite"></p><button type="button" id="nextAfterSolfege" class="continue-button" hidden>つぎのもんだい →</button></div><div id="micBox" class="mic-box" hidden><div class="mic-toolbar"><button id="micStart" type="button">🎙️ マイクを開始</button><button id="micStop" type="button" disabled>停止</button><button id="micSkip" type="button">この問題をスキップ →</button></div><p id="micStatus" role="status">マイクを開始すると、実際のピアノの音で答えられます。対応範囲：C3〜C6。</p><p id="micFeedback" aria-live="polite">正解なら約0.8秒後に次へ。不正解は同じ問題に再挑戦できます。</p><p class="minor">弱音重視のv0.1.6認識処理を使用。周囲の雑音や残響では誤認識する場合があります。</p></div><div class="assessment" id="assessment"><button type="button" class="yes" id="correct">○ できた</button><button type="button" class="no" id="incorrect">× まちがえた</button></div><button type="button" id="selfNext" class="continue-button" hidden style="display:block;width:calc(100% - 28px);margin:4px 14px 16px">つぎへ →</button></section>
 <div class="actionbar"><button type="button" id="progress" class="small primary">がんばり</button><button type="button" id="parentReport" class="small">保護者向け</button><button type="button" id="openSettings" class="small">⚙ 設定</button></div>
 <p class="foot">音名は「ド・レ・ミ」で表示し、括弧内に国際式の音名（例：C4）を表示します。○×・ドレミモードは白鍵のみ、鍵盤モードでは♯・♭も出題できます。</p>
 
 <div id="settingsOverlay" class="overlay" role="presentation"><div class="dialog settings-dialog" role="dialog" aria-modal="true" aria-label="設定画面"><div class="settings-heading"><h2>⚙ 設定</h2><button id="closeSettingsTop" type="button" aria-label="設定を閉じる">×</button></div><div class="settings-profiles"><h3>学習者の管理</h3><div class="settings-profile-actions"><button type="button" id="addProfile">＋ 名前を追加</button><button type="button" id="renameProfile">名前を変更</button></div><p class="range-tip">学習者の切り替えは練習画面上部で行えます。</p></div><section class="settings" aria-label="出題設定"><div class="wide group-label">出題設定</div>
-<div class="wide"><label for="answerMode">回答方式</label><select id="answerMode"><option value="self">○・×で自己評価</option><option value="solfege">ドレミのボタンで答える</option><option value="keyboard">鍵盤を押して答える</option></select></div>
+<div class="wide"><label for="answerMode">回答方式</label><select id="answerMode"><option value="self">○・×で自己評価</option><option value="solfege">ドレミのボタンで答える</option><option value="keyboard">鍵盤を押して答える</option><option value="mic">実際のピアノで答える（マイク）</option></select></div>
 <div><label for="duration">音符の種類</label><select id="duration"><option value="random">ランダム</option><option value="eighth">八分音符</option><option value="quarter">四分音符</option><option value="half">二分音符</option><option value="whole">全音符</option></select></div>
 <div><label for="accidental">臨時記号</label><select id="accidental"><option value="none">なし（白鍵のみ）</option><option value="sharp">♯ のみ</option><option value="flat">♭ のみ</option><option value="both">♯・♭ 両方</option></select><div class="range-tip">♯・♭は鍵盤回答モードでのみ出題されます。</div></div>
 <div><label for="clef">音部記号</label><select id="clef"><option value="auto">自動（ト音・ヘ音）</option><option value="treble">ト音記号のみ</option><option value="bass">ヘ音記号のみ</option></select></div>
@@ -507,7 +508,7 @@ h1{text-align:center;color:#b85c95;font-size:clamp(1.3rem,5vw,2rem);line-height:
 </section><div class="settings-data"><h3>学習データ管理</h3><div class="tools"><button id="exportAll" type="button">JSONバックアップ</button><button id="exportCsv" type="button">回答履歴CSV</button><button id="importBackup" type="button">JSON復元</button><button id="clearProfile" type="button">学習データ初期化</button></div><input type="file" id="backupFile" class="backupfile" accept=".json,application/json"><p class="foot" id="storageInfo">学習データはこのブラウザ内に保存されます。ブラウザのデータを削除すると失われることがあるため、定期的にバックアップしてください。</p></div><button type="button" id="closeSettings" class="settings-close">設定を閉じる</button></div></div>
 <div id="parentOverlay" class="overlay"><div class="dialog report-dialog" role="dialog" aria-modal="true" aria-label="保護者向け学習レポート"><h2>保護者向け 学習レポート</h2><p class="report-detail" id="reportWho"></p><div class="report-tabs"><button type="button" data-period="today" class="on">今日</button><button type="button" data-period="week">1週間</button><button type="button" data-period="month">1か月</button></div><div id="reportContent"></div><button type="button" id="closeParent" class="close-report">練習に戻る</button></div></div>
 <div id="resultOverlay" class="overlay"><div class="dialog" id="resultDialog" role="dialog" aria-modal="true" aria-label="学習結果"><div class="classroom-celebration">🐰 🏅 🐻</div><h2 id="resultHeading">20もん できたね！</h2><p id="resultSub">きょうも がんばったね</p><div class="metrics"><div><strong id="rCorrect">0</strong>せいかい</div><div><strong id="rWrong">0</strong>まちがい</div><div><strong id="rRate">0%</strong>せいかいりつ</div></div><p id="mastered">おぼえた音符：0個</p><p id="childPraise" class="report-detail">今日もがんばったね！</p><button id="resume" type="button">タップして つづける →</button></div></div>
-<p class="foot" style="text-align:center">v3.3.7｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
+<p class="foot" style="text-align:center">v3.3.8｜ファイル閲覧画面で動かない場合は、Safari・Chromeで開いてください。</p>
 </main>
 <script>
 
@@ -584,9 +585,9 @@ function refreshProfiles(){$('profile').replaceChildren();for(const [id,p] of Ob
 function loadSettings(){const s=active().settings;for(const id of settingIds)$(id).value=s[id]??DEFAULTS[id];updateAccidentalControl()}
 function syncSettings(){const s=active().settings;for(const id of settingIds)s[id]=$(id).value;save()}
 function activeClefs(){return $('clef').value==='auto'?['treble','bass']:[$('clef').value]}
-function eligible(clef){const ids=ranges[clef],lo=+$(ids[0]).value,hi=+$(ids[1]).value;const out=[];for(let m=lo;m<=hi;m++)if(!BLACK.has(m%12)||($('answerMode').value==='keyboard'&&$('accidental').value!=='none'))out.push(m);return out}
-function valid(){const cs=activeClefs();const bad=cs.some(c=>+$(ranges[c][0]).value>+$(ranges[c][1]).value),empty=cs.some(c=>eligible(c).length===0);$('rangeError').textContent=bad?'下限は上限以下にしてください。':'出題できる音符がありません。';$('rangeError').classList.toggle('on',bad||empty);return !(bad||empty)}
-function allCandidates(){const out=[];const acc=$('answerMode').value==='keyboard'?$('accidental').value:'none';for(const c of activeClefs())for(const m of eligible(c)){const black=BLACK.has(m%12);if(black&&acc==='none')continue;if(black&&acc==='sharp')out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`});else if(black&&acc==='flat')out.push({m,clef:c,useFlat:true,id:`${c}:${m}:f`});else if(black&&acc==='both'){out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`},{m,clef:c,useFlat:true,id:`${c}:${m}:f`})}else if(!black)out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`})}return out}
+function eligible(clef){const ids=ranges[clef],lo=+$(ids[0]).value,hi=+$(ids[1]).value;const out=[];for(let m=lo;m<=hi;m++)if(!BLACK.has(m%12)||(['keyboard','mic'].includes($('answerMode').value)&&$('accidental').value!=='none'))out.push(m);return out}
+function valid(){const cs=activeClefs();const bad=cs.some(c=>+$(ranges[c][0]).value>+$(ranges[c][1]).value),empty=cs.some(c=>eligible(c).filter(m=>$('answerMode').value!=='mic'||m>=48&&m<=84).length===0);$('rangeError').textContent=bad?'下限は上限以下にしてください。':'出題できる音符がありません。';$('rangeError').classList.toggle('on',bad||empty);return !(bad||empty)}
+function allCandidates(){const out=[];const acc=['keyboard','mic'].includes($('answerMode').value)?$('accidental').value:'none';for(const c of activeClefs())for(const m of eligible(c)){if($('answerMode').value==='mic'&&(m<48||m>84))continue;const black=BLACK.has(m%12);if(black&&acc==='none')continue;if(black&&acc==='sharp')out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`});else if(black&&acc==='flat')out.push({m,clef:c,useFlat:true,id:`${c}:${m}:f`});else if(black&&acc==='both'){out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`},{m,clef:c,useFlat:true,id:`${c}:${m}:f`})}else if(!black)out.push({m,clef:c,useFlat:false,id:`${c}:${m}:s`})}return out}
 function weighted(items,weight){const weights=items.map(x=>Math.max(.001,weight(x)));let r=Math.random()*weights.reduce((a,b)=>a+b,0);for(let i=0;i<items.length;i++){r-=weights[i];if(r<=0)return items[i]}return items[items.length-1]}
 function levelWeight(s){return [8,5,3,2,1][s?.level??0]}
 function currentStatus(n){return active().stats[n.id]}
@@ -612,8 +613,8 @@ else {chosen=weighted(options,n=>levelWeight(currentStatus(n)));type='early'}
 // If recent-history exclusion masked all eligible due problems, retry them when appropriate.
 if(!chosen){chosen=pool[Math.floor(Math.random()*pool.length)];type=currentStatus(chosen)?'early':'first'}
 const d=$('duration').value==='random'?DURATIONS[Math.floor(Math.random()*4)]:$('duration').value;
-current={...chosen,d,type,started:Date.now()};revealed=false;waiting=false;
-$('stage').disabled=false;$('assessment').classList.remove('show');$('solfegeFeedback').textContent='';$('solfegeFeedback').className='solfege-feedback';$('keyboardFeedback').textContent='';$('keyboardNext').hidden=true;clearKeyHighlights();$('nextAfterSolfege').hidden=true;$('selfNext').hidden=true;$('solfegeKeys').querySelectorAll('button').forEach(b=>{b.disabled=false;b.classList.remove('chosen-answer')});render();updateAnswerMode();updateStatus();}
+current={...chosen,d,type,started:Date.now()};revealed=false;waiting=false;micMistakes=0;micFirstJudged=false;micHoldUntil=performance.now()+380;micSamples=[];micLastPitch=null;micPrevActive=false;micActiveSince=0;
+$('stage').disabled=false;$('assessment').classList.remove('show');$('solfegeFeedback').textContent='';$('solfegeFeedback').className='solfege-feedback';$('keyboardFeedback').textContent='';$('keyboardNext').hidden=true;clearKeyHighlights();$('nextAfterSolfege').hidden=true;$('selfNext').hidden=true;$('solfegeKeys').querySelectorAll('button').forEach(b=>{b.disabled=false;b.classList.remove('chosen-answer')});render();updateAnswerMode();updateStatus();if($('answerMode').value==='mic'){$('micFeedback').textContent=micRunning?'鍵盤を弾いて答えてね':'マイクを開始してください';}}
 function updateStatus(){const p=active(),stats=Object.values(p.stats),good=stats.filter(x=>x.level>=3).length; $('statusText').textContent=`${p.name}｜回答 ${p.counter}問｜学習済み ${stats.length}音｜Lv.3以上 ${good}音`;}
 function reveal(){if($('answerMode').value!=='self'||!current||revealed)return;revealed=true;$('answer').className='answer answer-shown';$('tapguide').textContent='できたら ○、まちがえたら × をおしてね';$('assessment').classList.add('show');}
 const DAY=86400000;
@@ -630,7 +631,8 @@ else if(promote){s.shortDue=null;s.dueCount=p.counter+interval(s.level,s);s.dueA
 s.lastAt=now;p.stats[n.id]=s;
 const elapsed=Math.max(0,(now-n.started)/1000);const activeSeconds=Math.min(elapsed,120);p.history.push({activeSeconds,at:now,ordinal:p.counter,noteId:n.id,clef:n.clef,midi:n.m,useFlat:n.useFlat,duration:n.d,type:n.type,correct,seconds:Math.round((now-n.started)/100)/10,before,after:s.level,algorithm:'v2.5',answerMode:details?.mode??'self',chosenAnswer:details?.answer??null});
 p.recent.push(n.id);p.recent=p.recent.slice(-3);count++;lastRecordedAt=now;save();updateStatus();
-if(details?.mode==='keyboard'){finishKeyboard(correct,n,details.answer)}
+if(details?.mode==='mic'){ /* Mic retry feedback is managed by micAccept; score is recorded only on first attempt. */ }
+else if(details?.mode==='keyboard'){finishKeyboard(correct,n,details.answer)}
 else if(details){$('answer').className='answer answer-shown';$('solfegeFeedback').textContent=correct?'○ せいかい！':`× せいかいは ${expectedAnswer(n)}`;$('solfegeFeedback').className='solfege-feedback '+(correct?'good':'bad');$('solfegeKeys').querySelectorAll('button').forEach(b=>b.disabled=true);$('nextAfterSolfege').hidden=false;}
 else if(p.counter%20===0){$('assessment').classList.remove('show');$('selfNext').hidden=false;$('tapguide').textContent=correct?'○ できた！ つぎへを押してね':'× まちがえたね。つぎへを押してね';}
 else nextProblem();}
@@ -652,8 +654,8 @@ function csv(){const head=['profile','date','ordinal','noteId','clef','midi','us
 
 function expectedAnswer(n){const pitch=n.m%12;const name=(n.useFlat?FLAT_JP[pitch]:JP[pitch]);return name}
 function expectedAnswer(n){return JP[n.m%12]}
-function updateAccidentalControl(){$('accidental').disabled=$('answerMode').value!=='keyboard'}
-function updateAnswerMode(){const sol=$('answerMode').value==='solfege',kb=$('answerMode').value==='keyboard';$('solfegeBox').hidden=!sol;$('keyboardBox').hidden=!kb;document.querySelector('.practice').classList.toggle('solfege-mode',sol);document.querySelector('.practice').classList.toggle('keyboard-mode',kb);$('stage').style.cursor=sol||kb?'default':'pointer';$('tapguide').textContent=kb?'したの鍵盤を押してね':sol?'下のドレミを押してね':'音を読んでからタップして答えを確認';if(kb){initKeyboard();if(!keyboardPositioned){positionKeyboard();keyboardPositioned=true}}updateAccidentalControl()}
+function updateAccidentalControl(){$('accidental').disabled=!['keyboard','mic'].includes($('answerMode').value)}
+function updateAnswerMode(){const sol=$('answerMode').value==='solfege',kb=$('answerMode').value==='keyboard',mic=$('answerMode').value==='mic';if(!mic&&micRunning)micStop();$('micBox').hidden=!mic;$('solfegeBox').hidden=!sol;$('keyboardBox').hidden=!kb;document.querySelector('.practice').classList.toggle('solfege-mode',sol);document.querySelector('.practice').classList.toggle('keyboard-mode',kb);document.querySelector('.practice').classList.toggle('mic-mode',mic);$('stage').style.cursor=sol||kb||mic?'default':'pointer';$('tapguide').textContent=mic?'ピアノを弾いて答えてね':kb?'したの鍵盤を押してね':sol?'下のドレミを押してね':'音を読んでからタップして答えを確認';if(kb){initKeyboard();if(!keyboardPositioned){positionKeyboard();keyboardPositioned=true}}updateAccidentalControl()}
 let keyboardReady=false,keyboardPositioned=false,keyWidth=26,dragStarted=false,dragMoved=false,dragX=0,dragY=0;
 const whiteBefore=m=>{let n=0;for(let i=21;i<m;i++)if(!BLACK.has(i%12))n++;return n};
 const keyX=m=>{const w=whiteBefore(m);return BLACK.has(m%12)?w*keyWidth-keyWidth*.36:w*keyWidth};
@@ -667,7 +669,99 @@ function finishKeyboard(correct,n,answer){$('keyboardFeedback').textContent=corr
 function chooseSolfege(note){if(!current||waiting||$('answerMode').value!=='solfege')return;const chosen=[...$('solfegeKeys').querySelectorAll('button')].find(b=>b.dataset.note===note);chosen?.classList.add('chosen-answer');const correct=note===expectedAnswer(current);revealed=true;record(correct,{answer:note})}
 
 function closeSettingsPanel(){$('settingsOverlay').classList.remove('show');if(!valid()){loadSettings();nextProblem()}}
-function setupEvents(){for(const id of settingIds)$(id).addEventListener('change',()=>{updateAccidentalControl();if(!valid())return;syncSettings();if(id==='answerMode'||id==='clef'||ranges.treble.includes(id)||ranges.bass.includes(id))keyboardPositioned=false;nextProblem()});
+
+/* Piano-microphone answer mode based on microphone diagnostic v0.1.6.
+ * C3..C6 only; one first-attempt mastery update; retries and skips are not scored twice.
+ */
+let micCtx=null,micStream=null,micSource=null,micAnalyser=null,micRaw=null,micFiltered=null,micFrame=0,micRunning=false;
+let micPrevSample=0,micLow=0,micNoise=.00005,micPrevVolume=0,micPrevActive=false,micActiveSince=0,micLastAt=0,micHoldUntil=0;
+let micSamples=[],micLastPitch=null,micMistakes=0,micFirstJudged=false,micTimer=0,micEpoch=0,micLastAcceptedAt=0;
+const micHz=m=>440*Math.pow(2,(m-69)/12);
+async function micStart(){
+ if(micRunning||$('answerMode').value!=='mic')return;
+ try{
+  if(!navigator.mediaDevices?.getUserMedia)throw Error('HTTPSのSafariで開いてください');
+  micStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false});
+  micCtx=new (window.AudioContext||window.webkitAudioContext)();await micCtx.resume();
+  micSource=micCtx.createMediaStreamSource(micStream);micAnalyser=micCtx.createAnalyser();micAnalyser.fftSize=8192;micAnalyser.smoothingTimeConstant=0;
+  micSource.connect(micAnalyser);micRaw=new Float32Array(8192);micFiltered=new Float32Array(8192);
+  micPrevSample=0;micLow=0;micNoise=.00005;micPrevActive=false;micSamples=[];micLastAt=0;
+  micHoldUntil=performance.now()+450;micRunning=true;micEpoch++;
+  $('micStart').disabled=true;$('micStop').disabled=false;$('micStatus').textContent='🎙️ マイク認識中（C3〜C6）';
+  micFrame=requestAnimationFrame(micLoop);
+ }catch(e){$('micStatus').textContent='マイク開始失敗：'+e.message;await micStop()}
+}
+async function micStop(){
+ micRunning=false;micEpoch++;if(micFrame)cancelAnimationFrame(micFrame);micFrame=0;
+ clearTimeout(micTimer);micTimer=0;try{micSource?.disconnect()}catch(e){}
+ micStream?.getTracks().forEach(t=>t.stop());micStream=null;micSource=null;micAnalyser=null;micRaw=null;micFiltered=null;
+ if(micCtx){await micCtx.close().catch(()=>{});micCtx=null}
+ $('micStart').disabled=false;$('micStop').disabled=true;
+ if($('answerMode').value==='mic')$('micStatus').textContent='停止しました';
+}
+function micPrefilter(data,sr){
+ const hp=1/(1+2*Math.PI*65/sr),lp=1-Math.exp(-2*Math.PI*1700/sr);let prev=micPrevSample,hi=0,lo=micLow;
+ for(let i=0;i<data.length;i++){let x=data[i];hi=hp*(hi+x-prev);prev=x;lo+=lp*(hi-lo);micFiltered[i]=lo}
+ micPrevSample=prev;micLow=lo;return micFiltered;
+}
+function micYin(data,sr){
+ const min=Math.max(2,Math.floor(sr/(1046.51*1.06))),max=Math.min(Math.floor(sr/(130.81*.94)),Math.floor(data.length/2)-2);
+ const n=Math.min(data.length-max-1,2048);if(n<max||max<=min)return null;
+ const cmnd=new Float64Array(max+1);let total=0;
+ for(let tau=1;tau<=max;tau++){let p=0;for(let i=0;i<n;i++){let d=data[i]-data[i+tau];p+=d*d}total+=p;cmnd[tau]=total?p*tau/total:1}
+ const minima=[];for(let tau=min+1;tau<max;tau++)if(cmnd[tau]<=cmnd[tau-1]&&cmnd[tau]<=cmnd[tau+1]&&cmnd[tau]<.32)minima.push({tau,error:cmnd[tau]});
+ if(!minima.length)return null;minima.sort((a,b)=>a.error-b.error);
+ let chosen=minima.find(x=>x.error<.17)||minima[0],best=minima[0];
+ if(best.error<.24){let octave=minima.find(x=>Math.abs(x.tau-2*chosen.tau)<=2&&x.error<=chosen.error+.025);if(octave&&chosen.error>.105)chosen=octave}
+ const k=chosen.tau,a=cmnd[k-1],b=cmnd[k],c=cmnd[k+1],denom=a-2*b+c;
+ const offset=denom?Math.max(-.5,Math.min(.5,.5*(a-c)/denom)):0;
+ return {hz:sr/(k+offset),quality:Math.max(0,1-chosen.error)};
+}
+function micAccept(midi,ts){
+ if(!current||waiting||$('answerMode').value!=='mic')return;
+ // The same held key cannot answer multiple questions. Also suppress long reverberant repeats.
+ if(micLastPitch===midi&&ts-micLastAcceptedAt<600)return;
+ micLastPitch=midi;micLastAcceptedAt=ts;micSamples=[];micHoldUntil=ts+350;
+ const correct=midi===current.m;
+ if(!micFirstJudged){micFirstJudged=true;revealed=true;record(correct,{mode:'mic',answer:midi});}
+ micMistakes+=correct?0:1;
+ if(correct){
+  waiting=true;$('micFeedback').textContent='○ せいかい！';$('answer').className='answer answer-shown';
+  micHoldUntil=ts+1200;const epoch=micEpoch;
+  micTimer=setTimeout(()=>{if(epoch!==micEpoch||!micRunning||$('answerMode').value!=='mic')return;if(active().counter>0&&active().counter%20===0&&micFirstJudged)showResult(false);else nextProblem()},800);
+ }else{
+  waiting=false;$('micFeedback').textContent='× ちがう音です。もう一度弾いてね'+(micMistakes>=3?'　ヒント：'+getName(current.m,current.useFlat):'');
+  if(micMistakes>=3)$('answer').textContent=getName(current.m,current.useFlat);
+ }
+}
+function micLoop(ts){
+ if(!micRunning)return;micFrame=requestAnimationFrame(micLoop);
+ if(ts-micLastAt<30)return;micLastAt=ts;
+ if($('answerMode').value!=='mic'||!micAnalyser||!current||waiting||ts<micHoldUntil)return;
+ micAnalyser.getFloatTimeDomainData(micRaw);
+ let power=0;for(let i=0;i<micRaw.length;i++)power+=micRaw[i]*micRaw[i];
+ const rms=Math.sqrt(power/micRaw.length);
+ if(rms<micNoise*1.18)micNoise=micNoise*.94+rms*.06;
+ else if(rms<micNoise*1.55)micNoise=micNoise*.998+rms*.002;
+ const activeSound=rms>=Math.max(.000035,micNoise*1.27);
+ if(activeSound&&(!micPrevActive||rms>micPrevVolume*1.7)){
+  micActiveSince=ts;micSamples=[];micLastPitch=null;
+ }
+ micPrevVolume=rms;micPrevActive=activeSound;
+ if(!activeSound){micSamples=micSamples.filter(x=>ts-x.at<=180);return}
+ const est=micYin(micPrefilter(micRaw,micCtx.sampleRate),micCtx.sampleRate);if(!est)return;
+ const midi=Math.round(69+12*Math.log2(est.hz/440));
+ if(midi<48||midi>84||est.quality<.42||Math.abs(1200*Math.log2(est.hz/micHz(midi)))>44)return;
+ micSamples.push({at:ts,midi,q:est.quality});micSamples=micSamples.filter(x=>ts-x.at<=260);
+ const counts=new Map();for(const p of micSamples)counts.set(p.midi,(counts.get(p.midi)||0)+Math.max(.05,p.q-.35));
+ const votes=[...counts].sort((a,b)=>b[1]-a[1]);if(!votes.length)return;
+ const winner=votes[0][0],share=votes[0][1]/votes.reduce((a,b)=>a+b[1],0);
+ const matching=micSamples.filter(x=>x.midi===winner),span=ts-matching[0].at;
+ const soft=rms<Math.max(.003,micNoise*6);
+ if(share>=(soft?.78:.70)&&span>=(soft?135:95)&&matching.length>=3){micAccept(winner,ts)}
+}
+
+function setupEvents(){$('micStart').addEventListener('click',micStart);$('micStop').addEventListener('click',micStop);$('micSkip').addEventListener('click',()=>{if($('answerMode').value!=='mic'||!current)return;micHoldUntil=performance.now()+700;micSamples=[];if(waiting){advanceAfterAnswer()}else{nextProblem()}});document.addEventListener('visibilitychange',()=>{if(document.hidden&&micRunning)micStop()});for(const id of settingIds)$(id).addEventListener('change',()=>{updateAccidentalControl();if(!valid())return;syncSettings();if(id==='answerMode'||id==='clef'||ranges.treble.includes(id)||ranges.bass.includes(id))keyboardPositioned=false;nextProblem()});
 $('stage').addEventListener('click',reveal);$('solfegeKeys').addEventListener('click',e=>{const b=e.target.closest('button[data-note]');if(b)chooseSolfege(b.dataset.note)});$('nextAfterSolfege').addEventListener('click',advanceAfterAnswer);$('keyboardNext').addEventListener('click',advanceAfterAnswer);$('selfNext').addEventListener('click',advanceAfterAnswer);$('correct').addEventListener('click',()=>record(true));$('incorrect').addEventListener('click',()=>record(false));
 $('openSettings').addEventListener('click',()=>{$('settingsOverlay').classList.add('show')});$('closeSettings').addEventListener('click',closeSettingsPanel);$('closeSettingsTop').addEventListener('click',closeSettingsPanel);
 $('progress').addEventListener('click',()=>showResult(true));$('parentReport').addEventListener('click',showParent);$('closeParent').addEventListener('click',()=>$('parentOverlay').classList.remove('show'));document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{reportPeriod=b.dataset.period;renderParent()}));$('resume').addEventListener('click',closeResult);$('resultOverlay').addEventListener('click',e=>{if(e.target===$('resultOverlay'))closeResult()});
